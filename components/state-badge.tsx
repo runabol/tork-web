@@ -10,6 +10,10 @@ export default function StateBadge({ name }: { name: string }) {
       bcolor = "bg-red-50";
       tcolor = "text-red-700";
       break;
+    case "CANCELLED":
+      bcolor = "bg-yellow-50";
+      tcolor = "text-yellow-800";
+      break;
     default:
       bcolor = "bg-gray-50";
       tcolor = "text-gray-600";
