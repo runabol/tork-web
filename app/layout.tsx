@@ -6,7 +6,7 @@ import MobileSideBar from "@/components/mobile-sidebar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Lucid | Home",
+  title: "Tork | Home",
 };
 
 export default function RootLayout({

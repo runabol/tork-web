@@ -31,7 +31,8 @@ const people = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const page = await getData();
   return (
     <>
       <main className="py-6 lg:pl-60">
@@ -47,7 +48,7 @@ export default function Home() {
                 type="button"
                 className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Add user
+                New Job
               </button>
             </div>
           </div>
@@ -68,19 +69,19 @@ export default function Home() {
                           scope="col"
                           className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                         >
-                          Title
+                          Created at
                         </th>
                         <th
                           scope="col"
                           className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                         >
-                          Email
+                          Finished at
                         </th>
                         <th
                           scope="col"
                           className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                         >
-                          Role
+                          State
                         </th>
                         <th
                           scope="col"
@@ -91,27 +92,27 @@ export default function Home() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
-                      {people.map((person) => (
-                        <tr key={person.email}>
-                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                            {person.name}
+                      {page.items.map((item) => (
+                        <tr key={item.id}>
+                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-500 sm:pl-6">
+                            {item.name}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                            {person.title}
+                            {item.createdAt}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                            {person.email}
+                            {item.completedAt}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                            {person.role}
+                            {item.state}
                           </td>
                           <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                             <a
                               href="#"
                               className="text-indigo-600 hover:text-indigo-900"
                             >
-                              Edit
-                              <span className="sr-only">, {person.name}</span>
+                              View
+                              <span className="sr-only">, {item.state}</span>
                             </a>
                           </td>
                         </tr>
@@ -126,4 +127,25 @@ export default function Home() {
       </main>
     </>
   );
+}
+
+type Page = {
+  items: Job[];
+};
+
+type Job = {
+  id: string;
+  name: string;
+  state: string;
+  createdAt: string;
+  startedAt: string;
+  completedAt: string;
+};
+
+async function getData(): Promise<Page> {
+  const res = await fetch("http://localhost:8000/jobs", { cache: "no-cache" });
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  return res.json();
 }
