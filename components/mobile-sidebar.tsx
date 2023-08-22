@@ -83,7 +83,7 @@ export default function MobileSideBar() {
                       <li>
                         <ul role="list" className="-mx-2 space-y-1">
                           <MenuItem
-                            name="Jobs"
+                            name="Recent Jobs"
                             icon={PlayCircleIcon}
                             href="/"
                           />
