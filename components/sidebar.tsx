@@ -13,7 +13,7 @@ export default function SideBar() {
           <ul role="list" className="flex flex-1 flex-col gap-y-7">
             <li>
               <ul role="list" className="-mx-2 space-y-1">
-                <MenuItem name="Jobs" icon={PlayCircleIcon} href="/" />
+                <MenuItem name="Recent Jobs" icon={PlayCircleIcon} href="/" />
               </ul>
             </li>
           </ul>
