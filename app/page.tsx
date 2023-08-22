@@ -1,35 +1,4 @@
-const people = [
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-];
+import { formatTimestamp } from "@/lib/datetime";
 
 export default async function Home() {
   const page = await getData();
@@ -98,13 +67,17 @@ export default async function Home() {
                             {item.name}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                            {item.createdAt}
+                            {formatTimestamp(item.createdAt)}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                            {item.completedAt}
+                            {item.completedAt
+                              ? formatTimestamp(item.completedAt)
+                              : formatTimestamp(item.failedAt)}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                            {item.state}
+                            <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+                              {item.state}
+                            </span>
                           </td>
                           <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                             <a
@@ -140,6 +113,7 @@ type Job = {
   createdAt: string;
   startedAt: string;
   completedAt: string;
+  failedAt: string;
 };
 
 async function getData(): Promise<Page> {
