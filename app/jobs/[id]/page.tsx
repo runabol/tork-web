@@ -23,7 +23,7 @@ export default async function Job({ params: { id } }: { params: params }) {
             <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
               {data.name}
             </h2>
-            <div className="mt-1 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap sm:space-x-6">
+            <div className="mt-2 flex flex-col sm:flex-row sm:flex-wrap sm:space-x-6">
               <div className="mt-2 flex items-center text-sm text-gray-500">
                 <StateBadge name={data.state}></StateBadge>
               </div>
@@ -64,7 +64,7 @@ export default async function Job({ params: { id } }: { params: params }) {
           </div>
         </div>
         <div className="mt-8 flow-root">
-          <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
               <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
                 <table className="min-w-full divide-y divide-gray-300">
