@@ -8,4 +8,6 @@ interface Job {
   failedAt: string;
   execution: Task[];
   tasks: Task[];
+  position: number;
+  taskCount: number;
 }

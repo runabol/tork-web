@@ -30,7 +30,13 @@ export default async function Jobs() {
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
-                        Finished at
+                        Ended at
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      >
+                        % Completed
                       </th>
                       <th
                         scope="col"
@@ -61,6 +67,11 @@ export default async function Jobs() {
                             : item.failedAt
                             ? formatTimestamp(item.failedAt)
                             : ""}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {Math.round(
+                            ((item.position - 1) / item.taskCount) * 100
+                          )}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           <StateBadge name={item.state} />
