@@ -1,5 +1,6 @@
 import StateBadge from "@/components/state-badge";
 import Table from "@/components/table";
+import TH from "@/components/table-header";
 import { formatTimestamp } from "@/lib/datetime";
 import Link from "next/link";
 
@@ -9,45 +10,18 @@ export default async function Jobs() {
     <Table>
       <thead className="bg-gray-50">
         <tr>
-          <th
-            scope="col"
-            className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-          >
-            Name
-          </th>
-          <th
-            scope="col"
-            className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-          >
-            Created at
-          </th>
-          <th
-            scope="col"
-            className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-          >
-            Ended at
-          </th>
-          <th
-            scope="col"
-            className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-          >
-            % Completed
-          </th>
-          <th
-            scope="col"
-            className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-          >
-            State
-          </th>
-          <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-            <span className="sr-only">Edit</span>
-          </th>
+          <TH name="Name" />
+          <TH name="Created at" />
+          <TH name="Ended at" />
+          <TH name="% Completed" />
+          <TH name="State" />
+          <TH name="" />
         </tr>
       </thead>
       <tbody className="divide-y divide-gray-200 bg-white">
         {page.items.map((item) => (
           <tr key={item.id}>
-            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-500 sm:pl-6">
+            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-6">
               {item.name}
             </td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">

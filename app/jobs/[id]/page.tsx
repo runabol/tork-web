@@ -1,5 +1,6 @@
 import StateBadge from "@/components/state-badge";
 import Table from "@/components/table";
+import TH from "@/components/table-header";
 import { formatTimestamp } from "@/lib/datetime";
 import { CalendarIcon } from "@heroicons/react/24/solid";
 
@@ -61,42 +62,17 @@ export default async function Job({ params: { id } }: { params: params }) {
       <Table>
         <thead className="bg-gray-50">
           <tr>
-            <th
-              scope="col"
-              className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-            >
-              Name
-            </th>
-            <th
-              scope="col"
-              className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell"
-            >
-              Started at
-            </th>
-            <th
-              scope="col"
-              className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell"
-            >
-              Ended at
-            </th>
-            <th
-              scope="col"
-              className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-            >
-              State
-            </th>
-            <th
-              scope="col"
-              className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell"
-            >
-              Output
-            </th>
+            <TH name="Name" />
+            <TH name="Started at" />
+            <TH name="Ended at" />
+            <TH name="State" />
+            <TH name="Output" />
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
           {data.execution.reverse().map((task) => (
             <tr key={task.id}>
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-500 sm:pl-6">
+              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm  text-gray-500 sm:pl-6">
                 {task.name}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
