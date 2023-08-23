@@ -1,5 +1,12 @@
 import StateBadge from "@/components/state-badge";
 import { formatTimestamp } from "@/lib/datetime";
+import {
+  BriefcaseIcon,
+  CalendarIcon,
+  ClockIcon,
+  CurrencyDollarIcon,
+  MapPinIcon,
+} from "@heroicons/react/24/solid";
 import Link from "next/link";
 
 interface params {
@@ -16,6 +23,30 @@ export default async function Job({ params: { id } }: { params: params }) {
             <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
               {data.name}
             </h2>
+            <div className="mt-1 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap sm:space-x-6">
+              <div className="mt-2 flex items-center text-sm text-gray-500">
+                <StateBadge name={data.state}></StateBadge>
+              </div>
+              <div className="mt-2 flex items-center text-sm text-gray-500">
+                <CalendarIcon
+                  className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                  aria-hidden="true"
+                />
+                Created on {formatTimestamp(data.createdAt)}
+              </div>
+              <div className="mt-2 flex items-center text-sm text-gray-500">
+                <CalendarIcon
+                  className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                  aria-hidden="true"
+                />
+                Finished on{" "}
+                {data.completedAt
+                  ? formatTimestamp(data.completedAt)
+                  : data.failedAt
+                  ? formatTimestamp(data.failedAt)
+                  : ""}
+              </div>
+            </div>
           </div>
           <div className="mt-4 flex md:ml-4 md:mt-0">
             {/* <button
@@ -72,7 +103,7 @@ export default async function Job({ params: { id } }: { params: params }) {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {data.execution.map((task) => (
+                    {data.execution.reverse().map((task) => (
                       <tr key={task.id}>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-500 sm:pl-6">
                           {task.name}

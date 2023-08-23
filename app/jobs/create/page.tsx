@@ -66,7 +66,7 @@ tasks:
                           setErrorMsg(data.error);
                         } else {
                           router.refresh();
-                          router.push(`/jobs`);
+                          router.push(`/jobs/${data.id}`);
                         }
                       });
                   }}
