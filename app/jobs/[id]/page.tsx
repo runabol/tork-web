@@ -1,13 +1,6 @@
 import StateBadge from "@/components/state-badge";
 import { formatTimestamp } from "@/lib/datetime";
-import {
-  BriefcaseIcon,
-  CalendarIcon,
-  ClockIcon,
-  CurrencyDollarIcon,
-  MapPinIcon,
-} from "@heroicons/react/24/solid";
-import Link from "next/link";
+import { CalendarIcon } from "@heroicons/react/24/solid";
 
 interface params {
   id: string;

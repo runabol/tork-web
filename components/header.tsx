@@ -1,10 +1,14 @@
-import { Fragment } from "react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/20/solid";
-import { classNames } from "@/lib/classnames";
 import Link from "next/link";
+import { headers } from "next/headers";
 
 export default function Header() {
+  const headersList = headers();
+  const nextPath = headersList.get("next-path") || "";
+  const active =
+    "inline-flex items-center border-b-2 border-gray-800 px-1 pt-1 text-sm font-medium text-gray-900";
+  const inactive =
+    "inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700";
   return (
     <nav className="bg-white shadow">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -12,20 +16,20 @@ export default function Header() {
           <div className="flex">
             <div className="hidden md:flex md:space-x-8">
               <a
-                href="/"
-                className="inline-flex items-center border-b-2 border-gray-800 px-1 pt-1 text-sm font-medium text-gray-900"
+                href="/jobs"
+                className={nextPath.includes("/jobs") ? active : inactive}
               >
-                Recent Jobs
+                Jobs
               </a>
               <a
                 href="#"
-                className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                className={nextPath.includes("/queues") ? active : inactive}
               >
                 Queues
               </a>
               <a
                 href="#"
-                className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                className={nextPath.includes("/nodes") ? active : inactive}
               >
                 Nodes
               </a>
