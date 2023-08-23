@@ -2,6 +2,7 @@ import SideBar from "@/components/sidebar";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import MobileSideBar from "@/components/mobile-sidebar";
+import Header from "@/components/header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,9 +19,10 @@ export default function RootLayout({
     <html lang="en" className="h-full bg-gray-50">
       <body className={`${inter.className} h-full`}>
         <div>
-          <MobileSideBar />
-          <SideBar />
-          {children}
+          <Header />
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            {children}
+          </div>
         </div>
       </body>
     </html>
