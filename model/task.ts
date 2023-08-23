@@ -1,4 +1,4 @@
-interface Job {
+interface Task {
   id: string;
   name: string;
   state: string;
@@ -6,6 +6,6 @@ interface Job {
   startedAt: string;
   completedAt: string;
   failedAt: string;
-  execution: Task[];
-  tasks: Task[];
+  error: string;
+  result: string;
 }
