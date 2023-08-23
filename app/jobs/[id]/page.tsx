@@ -34,18 +34,20 @@ export default async function Job({ params: { id } }: { params: params }) {
                 />
                 Created on {formatTimestamp(data.createdAt)}
               </div>
-              <div className="mt-2 flex items-center text-sm text-gray-500">
-                <CalendarIcon
-                  className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
-                  aria-hidden="true"
-                />
-                Finished on{" "}
-                {data.completedAt
-                  ? formatTimestamp(data.completedAt)
-                  : data.failedAt
-                  ? formatTimestamp(data.failedAt)
-                  : ""}
-              </div>
+              {data.completedAt || data.failedAt ? (
+                <div className="mt-2 flex items-center text-sm text-gray-500">
+                  <CalendarIcon
+                    className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                    aria-hidden="true"
+                  />
+                  Finished on{" "}
+                  {data.completedAt
+                    ? formatTimestamp(data.completedAt)
+                    : formatTimestamp(data.failedAt)}
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
           <div className="mt-4 flex md:ml-4 md:mt-0">
