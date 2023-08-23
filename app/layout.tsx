@@ -5,7 +5,7 @@ import Header from "@/components/header";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Tork | Home",
+  title: "Tork",
 };
 
 export default function RootLayout({

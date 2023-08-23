@@ -21,7 +21,7 @@ export default async function Jobs() {
       <tbody className="divide-y divide-gray-200 bg-white">
         {page.items.map((item) => (
           <tr key={item.id}>
-            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-6">
+            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-6 ">
               {item.name}
             </td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
@@ -45,8 +45,12 @@ export default async function Jobs() {
                 href={`/jobs/${item.id}`}
                 className="text-black hover:text-gray-700"
               >
-                View
-                <span className="sr-only">, {item.state}</span>
+                <button
+                  type="button"
+                  className="rounded bg-white px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 hover:bg-gray-50"
+                >
+                  View
+                </button>
               </Link>
             </td>
           </tr>
