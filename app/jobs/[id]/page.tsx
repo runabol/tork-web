@@ -1,4 +1,5 @@
 import StateBadge from "@/components/state-badge";
+import Table from "@/components/table";
 import { formatTimestamp } from "@/lib/datetime";
 import { CalendarIcon } from "@heroicons/react/24/solid";
 
@@ -57,75 +58,67 @@ export default async function Job({ params: { id } }: { params: params }) {
             </button> */}
         </div>
       </div>
-      <div className="mt-8 flow-root">
-        <div className="-my-2 overflow-x-hidden sm:-mx-6 lg:-mx-8">
-          <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-            <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
-              <table className="min-w-full divide-y divide-gray-300">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th
-                      scope="col"
-                      className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-                    >
-                      Name
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell"
-                    >
-                      Started at
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell"
-                    >
-                      Ended at
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      State
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell"
-                    >
-                      Output
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200 bg-white">
-                  {data.execution.reverse().map((task) => (
-                    <tr key={task.id}>
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-500 sm:pl-6">
-                        {task.name}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
-                        {task.startedAt ? formatTimestamp(task.createdAt) : ""}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
-                        {task.completedAt
-                          ? formatTimestamp(task.completedAt)
-                          : task.failedAt
-                          ? formatTimestamp(task.failedAt)
-                          : ""}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        <StateBadge name={task.state} />
-                      </td>
-                      <td className="px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
-                        {task.error ? task.error : task.result}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Table>
+        <thead className="bg-gray-50">
+          <tr>
+            <th
+              scope="col"
+              className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+            >
+              Name
+            </th>
+            <th
+              scope="col"
+              className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell"
+            >
+              Started at
+            </th>
+            <th
+              scope="col"
+              className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell"
+            >
+              Ended at
+            </th>
+            <th
+              scope="col"
+              className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+            >
+              State
+            </th>
+            <th
+              scope="col"
+              className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell"
+            >
+              Output
+            </th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-200 bg-white">
+          {data.execution.reverse().map((task) => (
+            <tr key={task.id}>
+              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-500 sm:pl-6">
+                {task.name}
+              </td>
+              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
+                {task.startedAt ? formatTimestamp(task.createdAt) : ""}
+              </td>
+              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
+                {task.completedAt
+                  ? formatTimestamp(task.completedAt)
+                  : task.failedAt
+                  ? formatTimestamp(task.failedAt)
+                  : ""}
+              </td>
+              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                <StateBadge name={task.state} />
+              </td>
+              <td className="px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
+                {task.error ? task.error : task.result}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </>
   );
 }
