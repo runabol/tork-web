@@ -48,7 +48,7 @@ tasks:
                 />
               </div>
               <Alert message={errorMsg} />
-              <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse gap-2">
+              <div className="flex gap-2 mt-2 justify-end">
                 <button
                   type="button"
                   className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -76,7 +76,7 @@ tasks:
                 <Link href={"/jobs"}>
                   <button
                     type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                    className="inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:w-auto"
                   >
                     Cancel
                   </button>
