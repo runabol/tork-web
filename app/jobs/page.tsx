@@ -1,5 +1,6 @@
 import CancelJob from "@/components/cancel-job";
 import Confirm from "@/components/cancel-job";
+import RestartJob from "@/components/restart-job";
 import StateBadge from "@/components/state-badge";
 import Table from "@/components/table";
 import THeader from "@/components/table-header";
@@ -55,6 +56,11 @@ export default async function Jobs() {
                 </button>
               </Link>
               {item.state === "RUNNING" ? <CancelJob job={item} /> : <></>}
+              {item.state === "FAILED" || item.state === "CANCELLED" ? (
+                <RestartJob job={item} />
+              ) : (
+                <></>
+              )}
             </td>
           </tr>
         ))}
