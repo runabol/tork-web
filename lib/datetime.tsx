@@ -1,4 +1,4 @@
-import { parseISO, format } from "date-fns";
+import { parseISO, format, formatDuration } from "date-fns";
 
 export function formatTimestamp(ts: string) {
   return format(parseISO(ts), "MM/dd/yy HH:mm:ss");

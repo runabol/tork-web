@@ -25,7 +25,7 @@ export default async function Queues() {
         </tr>
       </thead>
       <tbody className="divide-y divide-gray-200 bg-white">
-        {qs.map((q) => (
+        {sorted.map((q) => (
           <tr key={q.name}>
             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-6 ">
               {q.name}

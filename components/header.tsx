@@ -28,7 +28,7 @@ export default function Header() {
                 Queues
               </a>
               <a
-                href="#"
+                href="/nodes"
                 className={nextPath.includes("/nodes") ? active : inactive}
               >
                 Nodes
