@@ -27,3 +27,7 @@ You can override the default configuration by creating an `.env.local` file.
 4. Show node status
 5. Cancel a running job
 6. Add a drop-down of sample jobs on New Job page.
+
+## License
+
+Copyright (c) 2023-present Arik Cohen. Tork and Tork Web is free and open-source software licensed under the MIT License.
