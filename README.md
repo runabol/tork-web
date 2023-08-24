@@ -1,6 +1,6 @@
 A web UI for the [Tork](https://github.com/runabol/tork) Workflow Engine.
 
-![screenshot](screenshotv2.png "Screenshot")
+![screenshot](screenshot.png "Screenshot")
 
 ## Getting Started
 
