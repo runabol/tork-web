@@ -1,5 +1,5 @@
 import Table from "@/components/table";
-import TH from "@/components/table-header";
+import THeader from "@/components/table-header";
 import { formatTimestamp } from "@/lib/datetime";
 import { formatDistanceToNow, parseISO } from "date-fns";
 
@@ -14,11 +14,11 @@ export default async function Queues() {
     <Table>
       <thead className="bg-gray-50">
         <tr>
-          <TH name="ID" />
-          <TH name="Started At" />
-          <TH name="Last Heartbeat" />
-          <TH name="Uptime" />
-          <TH name="CPU %" />
+          <THeader name="ID" />
+          <THeader name="Started At" />
+          <THeader name="Last Heartbeat" />
+          <THeader name="Uptime" />
+          <THeader name="CPU %" />
         </tr>
       </thead>
       <tbody className="divide-y divide-gray-200 bg-white">

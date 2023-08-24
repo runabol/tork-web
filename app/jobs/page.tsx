@@ -1,6 +1,6 @@
 import StateBadge from "@/components/state-badge";
 import Table from "@/components/table";
-import TH from "@/components/table-header";
+import THeader from "@/components/table-header";
 import { formatTimestamp } from "@/lib/datetime";
 import Link from "next/link";
 
@@ -10,12 +10,12 @@ export default async function Jobs() {
     <Table>
       <thead className="bg-gray-50">
         <tr>
-          <TH name="Name" />
-          <TH name="Created at" />
-          <TH name="Ended at" />
-          <TH name="% Completed" />
-          <TH name="State" />
-          <TH name="" />
+          <THeader name="Name" />
+          <THeader name="Created at" />
+          <THeader name="Ended at" />
+          <THeader name="% Completed" />
+          <THeader name="State" />
+          <THeader name="" />
         </tr>
       </thead>
       <tbody className="divide-y divide-gray-200 bg-white">

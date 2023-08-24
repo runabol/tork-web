@@ -1,6 +1,6 @@
 import StateBadge from "@/components/state-badge";
 import Table from "@/components/table";
-import TH from "@/components/table-header";
+import THeader from "@/components/table-header";
 import { formatTimestamp } from "@/lib/datetime";
 import { CalendarIcon } from "@heroicons/react/24/solid";
 
@@ -62,11 +62,11 @@ export default async function Job({ params: { id } }: { params: params }) {
       <Table>
         <thead className="bg-gray-50">
           <tr>
-            <TH name="Name" />
-            <TH name="Started at" />
-            <TH name="Ended at" />
-            <TH name="State" />
-            <TH name="Output" />
+            <THeader name="Name" />
+            <THeader name="Started at" />
+            <THeader name="Ended at" />
+            <THeader name="State" />
+            <THeader name="Output" />
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">

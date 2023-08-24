@@ -1,5 +1,5 @@
 import Table from "@/components/table";
-import TH from "@/components/table-header";
+import THeader from "@/components/table-header";
 
 export default async function Queues() {
   const qs = await getData();
@@ -20,8 +20,8 @@ export default async function Queues() {
     <Table>
       <thead className="bg-gray-50">
         <tr>
-          <TH name="Name" />
-          <TH name="Size" />
+          <THeader name="Name" />
+          <THeader name="Size" />
         </tr>
       </thead>
       <tbody className="divide-y divide-gray-200 bg-white">

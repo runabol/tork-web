@@ -1,4 +1,4 @@
-export default function TH({ name }: { name: string }) {
+export default function THeader({ name }: { name: string }) {
   return (
     <th
       scope="col"
