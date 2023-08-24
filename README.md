@@ -26,3 +26,4 @@ You can override the default configuration by creating an `.env.local` file.
 3. Duplicate a job
 4. Show node status
 5. Cancel a running job
+6. Add a drop-down of sample jobs on New Job page.
