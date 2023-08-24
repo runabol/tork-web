@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useState } from "react";
 import Alert from "./alert";
 import { useRouter } from "next/navigation";
-import CodeEditor from "@uiw/react-textarea-code-editor";
 
 export default function SubmitJob() {
   const [content, setContent] = useState(
@@ -22,23 +21,13 @@ tasks:
       <div className="mt-8 flow-root">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-            <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
-              <CodeEditor
-                value={content}
-                language="yaml"
-                placeholder="Please enter JS code."
-                onChange={(evn) => setContent(evn.target.value)}
-                padding={15}
-                minHeight={50}
-                style={{
-                  fontSize: 14,
-                  height: "30rem",
-                  backgroundColor: "#f5f5f5",
-                  fontFamily:
-                    "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
-                }}
-              />
-            </div>
+            <textarea
+              value={content}
+              placeholder="Please enter JS code."
+              onChange={(evn) => setContent(evn.target.value)}
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6 font-mono"
+              rows={20}
+            />
             <Alert message={errorMsg} />
             <div className="flex gap-2 mt-4 justify-end">
               <button
