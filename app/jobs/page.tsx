@@ -1,3 +1,5 @@
+import CancelJob from "@/components/cancel-job";
+import Confirm from "@/components/cancel-job";
 import StateBadge from "@/components/state-badge";
 import Table from "@/components/table";
 import THeader from "@/components/table-header";
@@ -40,7 +42,7 @@ export default async function Jobs() {
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
               <StateBadge name={item.state} />
             </td>
-            <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+            <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 flex gap-2 justify-end">
               <Link
                 href={`/jobs/${item.id}`}
                 className="text-black hover:text-gray-700"
@@ -52,6 +54,7 @@ export default async function Jobs() {
                   View
                 </button>
               </Link>
+              {item.state === "RUNNING" ? <CancelJob job={item} /> : <></>}
             </td>
           </tr>
         ))}
