@@ -2,6 +2,8 @@ import Refresh from "@/components/refresh";
 import Table from "@/components/table";
 import THeader from "@/components/table-header";
 
+export const dynamic = "force-dynamic";
+
 export default async function Queues() {
   const qs = await getData();
   const sorted = qs.sort((a, b) => {
@@ -48,7 +50,7 @@ export default async function Queues() {
 
 async function getData(): Promise<Queue[]> {
   const res = await fetch(`${process.env.BACKEND_URL}/queues`, {
-    cache: "no-cache",
+    cache: "no-store",
   });
   if (!res.ok) {
     throw new Error("Failed to fetch data");

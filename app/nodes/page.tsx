@@ -4,7 +4,9 @@ import THeader from "@/components/table-header";
 import { formatTimestamp } from "@/lib/datetime";
 import { formatDistanceToNow, parseISO } from "date-fns";
 
-export default async function Queues() {
+export const dynamic = "force-dynamic";
+
+export default async function Nodes() {
   const nodes = await getData();
   const sorted = nodes.sort((a, b) => {
     const as = parseISO(a.startedAt).getTime();
