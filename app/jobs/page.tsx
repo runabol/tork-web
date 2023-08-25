@@ -12,11 +12,48 @@ export default async function Jobs({
 }: {
   searchParams: { page?: number };
 }) {
-  const page = await getData(searchParams.page || 1);
+  const page = await getJobs(searchParams.page || 1);
+  const stats = await getStats();
   return (
     <>
       <div className="mt-8 flex justify-end gap-2">
         <Refresh />
+      </div>
+      <div>
+        <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-4">
+          <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+            <dt className="truncate text-sm font-medium text-gray-500">
+              Running Jobs
+            </dt>
+            <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
+              {stats.jobs.running}
+            </dd>
+          </div>
+          <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+            <dt className="truncate text-sm font-medium text-gray-500">
+              Running Tasks
+            </dt>
+            <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
+              {stats.tasks.running}
+            </dd>
+          </div>
+          <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+            <dt className="truncate text-sm font-medium text-gray-500">
+              Nodes
+            </dt>
+            <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
+              {stats.nodes.online}
+            </dd>
+          </div>
+          <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+            <dt className="truncate text-sm font-medium text-gray-500">
+              Utilization
+            </dt>
+            <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
+              {Math.round(stats.nodes.cpuPercent * 100) / 100}%
+            </dd>
+          </div>
+        </dl>
       </div>
       <Table page={page}>
         <thead className="bg-gray-50">
@@ -85,8 +122,18 @@ export default async function Jobs({
   );
 }
 
-async function getData(page: number): Promise<Page<Job>> {
+async function getJobs(page: number): Promise<Page<Job>> {
   const res = await fetch(`${process.env.BACKEND_URL}/jobs?page=${page}`, {
+    cache: "no-cache",
+  });
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  return res.json();
+}
+
+async function getStats(): Promise<Stats> {
+  const res = await fetch(`${process.env.BACKEND_URL}/stats`, {
     cache: "no-cache",
   });
   if (!res.ok) {
