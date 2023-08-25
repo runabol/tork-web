@@ -4,6 +4,7 @@ import StateBadge from "@/components/state-badge";
 import Table from "@/components/table";
 import THeader from "@/components/table-header";
 import { formatTimestamp } from "@/lib/datetime";
+import { truncateString } from "@/lib/strings";
 import { CalendarIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 
@@ -94,7 +95,7 @@ export default async function Job({ params: { id } }: { params: params }) {
                 <StateBadge name={task.state} />
               </td>
               <td className="px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
-                {task.error ? task.error : task.result}
+                {task.error ? task.error : truncateString(task.result, 100)}
               </td>
             </tr>
           ))}

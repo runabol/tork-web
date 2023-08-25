@@ -1,10 +1,14 @@
 ## A web UI for the [Tork](https://github.com/runabol/tork) Workflow Engine.
 
-Jobs Page:
+List Jobs:
 
 ![jobs](screenshots/jobs.png "Jobs")
 
-New Job Page:
+Create Job:
+
+![create job](screenshots/create-job.png "Create Job")
+
+View Job:
 
 ![create job](screenshots/create-job.png "Create Job")
 
