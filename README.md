@@ -10,7 +10,7 @@ Create Job:
 
 View Job:
 
-![create job](screenshots/create-job.png "Create Job")
+![view job](screenshots/view-job.png "View Job")
 
 ## Getting Started
 
