@@ -27,6 +27,18 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
+## Docker
+
+```bash
+docker run \
+  -it \
+  --rm \
+  --name=tork-web \
+  -p 3000:3000 \
+  -e BACKEND_URL=http://host.docker.internal:8000 \
+  runabol/tork-web
+```
+
 ## Configuration
 
 Default configuration can be found at [.env.development](.env.development).
