@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { ArrowPathIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
 
 export default function Refresh() {
@@ -11,7 +11,7 @@ export default function Refresh() {
       className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
       onClick={() => router.refresh()}
     >
-      Refresh
+      <ArrowPathIcon className="h-5 w-5 text-black" aria-hidden="true" />
     </button>
   );
 }
