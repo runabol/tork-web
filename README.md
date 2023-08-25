@@ -1,6 +1,12 @@
-A web UI for the [Tork](https://github.com/runabol/tork) Workflow Engine.
+## A web UI for the [Tork](https://github.com/runabol/tork) Workflow Engine.
 
-![screenshot](screenshot.png "Screenshot")
+Jobs Page:
+
+![jobs](screenshots/jobs.png "Jobs")
+
+New Job Page:
+
+![create job](screenshots/create-job.png "Create Job")
 
 ## Getting Started
 
