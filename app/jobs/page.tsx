@@ -34,11 +34,11 @@ export default async function Jobs({
         <tbody className="divide-y divide-gray-200 bg-white">
           {page.items.map((item) => (
             <tr key={item.id}>
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-6 flex justify-between">
+              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-6 flex gap-2">
                 <span>{item.name}</span>
                 {item.parentId ? (
                   <span className="inline-flex items-center rounded-md bg-gray-200 px-2 py-1 text-xs font-medium text-gray-700 ring-1 ring-inset ring-gray-500/10">
-                    Subjob
+                    sub-job
                   </span>
                 ) : (
                   <></>
