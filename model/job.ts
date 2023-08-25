@@ -1,6 +1,7 @@
 interface Job {
   id: string;
   name: string;
+  description: string;
   state: string;
   createdAt: string;
   startedAt: string;
@@ -8,6 +9,8 @@ interface Job {
   failedAt: string;
   execution: Task[];
   tasks: Task[];
+  inputs: Map<String, String>;
   position: number;
   taskCount: number;
+  output: string;
 }
