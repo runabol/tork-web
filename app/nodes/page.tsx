@@ -1,3 +1,4 @@
+import Refresh from "@/components/refresh";
 import Table from "@/components/table";
 import THeader from "@/components/table-header";
 import { formatTimestamp } from "@/lib/datetime";
@@ -11,38 +12,43 @@ export default async function Queues() {
     return bs - as;
   });
   return (
-    <Table>
-      <thead className="bg-gray-50">
-        <tr>
-          <THeader name="ID" />
-          <THeader name="Started At" />
-          <THeader name="Last Heartbeat" />
-          <THeader name="Uptime" />
-          <THeader name="CPU %" />
-        </tr>
-      </thead>
-      <tbody className="divide-y divide-gray-200 bg-white">
-        {sorted.map((node) => (
-          <tr key={node.id}>
-            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-6 ">
-              {node.id}
-            </td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-              {formatTimestamp(node.startedAt)}
-            </td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-              {formatTimestamp(node.lastHeartbeatAt)}
-            </td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-              {formatDistanceToNow(parseISO(node.startedAt))}
-            </td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-              {Math.round(node.cpuPercent * 100) / 100}
-            </td>
+    <>
+      <div className="mt-8 flex justify-end gap-2">
+        <Refresh />
+      </div>
+      <Table>
+        <thead className="bg-gray-50">
+          <tr>
+            <THeader name="ID" />
+            <THeader name="Started At" />
+            <THeader name="Last Heartbeat" />
+            <THeader name="Uptime" />
+            <THeader name="CPU %" />
           </tr>
-        ))}
-      </tbody>
-    </Table>
+        </thead>
+        <tbody className="divide-y divide-gray-200 bg-white">
+          {sorted.map((node) => (
+            <tr key={node.id}>
+              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-6 ">
+                {node.id}
+              </td>
+              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                {formatTimestamp(node.startedAt)}
+              </td>
+              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                {formatTimestamp(node.lastHeartbeatAt)}
+              </td>
+              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                {formatDistanceToNow(parseISO(node.startedAt))}
+              </td>
+              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                {Math.round(node.cpuPercent * 100) / 100}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </>
   );
 }
 

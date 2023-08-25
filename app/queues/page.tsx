@@ -1,3 +1,4 @@
+import Refresh from "@/components/refresh";
 import Table from "@/components/table";
 import THeader from "@/components/table-header";
 
@@ -17,26 +18,31 @@ export default async function Queues() {
     return a.size > b.size ? -1 : 1;
   });
   return (
-    <Table>
-      <thead className="bg-gray-50">
-        <tr>
-          <THeader name="Name" />
-          <THeader name="Size" />
-        </tr>
-      </thead>
-      <tbody className="divide-y divide-gray-200 bg-white">
-        {sorted.map((q) => (
-          <tr key={q.name}>
-            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-6 ">
-              {q.name}
-            </td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-              {q.size}
-            </td>
+    <>
+      <div className="mt-8 flex justify-end gap-2">
+        <Refresh />
+      </div>
+      <Table>
+        <thead className="bg-gray-50">
+          <tr>
+            <THeader name="Name" />
+            <THeader name="Size" />
           </tr>
-        ))}
-      </tbody>
-    </Table>
+        </thead>
+        <tbody className="divide-y divide-gray-200 bg-white">
+          {sorted.map((q) => (
+            <tr key={q.name}>
+              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-6 ">
+                {q.name}
+              </td>
+              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                {q.size}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </>
   );
 }
 
