@@ -49,23 +49,23 @@ export default async function Job({ params: { id } }: { params: params }) {
             )}
           </div>
         </div>
-      </div>
-      <div className="mt-8 flex justify-end gap-2">
-        <Refresh />
-        <Link href={`/jobs/duplicate?id=${job.id}`}>
-          <button
-            type="button"
-            className="rounded-md bg-blue-50 px-2.5 py-1.5 text-sm font-semibold text-blue-900 shadow-sm ring-1 ring-inset ring-blue-300 hover:bg-blue-100"
-          >
-            Duplicate
-          </button>
-        </Link>
-        {job.state === "RUNNING" ? <CancelJob job={job} /> : <></>}
-        {job.state === "FAILED" || job.state === "CANCELLED" ? (
-          <RestartJob job={job} />
-        ) : (
-          <></>
-        )}
+        <div className="mt-8 flex justify-end gap-2">
+          {job.state === "RUNNING" ? <Refresh /> : <></>}
+          <Link href={`/jobs/duplicate?id=${job.id}`}>
+            <button
+              type="button"
+              className="rounded-md bg-blue-50 px-2.5 py-1.5 text-sm font-semibold text-blue-900 shadow-sm ring-1 ring-inset ring-blue-300 hover:bg-blue-100"
+            >
+              Duplicate
+            </button>
+          </Link>
+          {job.state === "RUNNING" ? <CancelJob job={job} /> : <></>}
+          {job.state === "FAILED" || job.state === "CANCELLED" ? (
+            <RestartJob job={job} />
+          ) : (
+            <></>
+          )}
+        </div>
       </div>
       <Table>
         <thead className="bg-gray-50">
