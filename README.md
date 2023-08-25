@@ -14,7 +14,7 @@ Create Job:
 
 View Job:
 
-![view job](screenshots/view-job.png "View Job")
+![view job](screenshots/view-job-v2.png "View Job")
 
 ## Getting Started
 
