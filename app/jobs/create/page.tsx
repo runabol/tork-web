@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import Alert from "./alert";
 import { useRouter } from "next/navigation";
+import { Editor } from "@monaco-editor/react";
 
 export default function SubmitJob() {
   const [content, setContent] = useState(
@@ -21,12 +22,13 @@ tasks:
       <div className="mt-8 flow-root">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-            <textarea
+            <Editor
+              height="30rem"
+              language="yaml"
+              theme="vs-dark"
               value={content}
-              placeholder="Please enter JS code."
-              onChange={(evn) => setContent(evn.target.value)}
               className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6 font-mono"
-              rows={20}
+              onChange={(value) => setContent(value || "")}
             />
             <Alert message={errorMsg} />
             <div className="flex gap-2 mt-4 justify-end">
