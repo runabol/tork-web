@@ -6,7 +6,7 @@ A web UI for the [Tork](https://github.com/runabol/tork) Workflow Engine.
 
 List Jobs:
 
-![jobs](screenshots/jobs.png "Jobs")
+![jobs](screenshots/jobs-v2.png "Jobs")
 
 Create Job:
 
