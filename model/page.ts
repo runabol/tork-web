@@ -3,4 +3,5 @@ interface Page<Type> {
   size: number;
   number: number;
   totalPages: number;
+  totalItems: number;
 }

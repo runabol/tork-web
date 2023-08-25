@@ -35,10 +35,9 @@ You can override the default configuration by creating an `.env.local` file.
 
 ## TODO
 
-1. Pagination of jobs
-2. Show node status
-3. Add a drop-down of sample jobs on New Job page.
-4. Job stats
+1. Show node status
+2. Add a drop-down of sample jobs on New Job page.
+3. Job stats
 
 ## License
 

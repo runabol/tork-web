@@ -7,15 +7,20 @@ import Table from "@/components/table";
 import THeader from "@/components/table-header";
 import { formatTimestamp } from "@/lib/datetime";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
-export default async function Jobs() {
-  const page = await getData();
+export default async function Jobs({
+  searchParams,
+}: {
+  searchParams: { page?: number };
+}) {
+  const page = await getData(searchParams.page || 1);
   return (
     <>
       <div className="mt-8 flex justify-end gap-2">
         <Refresh />
       </div>
-      <Table>
+      <Table page={page}>
         <thead className="bg-gray-50">
           <tr>
             <THeader name="Name" />
@@ -29,8 +34,15 @@ export default async function Jobs() {
         <tbody className="divide-y divide-gray-200 bg-white">
           {page.items.map((item) => (
             <tr key={item.id}>
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-6 ">
-                {item.name}
+              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-6 flex justify-between">
+                <span>{item.name}</span>
+                {item.parentId ? (
+                  <span className="inline-flex items-center rounded-md bg-gray-200 px-2 py-1 text-xs font-medium text-gray-700 ring-1 ring-inset ring-gray-500/10">
+                    Subjob
+                  </span>
+                ) : (
+                  <></>
+                )}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 {formatTimestamp(item.createdAt)}
@@ -75,8 +87,8 @@ export default async function Jobs() {
   );
 }
 
-async function getData(): Promise<Page<Job>> {
-  const res = await fetch(`${process.env.BACKEND_URL}/jobs`, {
+async function getData(page: number): Promise<Page<Job>> {
+  const res = await fetch(`${process.env.BACKEND_URL}/jobs?page=${page}`, {
     cache: "no-cache",
   });
   if (!res.ok) {

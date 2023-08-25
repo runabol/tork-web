@@ -1,5 +1,6 @@
 interface Job {
   id: string;
+  parentId: string;
   name: string;
   description: string;
   state: string;
