@@ -22,11 +22,8 @@ You can override the default configuration by creating an `.env.local` file.
 ## TODO
 
 1. Pagination of jobs
-2. Retry a failed task
-3. Duplicate a job
-4. Show node status
-5. Cancel a running job
-6. Add a drop-down of sample jobs on New Job page.
+2. Show node status
+3. Add a drop-down of sample jobs on New Job page.
 
 ## License
 
