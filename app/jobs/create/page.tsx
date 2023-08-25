@@ -6,13 +6,17 @@ import Alert from "./alert";
 import { useRouter } from "next/navigation";
 import { Editor } from "@monaco-editor/react";
 
-export default function SubmitJob() {
+export default function CreateJob() {
   const [content, setContent] = useState(
     `name: my job
 tasks:
   - name: my first task
     image: alpine:3.18.3
     run: echo hello world
+
+  - name: my second task
+    image: alpine:3.18.3
+    run: echo bye world
 `
   );
   const [errorMsg, setErrorMsg] = useState("");
