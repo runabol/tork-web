@@ -1,4 +1,5 @@
 import CancelJob from "@/components/cancel-job";
+import Refresh from "@/components/refresh";
 import RestartJob from "@/components/restart-job";
 import StateBadge from "@/components/state-badge";
 import Table from "@/components/table";
@@ -50,13 +51,17 @@ export default async function Job({ params: { id } }: { params: params }) {
         </div>
       </div>
       <div className="mt-8 flex justify-end gap-2">
+        <Refresh />
         <Link href={`/jobs/duplicate?id=${job.id}`}>
           <button
             type="button"
-            className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+            className="rounded-md bg-blue-50 px-2.5 py-1.5 text-sm font-semibold text-blue-900 shadow-sm ring-1 ring-inset ring-blue-300 hover:bg-blue-100"
           >
             Duplicate
           </button>
+          {/* <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
+        Badge
+      </span> */}
         </Link>
         {job.state === "RUNNING" ? <CancelJob job={job} /> : <></>}
         {job.state === "FAILED" || job.state === "CANCELLED" ? (
