@@ -22,6 +22,9 @@ export default async function Job({ params: { id } }: { params: params }) {
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
             {job.name}
           </h2>
+          <p className="hidden md:block text-sm text-gray-500 mt-3 whitespace-pre border-b-[1px] border-gray-300 pb-4">
+            {job.description}
+          </p>
           <div className="mt-2 flex flex-col sm:flex-row sm:flex-wrap sm:space-x-6">
             <div className="mt-2 flex items-center text-sm text-gray-500">
               <StateBadge name={job.state}></StateBadge>
@@ -49,23 +52,23 @@ export default async function Job({ params: { id } }: { params: params }) {
             )}
           </div>
         </div>
-        <div className="mt-8 flex justify-end gap-2">
-          {job.state === "RUNNING" ? <Refresh /> : <></>}
-          <Link href={`/jobs/duplicate?id=${job.id}`}>
-            <button
-              type="button"
-              className="rounded-md bg-blue-50 px-2.5 py-1.5 text-sm font-semibold text-blue-900 shadow-sm ring-1 ring-inset ring-blue-300 hover:bg-blue-100"
-            >
-              Duplicate
-            </button>
-          </Link>
-          {job.state === "RUNNING" ? <CancelJob job={job} /> : <></>}
-          {job.state === "FAILED" || job.state === "CANCELLED" ? (
-            <RestartJob job={job} />
-          ) : (
-            <></>
-          )}
-        </div>
+      </div>
+      <div className="mt-2 flex justify-end gap-2">
+        {job.state === "RUNNING" ? <Refresh /> : <></>}
+        <Link href={`/jobs/duplicate?id=${job.id}`}>
+          <button
+            type="button"
+            className="rounded-md bg-blue-50 px-2.5 py-1.5 text-sm font-semibold text-blue-900 shadow-sm ring-1 ring-inset ring-blue-300 hover:bg-blue-100"
+          >
+            Duplicate
+          </button>
+        </Link>
+        {job.state === "RUNNING" ? <CancelJob job={job} /> : <></>}
+        {job.state === "FAILED" || job.state === "CANCELLED" ? (
+          <RestartJob job={job} />
+        ) : (
+          <></>
+        )}
       </div>
       <Table>
         <thead className="bg-gray-50">
