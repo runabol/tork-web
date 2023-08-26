@@ -3,4 +3,5 @@ interface Node {
   startedAt: string;
   cpuPercent: number;
   lastHeartbeatAt: string;
+  status: string;
 }
