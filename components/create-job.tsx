@@ -43,8 +43,8 @@ export default function CreateJob({
                   })
                     .then((res) => res.json())
                     .then((data) => {
-                      if (data.error) {
-                        setErrorMsg(data.error);
+                      if (data.message) {
+                        setErrorMsg(data.message);
                       } else {
                         router.refresh();
                         router.push(`/jobs/${data.id}`);
