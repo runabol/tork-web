@@ -8,4 +8,10 @@ interface Task {
   failedAt: string;
   error: string;
   result: string;
+  run: string;
+  parallel: Parallel;
+}
+
+interface Parallel {
+  tasks: Task[];
 }

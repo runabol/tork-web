@@ -15,13 +15,16 @@ export default function Duplicate() {
       .then((res) => res.json() as Promise<Job>)
       .then((job) =>
         setPlaceholder(
-          stringify({
-            name: job.name,
-            description: job.description,
-            inputs: job.inputs,
-            output: job.output,
-            tasks: job.tasks,
-          })
+          stringify(
+            {
+              name: job.name,
+              description: job.description,
+              inputs: job.inputs,
+              output: job.output,
+              tasks: job.tasks,
+            },
+            { lineWidth: 0, blockQuote: true }
+          )
         )
       );
   }, []);
