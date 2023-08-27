@@ -3,7 +3,7 @@
 import CreateJob from "@/components/create-job";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { parse, stringify } from "yaml";
+import { stringify } from "yaml";
 
 export default function Duplicate() {
   const searchParams = useSearchParams();

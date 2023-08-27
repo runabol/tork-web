@@ -4,6 +4,7 @@ import RestartJob from "@/components/restart-job";
 import StateBadge from "@/components/state-badge";
 import Table from "@/components/table";
 import THeader from "@/components/table-header";
+import ViewTask from "@/components/view-task";
 import { formatTimestamp } from "@/lib/datetime";
 import { truncateString } from "@/lib/strings";
 import { CalendarIcon } from "@heroicons/react/24/solid";
@@ -78,6 +79,7 @@ export default async function Job({ params: { id } }: { params: params }) {
             <THeader name="Ended at" />
             <THeader name="State" />
             <THeader name="Output" />
+            <THeader name="" />
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
@@ -101,6 +103,9 @@ export default async function Job({ params: { id } }: { params: params }) {
               </td>
               <td className="px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
                 {task.error ? task.error : truncateString(task.result, 100)}
+              </td>
+              <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 flex gap-2 justify-end">
+                <ViewTask task={task} />
               </td>
             </tr>
           ))}
