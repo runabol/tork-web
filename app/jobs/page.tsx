@@ -101,17 +101,19 @@ export default async function Jobs({
                 {Math.round(((item.position - 1) / item.taskCount) * 100)}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {item.completedAt
-                  ? formatDistanceStrict(
-                      parseISO(item.startedAt),
-                      parseISO(item.completedAt)
-                    )
-                  : item.failedAt
-                  ? formatDistanceStrict(
-                      parseISO(item.startedAt),
-                      parseISO(item.failedAt)
-                    )
-                  : formatDistanceToNowStrict(parseISO(item.startedAt))}
+                {item.startedAt
+                  ? item.completedAt
+                    ? formatDistanceStrict(
+                        parseISO(item.startedAt),
+                        parseISO(item.completedAt)
+                      )
+                    : item.startedAt && item.failedAt
+                    ? formatDistanceStrict(
+                        parseISO(item.startedAt),
+                        parseISO(item.failedAt)
+                      )
+                    : formatDistanceToNowStrict(parseISO(item.startedAt))
+                  : ""}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 <StateBadge name={item.state} />

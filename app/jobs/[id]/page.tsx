@@ -105,17 +105,19 @@ export default async function Job({ params: { id } }: { params: params }) {
                   : ""}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {task.completedAt
-                  ? formatDistanceStrict(
-                      parseISO(task.startedAt),
-                      parseISO(task.completedAt)
-                    )
-                  : task.failedAt
-                  ? formatDistanceStrict(
-                      parseISO(task.startedAt),
-                      parseISO(task.failedAt)
-                    )
-                  : formatDistanceToNowStrict(parseISO(task.startedAt))}
+                {task.startedAt
+                  ? task.completedAt
+                    ? formatDistanceStrict(
+                        parseISO(task.startedAt),
+                        parseISO(task.completedAt)
+                      )
+                    : task.startedAt && task.failedAt
+                    ? formatDistanceStrict(
+                        parseISO(task.startedAt),
+                        parseISO(task.failedAt)
+                      )
+                    : formatDistanceToNowStrict(parseISO(task.startedAt))
+                  : ""}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 <StateBadge name={task.state} />
