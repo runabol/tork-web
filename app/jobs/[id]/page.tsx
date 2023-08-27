@@ -8,6 +8,11 @@ import ViewTask from "@/components/view-task";
 import { formatTimestamp } from "@/lib/datetime";
 import { truncateString } from "@/lib/strings";
 import { CalendarIcon } from "@heroicons/react/24/solid";
+import {
+  formatDistanceStrict,
+  formatDistanceToNowStrict,
+  parseISO,
+} from "date-fns";
 import Link from "next/link";
 
 interface params {
@@ -77,6 +82,7 @@ export default async function Job({ params: { id } }: { params: params }) {
             <THeader name="Name" />
             <THeader name="Started at" />
             <THeader name="Ended at" />
+            <THeader name="Runtime" />
             <THeader name="State" />
             <THeader name="Output" />
             <THeader name="" />
@@ -97,6 +103,19 @@ export default async function Job({ params: { id } }: { params: params }) {
                   : task.failedAt
                   ? formatTimestamp(task.failedAt)
                   : ""}
+              </td>
+              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                {task.completedAt
+                  ? formatDistanceStrict(
+                      parseISO(task.startedAt),
+                      parseISO(task.completedAt)
+                    )
+                  : task.failedAt
+                  ? formatDistanceStrict(
+                      parseISO(task.startedAt),
+                      parseISO(task.failedAt)
+                    )
+                  : formatDistanceToNowStrict(parseISO(task.startedAt))}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 <StateBadge name={task.state} />

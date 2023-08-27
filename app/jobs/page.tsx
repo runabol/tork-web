@@ -5,6 +5,13 @@ import StateBadge from "@/components/state-badge";
 import Table from "@/components/table";
 import THeader from "@/components/table-header";
 import { formatTimestamp } from "@/lib/datetime";
+import {
+  formatDistance,
+  formatDistanceStrict,
+  formatDistanceToNow,
+  formatDistanceToNowStrict,
+  parseISO,
+} from "date-fns";
 import Link from "next/link";
 
 export default async function Jobs({
@@ -62,6 +69,7 @@ export default async function Jobs({
             <THeader name="Created at" />
             <THeader name="Ended at" />
             <THeader name="% Completed" />
+            <THeader name="Runtime" />
             <THeader name="State" />
             <THeader name="" />
           </tr>
@@ -91,6 +99,19 @@ export default async function Jobs({
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 {Math.round(((item.position - 1) / item.taskCount) * 100)}
+              </td>
+              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                {item.completedAt
+                  ? formatDistanceStrict(
+                      parseISO(item.startedAt),
+                      parseISO(item.completedAt)
+                    )
+                  : item.failedAt
+                  ? formatDistanceStrict(
+                      parseISO(item.startedAt),
+                      parseISO(item.failedAt)
+                    )
+                  : formatDistanceToNowStrict(parseISO(item.startedAt))}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 <StateBadge name={item.state} />

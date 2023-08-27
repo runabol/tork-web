@@ -39,7 +39,9 @@ export default async function Nodes() {
                 {formatTimestamp(node.startedAt)}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {formatDistanceToNow(parseISO(node.lastHeartbeatAt))} ago
+                {formatDistanceToNow(parseISO(node.lastHeartbeatAt), {
+                  addSuffix: true,
+                })}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 {formatDistanceToNow(parseISO(node.startedAt))}
