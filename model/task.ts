@@ -3,9 +3,9 @@ interface Task {
   name: string;
   state: string;
   createdAt: string;
-  startedAt: string;
-  completedAt: string;
-  failedAt: string;
+  startedAt?: string;
+  completedAt?: string;
+  failedAt?: string;
   error: string;
   result: string;
   run: string;

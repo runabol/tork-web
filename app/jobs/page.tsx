@@ -4,7 +4,7 @@ import RestartJob from "@/components/restart-job";
 import StateBadge from "@/components/state-badge";
 import Table from "@/components/table";
 import THeader from "@/components/table-header";
-import { formatTimestamp } from "@/lib/datetime";
+import { formatRuntime, formatTimestamp } from "@/lib/datetime";
 import {
   formatDistance,
   formatDistanceStrict,
@@ -101,19 +101,9 @@ export default async function Jobs({
                 {Math.round(((item.position - 1) / item.taskCount) * 100)}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {item.startedAt
-                  ? item.completedAt
-                    ? formatDistanceStrict(
-                        parseISO(item.startedAt),
-                        parseISO(item.completedAt)
-                      )
-                    : item.startedAt && item.failedAt
-                    ? formatDistanceStrict(
-                        parseISO(item.startedAt),
-                        parseISO(item.failedAt)
-                      )
-                    : formatDistanceToNowStrict(parseISO(item.startedAt))
-                  : ""}
+                {item.completedAt
+                  ? formatRuntime(item.state, item.startedAt, item.completedAt)
+                  : formatRuntime(item.state, item.startedAt, item.failedAt)}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 <StateBadge name={item.state} />

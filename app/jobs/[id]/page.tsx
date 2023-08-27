@@ -5,7 +5,7 @@ import StateBadge from "@/components/state-badge";
 import Table from "@/components/table";
 import THeader from "@/components/table-header";
 import ViewTask from "@/components/view-task";
-import { formatTimestamp } from "@/lib/datetime";
+import { formatRuntime, formatTimestamp } from "@/lib/datetime";
 import { truncateString } from "@/lib/strings";
 import { CalendarIcon } from "@heroicons/react/24/solid";
 import {
@@ -105,19 +105,9 @@ export default async function Job({ params: { id } }: { params: params }) {
                   : ""}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {task.startedAt
-                  ? task.completedAt
-                    ? formatDistanceStrict(
-                        parseISO(task.startedAt),
-                        parseISO(task.completedAt)
-                      )
-                    : task.startedAt && task.failedAt
-                    ? formatDistanceStrict(
-                        parseISO(task.startedAt),
-                        parseISO(task.failedAt)
-                      )
-                    : formatDistanceToNowStrict(parseISO(task.startedAt))
-                  : ""}
+                {task.completedAt
+                  ? formatRuntime(task.state, task.startedAt, task.completedAt)
+                  : formatRuntime(task.state, task.startedAt, task.failedAt)}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 <StateBadge name={task.state} />
