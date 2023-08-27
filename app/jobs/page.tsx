@@ -10,9 +10,9 @@ import Link from "next/link";
 export default async function Jobs({
   searchParams,
 }: {
-  searchParams: { page?: number };
+  searchParams: { page?: number; q?: string };
 }) {
-  const page = await getJobs(searchParams.page || 1);
+  const page = await getJobs(searchParams.page || 1, searchParams.q || "");
   const stats = await getStats();
   return (
     <>
@@ -55,7 +55,7 @@ export default async function Jobs({
           </div>
         </dl>
       </div>
-      <Table page={page}>
+      <Table page={page} search={true} q={searchParams.q}>
         <thead className="bg-gray-50">
           <tr>
             <THeader name="Name" />
@@ -122,10 +122,13 @@ export default async function Jobs({
   );
 }
 
-async function getJobs(page: number): Promise<Page<Job>> {
-  const res = await fetch(`${process.env.BACKEND_URL}/jobs?page=${page}`, {
-    cache: "no-cache",
-  });
+async function getJobs(page: number, q: string): Promise<Page<Job>> {
+  const res = await fetch(
+    `${process.env.BACKEND_URL}/jobs?page=${page}&q=${q}`,
+    {
+      cache: "no-cache",
+    }
+  );
   if (!res.ok) {
     throw new Error("Failed to fetch data");
   }
