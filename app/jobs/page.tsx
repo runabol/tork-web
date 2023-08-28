@@ -98,7 +98,9 @@ export default async function Jobs({
                   : ""}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {Math.round(((item.position - 1) / item.taskCount) * 100)}
+                {item.position
+                  ? Math.round(((item.position - 1) / item.taskCount) * 100)
+                  : 0}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 {item.completedAt

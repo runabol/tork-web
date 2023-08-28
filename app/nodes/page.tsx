@@ -22,6 +22,7 @@ export default async function Nodes() {
         <thead className="bg-gray-50">
           <tr>
             <THeader name="ID" />
+            <THeader name="Hostname" />
             <THeader name="Started At" />
             <THeader name="Last Heartbeat" />
             <THeader name="Uptime" />
@@ -34,6 +35,9 @@ export default async function Nodes() {
             <tr key={node.id}>
               <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-6 ">
                 {node.id}
+              </td>
+              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                {node.hostname}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 {formatTimestamp(node.startedAt)}
