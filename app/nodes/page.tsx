@@ -8,11 +8,6 @@ export const dynamic = "force-dynamic";
 
 export default async function Nodes() {
   const nodes = await getData();
-  const sorted = nodes.sort((a, b) => {
-    const as = parseISO(a.startedAt).getTime();
-    const bs = parseISO(b.startedAt).getTime();
-    return bs - as;
-  });
   return (
     <>
       <div className="mt-8 flex justify-end gap-2">
@@ -31,7 +26,7 @@ export default async function Nodes() {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
-          {sorted.map((node) => (
+          {nodes.map((node) => (
             <tr key={node.id}>
               <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-6 ">
                 {node.id}
