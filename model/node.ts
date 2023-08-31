@@ -5,4 +5,5 @@ interface Node {
   cpuPercent: number;
   lastHeartbeatAt: string;
   status: string;
+  taskCount: number;
 }

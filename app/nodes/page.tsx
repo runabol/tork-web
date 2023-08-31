@@ -22,6 +22,7 @@ export default async function Nodes() {
             <THeader name="Last Heartbeat" />
             <THeader name="Uptime" />
             <THeader name="CPU %" />
+            <THeader name="Tasks" />
             <THeader name="Status" />
           </tr>
         </thead>
@@ -47,6 +48,9 @@ export default async function Nodes() {
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 {Math.round(node.cpuPercent * 100) / 100}
+              </td>
+              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                {node.taskCount}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 {node.status === "UP" ? (

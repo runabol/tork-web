@@ -7,12 +7,7 @@ import THeader from "@/components/table-header";
 import ViewTask from "@/components/view-task";
 import { formatRuntime, formatTimestamp } from "@/lib/datetime";
 import { truncateString } from "@/lib/strings";
-import { CalendarIcon } from "@heroicons/react/24/solid";
-import {
-  formatDistanceStrict,
-  formatDistanceToNowStrict,
-  parseISO,
-} from "date-fns";
+import { CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 
 interface params {
@@ -33,14 +28,14 @@ export default async function Job({ params: { id } }: { params: params }) {
           </p>
           <div className="mt-2 flex flex-col sm:flex-row sm:flex-wrap sm:space-x-6">
             <div className="mt-2 flex items-center text-sm text-gray-500">
-              <StateBadge name={job.state}></StateBadge>
+              <StateBadge textSize="text-lg" name={job.state}></StateBadge>
             </div>
             <div className="mt-2 flex items-center text-sm text-gray-500">
               <CalendarIcon
                 className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                 aria-hidden="true"
               />
-              Created on {formatTimestamp(job.createdAt)}
+              Created at {formatTimestamp(job.createdAt)}
             </div>
             {job.completedAt || job.failedAt ? (
               <div className="mt-2 flex items-center text-sm text-gray-500">
@@ -48,7 +43,7 @@ export default async function Job({ params: { id } }: { params: params }) {
                   className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                   aria-hidden="true"
                 />
-                Finished on{" "}
+                Ended at{" "}
                 {job.completedAt
                   ? formatTimestamp(job.completedAt)
                   : formatTimestamp(job.failedAt)}
@@ -56,6 +51,16 @@ export default async function Job({ params: { id } }: { params: params }) {
             ) : (
               <></>
             )}
+            <div className="mt-2 flex items-center text-sm text-gray-500">
+              <ClockIcon
+                className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                aria-hidden="true"
+              />
+              Runtime{" "}
+              {job.completedAt
+                ? formatRuntime(job.state, job.startedAt, job.completedAt)
+                : formatRuntime(job.state, job.startedAt, job.failedAt)}
+            </div>
           </div>
         </div>
       </div>

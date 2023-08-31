@@ -1,4 +1,10 @@
-export default function StateBadge({ name }: { name: string }) {
+export default function StateBadge({
+  name,
+  textSize,
+}: {
+  name: string;
+  textSize?: string;
+}) {
   var bcolor: string;
   var tcolor: string;
   switch (name) {
@@ -20,7 +26,9 @@ export default function StateBadge({ name }: { name: string }) {
   }
   return (
     <span
-      className={`inline-flex items-center capitalize rounded-md ${bcolor} px-2 py-1 text-xs font-medium ${tcolor} ring-1 ring-inset ring-gray-500/10`}
+      className={`${
+        textSize || "text-xs"
+      } ${bcolor} ${tcolor} inline-flex items-center capitalize rounded-md  px-2 py-1 font-medium ring-1 ring-inset ring-gray-500/10`}
     >
       {name.toLowerCase()}
     </span>
