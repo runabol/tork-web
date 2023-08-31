@@ -60,7 +60,11 @@ export default async function Job({ params: { id } }: { params: params }) {
         </div>
       </div>
       <div className="mt-2 flex justify-end gap-2">
-        {job.state === "RUNNING" ? <Refresh /> : <></>}
+        {job.state === "PENDING" || job.state === "RUNNING" ? (
+          <Refresh />
+        ) : (
+          <></>
+        )}
         <Link href={`/jobs/duplicate?id=${job.id}`}>
           <button
             type="button"
