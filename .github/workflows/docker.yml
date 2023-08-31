@@ -1,0 +1,21 @@
+name: Docker Release
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  docker-release:
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_LOGIN: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build the docker image
+        run: make docker-build
+      - name: List docker images
+        run: docker images
+      - name: Publish the docker image
+        run: |
+          make docker-push
