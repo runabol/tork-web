@@ -1,18 +1,18 @@
-interface Stats {
-  jobs: JobStats;
-  tasks: TaskStats;
-  nodes: NodeStats;
+interface Metrics {
+  jobs: JobMetrics;
+  tasks: TaskMetrics;
+  nodes: NodeMetrics;
 }
 
-interface JobStats {
+interface JobMetrics {
   running: number;
 }
 
-interface TaskStats {
+interface TaskMetrics {
   running: number;
 }
 
-interface NodeStats {
+interface NodeMetrics {
   online: number;
   cpuPercent: number;
 }

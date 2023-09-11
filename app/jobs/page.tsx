@@ -13,7 +13,7 @@ export default async function Jobs({
   searchParams: { page?: number; q?: string };
 }) {
   const page = await getJobs(searchParams.page || 1, searchParams.q || "");
-  const stats = await getStats();
+  const metrics = await getMetrics();
   return (
     <>
       <div className="mt-8 flex justify-end gap-2">
@@ -26,7 +26,7 @@ export default async function Jobs({
               Running Jobs
             </dt>
             <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-              {stats.jobs.running}
+              {metrics.jobs.running}
             </dd>
           </div>
           <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
@@ -34,7 +34,7 @@ export default async function Jobs({
               Running Tasks
             </dt>
             <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-              {stats.tasks.running}
+              {metrics.tasks.running}
             </dd>
           </div>
           <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
@@ -42,7 +42,7 @@ export default async function Jobs({
               Nodes
             </dt>
             <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-              {stats.nodes.online}
+              {metrics.nodes.online}
             </dd>
           </div>
           <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
@@ -50,7 +50,7 @@ export default async function Jobs({
               Utilization
             </dt>
             <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-              {Math.round(stats.nodes.cpuPercent * 100) / 100}%
+              {Math.round(metrics.nodes.cpuPercent * 100) / 100}%
             </dd>
           </div>
         </dl>
@@ -143,8 +143,8 @@ async function getJobs(page: number, q: string): Promise<Page<Job>> {
   return res.json();
 }
 
-async function getStats(): Promise<Stats> {
-  const res = await fetch(`${process.env.BACKEND_URL}/stats`, {
+async function getMetrics(): Promise<Metrics> {
+  const res = await fetch(`${process.env.BACKEND_URL}/metrics`, {
     cache: "no-cache",
   });
   if (!res.ok) {
