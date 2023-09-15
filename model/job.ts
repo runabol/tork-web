@@ -14,4 +14,5 @@ interface Job {
   position: number;
   taskCount: number;
   output: string;
+  defaults: any;
 }

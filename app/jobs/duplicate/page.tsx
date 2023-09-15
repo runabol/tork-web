@@ -22,6 +22,7 @@ export default function Duplicate() {
               inputs: job.inputs,
               output: job.output,
               tasks: job.tasks,
+              defaults: job.defaults,
             },
             { lineWidth: 0, blockQuote: true }
           )
