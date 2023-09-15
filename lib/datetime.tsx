@@ -4,6 +4,13 @@ import {
   formatDuration,
   formatDistanceStrict,
   formatDistanceToNowStrict,
+  intervalToDuration,
+  Duration,
+  differenceInMinutes,
+  minutesToHours,
+  differenceInSeconds,
+  secondsToHours,
+  secondsToMinutes,
 } from "date-fns";
 
 export function formatTimestamp(ts: string) {
@@ -15,9 +22,19 @@ export function formatRuntime(state: string, from?: string, to?: string) {
     return undefined;
   }
   const fromDate = parseISO(from);
+  var toDate: Date;
   if (to) {
-    const toDate = parseISO(to);
-    return formatDistanceStrict(fromDate, toDate);
+    toDate = parseISO(to);
+  } else {
+    toDate = new Date();
   }
-  return formatDistanceToNowStrict(fromDate);
+  const sec = differenceInSeconds(toDate, fromDate);
+  const mins = secondsToMinutes(sec);
+  const hours = minutesToHours(mins);
+  const dur: Duration = {
+    minutes: mins - hours * 60,
+    hours: hours,
+    seconds: hours > 0 ? 0 : sec - mins * 60,
+  };
+  return formatDuration(dur);
 }
