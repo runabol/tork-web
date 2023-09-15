@@ -25,7 +25,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:8100](http://localhost:8100) with your browser to see the application.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
 ## Docker
 
@@ -34,7 +34,7 @@ docker run \
   -it \
   --rm \
   --name=tork-web \
-  -p 8100:8100 \
+  -p 3000:3000 \
   -e BACKEND_URL=http://host.docker.internal:8000 \
   runabol/tork-web
 ```
