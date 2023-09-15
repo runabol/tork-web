@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "dotenv -c -- next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "dotenv -c -- next start",
     "lint": "next lint"
   },
   "dependencies": {
@@ -19,6 +19,7 @@
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.15",
     "date-fns": "^2.30.0",
+    "dotenv-cli": "^7.3.0",
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.19",
     "next": "13.4.19",
