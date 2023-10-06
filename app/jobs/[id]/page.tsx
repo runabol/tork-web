@@ -104,7 +104,7 @@ export default async function Job({ params: { id } }: { params: params }) {
                 {task.name}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
-                {task.startedAt ? formatTimestamp(task.createdAt) : ""}
+                {task.startedAt ? formatTimestamp(task.startedAt) : ""}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
                 {task.completedAt
