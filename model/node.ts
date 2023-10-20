@@ -6,4 +6,5 @@ interface Node {
   lastHeartbeatAt: string;
   status: string;
   taskCount: number;
+  version: string;
 }
