@@ -1,5 +1,6 @@
 interface Node {
   id: string;
+  name: string;
   hostname: string;
   startedAt: string;
   cpuPercent: number;
