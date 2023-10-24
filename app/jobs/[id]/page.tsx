@@ -122,7 +122,7 @@ export default async function Job({ params: { id } }: { params: params }) {
                 <StateBadge name={task.state} />
               </td>
               <td className="px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
-                {task.error ? task.error : truncateString(task.result, 100)}
+                {task.error ? task.error : truncateString(task.result, 50)}
               </td>
               <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 flex gap-2 justify-end">
                 <ViewTask task={task} />
