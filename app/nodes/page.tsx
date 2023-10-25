@@ -19,7 +19,6 @@ export default async function Nodes() {
             <THeader name="Name" />
             <THeader name="Hostname" />
             <THeader name="Version" />
-            <THeader name="Started At" />
             <THeader name="Uptime" />
             <THeader name="CPU %" />
             <THeader name="Tasks" />
@@ -37,9 +36,6 @@ export default async function Nodes() {
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 {node.version}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {formatTimestamp(node.startedAt)}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 {formatDistanceToNow(parseISO(node.startedAt))}
