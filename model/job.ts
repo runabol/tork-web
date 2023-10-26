@@ -15,4 +15,10 @@ interface Job {
   taskCount: number;
   output: string;
   defaults: any;
+  webhooks: Webhook[];
+}
+
+interface Webhook {
+  url: string;
+  headers: Map<string, string>;
 }

@@ -23,6 +23,7 @@ export default function Duplicate() {
               output: job.output,
               tasks: job.tasks,
               defaults: job.defaults,
+              webhooks: job.webhooks,
             },
             { lineWidth: 0, blockQuote: true }
           )
