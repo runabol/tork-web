@@ -16,6 +16,7 @@ export default async function Nodes() {
       <Table>
         <thead className="bg-gray-50">
           <tr>
+            <THeader name="ID" />
             <THeader name="Name" />
             <THeader name="Hostname" />
             <THeader name="Version" />
@@ -29,6 +30,9 @@ export default async function Nodes() {
           {nodes.map((node) => (
             <tr key={node.id}>
               <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-6 ">
+                {node.id}
+              </td>
+              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 {node.name}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
