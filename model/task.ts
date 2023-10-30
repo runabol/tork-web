@@ -10,6 +10,7 @@ interface Task {
   result: string;
   run: string;
   parallel: Parallel;
+  gpus: string;
 }
 
 interface Parallel {
