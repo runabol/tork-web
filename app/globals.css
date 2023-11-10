@@ -17,3 +17,12 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.hostname {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 185px;
+  display: inline-block;
+  padding-top: 18px;
+}
