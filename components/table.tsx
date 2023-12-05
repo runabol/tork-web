@@ -59,7 +59,7 @@ export default function Table({
                 <div className="flex flex-1 justify-between sm:justify-end">
                   {page.number > 1 ? (
                     <a
-                      href={`?page=${page.number - 1}`}
+                      href={`?page=${page.number - 1}${q ? "&q=" + q : ""}`}
                       className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
                     >
                       Previous
@@ -69,7 +69,7 @@ export default function Table({
                   )}
                   {page.number < page.totalPages ? (
                     <a
-                      href={`?page=${page.number + 1}`}
+                      href={`?page=${page.number + 1}${q ? "&q=" + q : ""}`}
                       className="relative ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
                     >
                       Next
