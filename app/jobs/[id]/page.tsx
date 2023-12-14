@@ -101,7 +101,7 @@ export default async function Job({ params: { id } }: { params: params }) {
           {job.execution.reverse().map((task) => (
             <tr key={task.id}>
               <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm  text-gray-500 sm:pl-6">
-                {task.name}
+                {truncateString(task.name, 30)}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
                 {task.startedAt ? formatTimestamp(task.startedAt) : ""}
@@ -122,7 +122,7 @@ export default async function Job({ params: { id } }: { params: params }) {
                 <StateBadge name={task.state} />
               </td>
               <td className="px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
-                {truncateString(task.error ? task.error : task.result, 40)}
+                {truncateString(task.error ? task.error : task.result, 30)}
               </td>
               <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 flex gap-2 justify-end">
                 <ViewTask task={task} />
