@@ -116,7 +116,11 @@ export default async function Jobs({
                     View
                   </button>
                 </Link>
-                {item.state === "RUNNING" ? <CancelJob job={item} /> : <></>}
+                {item.state === "RUNNING" || item.state === "SCHEDULED" ? (
+                  <CancelJob job={item} />
+                ) : (
+                  <></>
+                )}
                 {item.state === "FAILED" || item.state === "CANCELLED" ? (
                   <RestartJob job={item} />
                 ) : (

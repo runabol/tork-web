@@ -78,7 +78,11 @@ export default async function Job({ params: { id } }: { params: params }) {
             Duplicate
           </button>
         </Link>
-        {job.state === "RUNNING" ? <CancelJob job={job} /> : <></>}
+        {job.state === "RUNNING" || job.state === "SCHEDULED" ? (
+          <CancelJob job={job} />
+        ) : (
+          <></>
+        )}
         {job.state === "FAILED" || job.state === "CANCELLED" ? (
           <RestartJob job={job} />
         ) : (
