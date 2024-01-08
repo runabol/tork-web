@@ -13,6 +13,11 @@ interface Task {
   gpus: string;
 }
 
+interface TaskLogPart {
+  contents: string;
+  createdAt: string;
+}
+
 interface Parallel {
   tasks: Task[];
 }

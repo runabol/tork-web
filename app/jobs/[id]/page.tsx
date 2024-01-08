@@ -5,6 +5,7 @@ import StateBadge from "@/components/state-badge";
 import Table from "@/components/table";
 import THeader from "@/components/table-header";
 import ViewTask from "@/components/view-task";
+import ViewTaskLog from "@/components/view-task-log";
 import { formatRuntime, formatTimestamp } from "@/lib/datetime";
 import { truncateString } from "@/lib/strings";
 import { CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
@@ -129,6 +130,7 @@ export default async function Job({ params: { id } }: { params: params }) {
                 {truncateString(task.error ? task.error : task.result, 30)}
               </td>
               <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 flex gap-2 justify-end">
+                <ViewTaskLog task={task} />
                 <ViewTask task={task} />
               </td>
             </tr>
