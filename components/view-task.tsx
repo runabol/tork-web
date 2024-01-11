@@ -3,6 +3,7 @@
 import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { stringify } from "yaml";
+import { downloadLogs } from "@/lib/helper";
 
 export default function ViewTask({ task }: { task: Task }) {
   const cancelButtonRef = useRef(null);
@@ -52,6 +53,7 @@ export default function ViewTask({ task }: { task: Task }) {
                     {stringify(task)}
                   </p>
 
+                  <div className="flex gap-1 mt-4 justify-between">
                   <button
                     type="button"
                     className="mt-4 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
@@ -60,6 +62,17 @@ export default function ViewTask({ task }: { task: Task }) {
                   >
                     Close
                   </button>
+
+                  <button
+                      type="button"
+                      className="mt-4 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                      onClick={() => {
+                        downloadLogs(task.id, stringify(task));
+                      }}
+                    >
+                      Download
+                  </button>
+                  </div>
                 </Dialog.Panel>
               </Transition.Child>
             </div>
