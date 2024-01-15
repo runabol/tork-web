@@ -8,15 +8,7 @@ export default function Create() {
 tasks:
   - name: my first task
     image: alpine:3.18.3
-    run: echo hello world
-
-  - name: do some real work
-    run: sleep 5
-    image: alpine:3.18.3
-
-  - name: my second task
-    image: alpine:3.18.3
-    run: echo bye world
+    run: echo -n hello world
 `;
   const [placeholder, setPlaceholder] = useState(code);
 
