@@ -1,26 +1,34 @@
 "use client";
 
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { ArrowPathIcon } from "@heroicons/react/24/outline";
-
-function getTaskLog(id: string): Promise<string | void> {
-  return fetch(`/api/tasks/${id}/log`)
-    .then((res) => res.json() as Promise<Page<TaskLogPart>>)
-    .then((log) => {
-      return log.items
-        .map((it) => {
-          return it.contents.split("\n").reverse().join("\n");
-        })
-        .join("")
-        .trim();
-    });
-}
+import { ArrowLeftIcon, ArrowPathIcon } from "@heroicons/react/24/outline";
+import { ArrowRightIcon } from "@heroicons/react/20/solid";
 
 export default function ViewTaskLog({ task }: { task: Task }) {
   const cancelButtonRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [contents, setContents] = useState("");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const getTaskLog = useCallback(
+    function (page: number) {
+      return fetch(`/api/tasks/${task.id}/log?page=${page}`)
+        .then((res) => res.json() as Promise<Page<TaskLogPart>>)
+        .then((log) => {
+          setTotalPages(log.totalPages);
+          return log.items
+            .map((it) => {
+              return it.contents.split("\n").reverse().join("\n");
+            })
+            .join("")
+            .trim();
+        })
+        .then((contents) => setContents(contents));
+    },
+    [task.id, setContents, setTotalPages]
+  );
 
   return (
     <>
@@ -28,7 +36,7 @@ export default function ViewTaskLog({ task }: { task: Task }) {
         type="button"
         className="rounded bg-white px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 hover:bg-gray-50"
         onClick={() => {
-          getTaskLog(task.id).then((contents) => setContents(contents || ""));
+          getTaskLog(page);
           setOpen(true);
         }}
       >
@@ -84,24 +92,53 @@ export default function ViewTaskLog({ task }: { task: Task }) {
                     >
                       Close
                     </button>
-                    {task.state === "RUNNING" ? (
+                    <div className="flex gap-2">
+                      {task.state === "RUNNING" ? (
+                        <button
+                          type="button"
+                          title="Refresh"
+                          className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                          onClick={() => getTaskLog(page)}
+                        >
+                          <ArrowPathIcon
+                            className="h-5 w-5 text-black"
+                            aria-hidden="true"
+                          />
+                        </button>
+                      ) : (
+                        <></>
+                      )}
                       <button
                         type="button"
-                        className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                        onClick={() =>
-                          getTaskLog(task.id).then((contents) =>
-                            setContents(contents || "")
-                          )
-                        }
+                        disabled={page >= totalPages}
+                        title="Previous Page"
+                        className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:opacity-30"
+                        onClick={() => {
+                          setPage((page) => page + 1);
+                          getTaskLog(page + 1);
+                        }}
                       >
-                        <ArrowPathIcon
+                        <ArrowLeftIcon
                           className="h-5 w-5 text-black"
                           aria-hidden="true"
                         />
                       </button>
-                    ) : (
-                      <></>
-                    )}
+                      <button
+                        type="button"
+                        title="Next Page"
+                        className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:opacity-30"
+                        disabled={page < 2}
+                        onClick={() => {
+                          setPage((page) => page - 1);
+                          getTaskLog(page - 1);
+                        }}
+                      >
+                        <ArrowRightIcon
+                          className="h-5 w-5 text-black"
+                          aria-hidden="true"
+                        />
+                      </button>
+                    </div>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
