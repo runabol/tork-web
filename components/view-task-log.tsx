@@ -42,13 +42,7 @@ export default function ViewTaskLog({ task }: { task: Task }) {
                 return newInterval;
               });
             } else {
-              setTailInterval((tailInterval) => {
-                var newInterval = tailInterval / 2;
-                if (newInterval < 2_000) {
-                  newInterval = 2_000;
-                }
-                return newInterval;
-              });
+              setTailInterval(2_000);
             }
             return contents;
           });
