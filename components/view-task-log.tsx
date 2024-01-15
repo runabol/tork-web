@@ -4,6 +4,9 @@ import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ArrowLeftIcon, ArrowPathIcon } from "@heroicons/react/24/outline";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
+import { taintUniqueValue } from "next/dist/server/app-render/rsc/taint";
+import { formatRuntime, formatTimestamp } from "@/lib/datetime";
+import { format } from "date-fns";
 
 export default function ViewTaskLog({ task }: { task: Task }) {
   const cancelButtonRef = useRef(null);
@@ -12,9 +15,11 @@ export default function ViewTaskLog({ task }: { task: Task }) {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [tail, setTail] = useState(false);
+  const [tailInterval, setTailInterval] = useState(2_000);
 
-  const getTaskLog = useCallback(
+  const refreshLog = useCallback(
     function (page: number) {
+      console.log(`${format(new Date(), "hh:mm:ss")}: refresh log`);
       return fetch(`/api/tasks/${task.id}/log?page=${page}`)
         .then((res) => res.json() as Promise<Page<TaskLogPart>>)
         .then((log) => {
@@ -26,18 +31,40 @@ export default function ViewTaskLog({ task }: { task: Task }) {
             .join("")
             .trim();
         })
-        .then((contents) => setContents(contents));
+        .then((contents) => {
+          setContents((oldContents) => {
+            if (oldContents === contents) {
+              setTailInterval((tailInterval) => {
+                var newInterval = tailInterval * 2;
+                if (newInterval > 10_000) {
+                  newInterval = 10_000;
+                }
+                return newInterval;
+              });
+            } else {
+              setTailInterval((tailInterval) => {
+                var newInterval = tailInterval / 2;
+                if (newInterval < 2_000) {
+                  newInterval = 2_000;
+                }
+                return newInterval;
+              });
+            }
+            return contents;
+          });
+        });
     },
-    [task.id, setContents, setTotalPages]
+    [task.id, contents, setContents, setTotalPages, setTailInterval]
   );
 
   useEffect(() => {
-    setInterval(() => {
-      if (tail) {
-        getTaskLog(1);
-      }
-    }, 5_000);
-  }, [tail]);
+    if (tail) {
+      const intervalID = setInterval(() => {
+        refreshLog(1);
+      }, tailInterval);
+      return () => clearInterval(intervalID);
+    }
+  }, [tail, tailInterval]);
 
   return (
     <>
@@ -45,7 +72,7 @@ export default function ViewTaskLog({ task }: { task: Task }) {
         type="button"
         className="rounded bg-white px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 hover:bg-gray-50"
         onClick={() => {
-          getTaskLog(page);
+          refreshLog(page);
           setOpen(true);
         }}
       >
@@ -102,14 +129,15 @@ export default function ViewTaskLog({ task }: { task: Task }) {
                       Close
                     </button>
                     <div className="flex gap-2">
-                      {task.state === "RUNNING" ? (
+                      {task.state === "RUNNING" ||
+                      task.state === "SCHEDULED" ? (
                         <button
                           type="button"
                           title="Tail"
                           className={`rounded-md font-semibold bg-white px-3 py-2 text-sm  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50`}
                           onClick={() => {
                             if (!tail) {
-                              getTaskLog(1);
+                              refreshLog(1);
                               setPage(1);
                             }
                             setTail((v) => !v);
@@ -132,7 +160,7 @@ export default function ViewTaskLog({ task }: { task: Task }) {
                         className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:opacity-30"
                         onClick={() => {
                           setPage((page) => page + 1);
-                          getTaskLog(page + 1);
+                          refreshLog(page + 1);
                         }}
                       >
                         <ArrowLeftIcon
@@ -147,7 +175,7 @@ export default function ViewTaskLog({ task }: { task: Task }) {
                         disabled={page < 2 || tail}
                         onClick={() => {
                           setPage((page) => page - 1);
-                          getTaskLog(page - 1);
+                          refreshLog(page - 1);
                         }}
                       >
                         <ArrowRightIcon
