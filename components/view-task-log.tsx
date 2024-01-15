@@ -86,6 +86,7 @@ export default function ViewTaskLog({ task }: { task: Task }) {
           onClose={() => {
             setContents("");
             setOpen(false);
+            setTail(false);
           }}
         >
           <Transition.Child
