@@ -11,6 +11,7 @@ export default function ViewTaskLog({ task }: { task: Task }) {
   const [contents, setContents] = useState("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [tail, setTail] = useState(false);
 
   const getTaskLog = useCallback(
     function (page: number) {
@@ -29,6 +30,14 @@ export default function ViewTaskLog({ task }: { task: Task }) {
     },
     [task.id, setContents, setTotalPages]
   );
+
+  useEffect(() => {
+    setInterval(() => {
+      if (tail) {
+        getTaskLog(1);
+      }
+    }, 5_000);
+  }, [tail]);
 
   return (
     <>
@@ -96,12 +105,20 @@ export default function ViewTaskLog({ task }: { task: Task }) {
                       {task.state === "RUNNING" ? (
                         <button
                           type="button"
-                          title="Refresh"
-                          className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                          onClick={() => getTaskLog(page)}
+                          title="Tail"
+                          className={`rounded-md font-semibold bg-white px-3 py-2 text-sm  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50`}
+                          onClick={() => {
+                            if (!tail) {
+                              getTaskLog(1);
+                              setPage(1);
+                            }
+                            setTail((v) => !v);
+                          }}
                         >
                           <ArrowPathIcon
-                            className="h-5 w-5 text-black"
+                            className={`h-5 w-5 text-black ${
+                              tail ? "animate-spin" : ""
+                            }`}
                             aria-hidden="true"
                           />
                         </button>
@@ -110,7 +127,7 @@ export default function ViewTaskLog({ task }: { task: Task }) {
                       )}
                       <button
                         type="button"
-                        disabled={page >= totalPages}
+                        disabled={page >= totalPages || tail}
                         title="Previous Page"
                         className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:opacity-30"
                         onClick={() => {
@@ -127,7 +144,7 @@ export default function ViewTaskLog({ task }: { task: Task }) {
                         type="button"
                         title="Next Page"
                         className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:opacity-30"
-                        disabled={page < 2}
+                        disabled={page < 2 || tail}
                         onClick={() => {
                           setPage((page) => page - 1);
                           getTaskLog(page - 1);

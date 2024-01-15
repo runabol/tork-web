@@ -66,7 +66,9 @@ export default async function Job({ params: { id } }: { params: params }) {
         </div>
       </div>
       <div className="mt-2 flex justify-end gap-2">
-        {job.state === "PENDING" || job.state === "RUNNING" ? (
+        {job.state === "PENDING" ||
+        job.state === "RUNNING" ||
+        job.state === "SCHEDULED" ? (
           <Refresh />
         ) : (
           <></>
