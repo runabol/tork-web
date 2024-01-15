@@ -16,6 +16,10 @@ View Job:
 
 ![view job](screenshots/view-job-v5.png "View Job")
 
+Task Logs:
+
+![task logs](screenshots/task-logs.png "Task Logs")
+
 ## Getting Started
 
 First, run the development server:
