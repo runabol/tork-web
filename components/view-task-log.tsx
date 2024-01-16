@@ -118,6 +118,7 @@ export default function ViewTaskLog({ task }: { task: Task }) {
                       onClick={() => {
                         setContents("");
                         setOpen(false);
+                        setTail(false);
                       }}
                       ref={cancelButtonRef}
                     >
