@@ -6,21 +6,21 @@ import { ArrowLeftIcon, ArrowPathIcon } from "@heroicons/react/24/outline";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
 import { format } from "date-fns";
 
-export default function ViewTaskLog({ task }: { task: Task }) {
+export default function ViewJobLog({ job }: { job: Job }) {
   const cancelButtonRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [contents, setContents] = useState("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [tail, setTail] = useState(
-    task.state === "RUNNING" || task.state === "SCHEDULED"
+    job.state === "RUNNING" || job.state === "SCHEDULED"
   );
   const [tailInterval, setTailInterval] = useState(2_000);
 
   const refreshLog = useCallback(
     function (page: number) {
       console.log(`${format(new Date(), "hh:mm:ss")}: refresh log`);
-      return fetch(`/api/tasks/${task.id}/log?page=${page}`)
+      return fetch(`/api/jobs/${job.id}/log?page=${page}`)
         .then((res) => res.json() as Promise<Page<TaskLogPart>>)
         .then((log) => {
           setTotalPages(log.totalPages);
@@ -48,7 +48,7 @@ export default function ViewTaskLog({ task }: { task: Task }) {
           });
         });
     },
-    [open, task.id, contents, setContents, setTotalPages, setTailInterval]
+    [open, job.id, contents, setContents, setTotalPages, setTailInterval]
   );
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function ViewTaskLog({ task }: { task: Task }) {
     <>
       <button
         type="button"
-        className="rounded bg-white px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 hover:bg-gray-50"
+        className="rounded bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 hover:bg-gray-50"
         onClick={() => {
           refreshLog(page);
           setOpen(true);
@@ -125,8 +125,7 @@ export default function ViewTaskLog({ task }: { task: Task }) {
                       Close
                     </button>
                     <div className="flex gap-2">
-                      {task.state === "RUNNING" ||
-                      task.state === "SCHEDULED" ? (
+                      {job.state === "RUNNING" || job.state === "SCHEDULED" ? (
                         <button
                           type="button"
                           title="Tail"

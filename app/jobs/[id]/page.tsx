@@ -4,6 +4,7 @@ import RestartJob from "@/components/restart-job";
 import StateBadge from "@/components/state-badge";
 import Table from "@/components/table";
 import THeader from "@/components/table-header";
+import ViewJobLog from "@/components/view-job-log";
 import ViewTask from "@/components/view-task";
 import ViewTaskLog from "@/components/view-task-log";
 import { formatRuntime, formatTimestamp } from "@/lib/datetime";
@@ -73,6 +74,7 @@ export default async function Job({ params: { id } }: { params: params }) {
         ) : (
           <></>
         )}
+        <ViewJobLog job={job} />
         <Link href={`/jobs/duplicate?id=${job.id}`}>
           <button
             type="button"
