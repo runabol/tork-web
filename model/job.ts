@@ -3,6 +3,7 @@ interface Job {
   parentId: string;
   name: string;
   description: string;
+  tags?: string[];
   state: string;
   createdAt: string;
   startedAt: string;
