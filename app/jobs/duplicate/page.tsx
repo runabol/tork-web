@@ -21,6 +21,7 @@ export default function Duplicate() {
               description: job.description,
               tags: job.tags,
               inputs: job.inputs,
+              secrets: job.secrets,
               output: job.output,
               tasks: job.tasks,
               defaults: job.defaults,

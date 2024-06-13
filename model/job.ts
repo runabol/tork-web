@@ -12,6 +12,7 @@ interface Job {
   execution: Task[];
   tasks: Task[];
   inputs: Map<String, String>;
+  secrets: Map<String, String>;
   position: number;
   taskCount: number;
   output: string;
