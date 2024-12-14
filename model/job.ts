@@ -18,6 +18,7 @@ interface Job {
   output: string;
   defaults: any;
   webhooks: Webhook[];
+  schedule?: any;
 }
 
 interface Webhook {

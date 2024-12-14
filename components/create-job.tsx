@@ -47,7 +47,11 @@ export default function CreateJob({
                         setErrorMsg(data.message);
                       } else {
                         router.refresh();
-                        router.push(`/jobs/${data.id}`);
+                        if (data.cron) {
+                          router.push(`/jobs`);
+                        } else {
+                          router.push(`/jobs/${data.id}`);
+                        }
                       }
                     });
                 }}
