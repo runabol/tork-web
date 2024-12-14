@@ -80,6 +80,13 @@ export default async function Jobs({
                 ) : (
                   <></>
                 )}
+                {item.schedule ? (
+                  <span className="inline-flex items-center rounded-md bg-gray-200 px-2 py-1 text-xs font-medium text-gray-700 ring-1 ring-inset ring-gray-500/10">
+                    Scheduled
+                  </span>
+                ) : (
+                  <></>
+                )}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 {formatTimestamp(item.createdAt)}
