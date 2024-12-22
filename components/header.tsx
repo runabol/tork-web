@@ -15,30 +15,30 @@ export default function Header() {
         <div className="flex h-16 justify-between">
           <div className="flex">
             <div className="hidden md:flex md:space-x-8">
-              <a
+              <Link
                 href="/jobs"
                 className={nextPath.includes("/jobs") ? active : inactive}
               >
                 Jobs
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/scheduled"
                 className={nextPath.includes("/scheduled") ? active : inactive}
               >
                 Scheduled
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/queues"
                 className={nextPath.includes("/queues") ? active : inactive}
               >
                 Queues
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/nodes"
                 className={nextPath.includes("/nodes") ? active : inactive}
               >
                 Nodes
-              </a>
+              </Link>
             </div>
           </div>
           <div className="flex items-center">
