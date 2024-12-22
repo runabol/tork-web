@@ -22,6 +22,12 @@ export default function Header() {
                 Jobs
               </a>
               <a
+                href="/scheduled"
+                className={nextPath.includes("/scheduled") ? active : inactive}
+              >
+                Scheduled
+              </a>
+              <a
                 href="/queues"
                 className={nextPath.includes("/queues") ? active : inactive}
               >
