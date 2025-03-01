@@ -1,8 +1,10 @@
+import DeleteScheduledJob from "@/components/delete-scheduled-job";
 import PauseScheduledJob from "@/components/pause-scheduled-job";
 import Refresh from "@/components/refresh";
 import ResumeScheduledJob from "@/components/resume-scheduled-job";
 import Table from "@/components/table";
 import THeader from "@/components/table-header";
+import { formatTimestamp } from "@/lib/datetime";
 
 export const dynamic = "force-dynamic";
 
@@ -17,6 +19,7 @@ export default async function Scheduled() {
         <thead className="bg-gray-50">
           <tr>
             <THeader name="Name" />
+            <THeader name="Created at" />
             <THeader name="Schedule" />
             <THeader name="Status" />
             <THeader name="" />
@@ -27,6 +30,9 @@ export default async function Scheduled() {
             <tr key={sjob.id}>
               <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-6 ">
                 {sjob.name}
+              </td>
+              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                {formatTimestamp(sjob.createdAt)}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 {sjob.cron}
@@ -47,8 +53,11 @@ export default async function Scheduled() {
                 )}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {sjob.state === "ACTIVE" && <PauseScheduledJob job={sjob} />}
-                {sjob.state === "PAUSED" && <ResumeScheduledJob job={sjob} />}
+                <div className="flex gap-2">
+                  {sjob.state === "ACTIVE" && <PauseScheduledJob job={sjob} />}
+                  {sjob.state === "PAUSED" && <ResumeScheduledJob job={sjob} />}
+                  <DeleteScheduledJob job={sjob} />
+                </div>
               </td>
             </tr>
           ))}

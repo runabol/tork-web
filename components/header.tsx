@@ -1,10 +1,10 @@
+"use client";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
-import { headers } from "next/headers";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
-  const headersList = headers();
-  const nextPath = headersList.get("next-path") || "";
+  const pathname = usePathname();
   const active =
     "inline-flex items-center border-b-2 border-gray-800 px-1 pt-1 text-sm font-medium text-gray-900";
   const inactive =
@@ -17,25 +17,25 @@ export default function Header() {
             <div className="hidden md:flex md:space-x-8">
               <Link
                 href="/jobs"
-                className={nextPath.includes("/jobs") ? active : inactive}
+                className={pathname.includes("/jobs") ? active : inactive}
               >
                 Jobs
               </Link>
               <Link
                 href="/scheduled"
-                className={nextPath.includes("/scheduled") ? active : inactive}
+                className={pathname.includes("/scheduled") ? active : inactive}
               >
                 Scheduled
               </Link>
               <Link
                 href="/queues"
-                className={nextPath.includes("/queues") ? active : inactive}
+                className={pathname.includes("/queues") ? active : inactive}
               >
                 Queues
               </Link>
               <Link
                 href="/nodes"
-                className={nextPath.includes("/nodes") ? active : inactive}
+                className={pathname.includes("/nodes") ? active : inactive}
               >
                 Nodes
               </Link>
