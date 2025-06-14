@@ -1,14 +1,13 @@
-export default function Table({
-  children,
-  page,
-  search,
-  q,
-}: {
+import { Page } from '@/models';
+
+type Props = {
   children: React.ReactNode;
   page?: Page<any>;
   q?: string;
   search?: boolean;
-}) {
+};
+
+export default function Table({ children, page, search, q }: Props) {
   return (
     <div className="mt-6 flow-root">
       <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -44,22 +43,22 @@ export default function Table({
               >
                 <div className="hidden sm:block">
                   <p className="text-sm text-gray-700">
-                    Showing{" "}
+                    Showing{' '}
                     <span className="font-medium">
                       {(page.number - 1) * 10 + 1}
-                    </span>{" "}
-                    to{" "}
+                    </span>{' '}
+                    to{' '}
                     <span className="font-medium">
                       {(page.number - 1) * 10 + page.size}
-                    </span>{" "}
-                    of <span className="font-medium">{page.totalItems}</span>{" "}
+                    </span>{' '}
+                    of <span className="font-medium">{page.totalItems}</span>{' '}
                     results
                   </p>
                 </div>
                 <div className="flex flex-1 justify-between sm:justify-end">
                   {page.number > 1 ? (
                     <a
-                      href={`?page=${page.number - 1}${q ? "&q=" + q : ""}`}
+                      href={`?page=${page.number - 1}${q ? '&q=' + q : ''}`}
                       className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
                     >
                       Previous
@@ -69,7 +68,7 @@ export default function Table({
                   )}
                   {page.number < page.totalPages ? (
                     <a
-                      href={`?page=${page.number + 1}${q ? "&q=" + q : ""}`}
+                      href={`?page=${page.number + 1}${q ? '&q=' + q : ''}`}
                       className="relative ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
                     >
                       Next

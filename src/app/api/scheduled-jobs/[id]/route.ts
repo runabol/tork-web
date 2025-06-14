@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server';
 
+import ENV_CONFIG from '@/config/env-config';
+
 export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const res = await fetch(`${process.env.BACKEND_URL}/scheduled-jobs/${id}`, {
+  const res = await fetch(`${ENV_CONFIG.backendUrl}/scheduled-jobs/${id}`, {
     method: 'DELETE',
   });
   if (res.ok) {

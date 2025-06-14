@@ -1,53 +1,63 @@
-"use client";
+'use client';
 
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 
-import { Dialog, Transition } from '@headlessui/react';
+import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { ArrowLeftIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
 
-export default function ViewTaskLog({ task }: { task: Task }) {
+import { Page, Task, TaskLogPart } from '@/models';
+
+type Props = {
+  task: Task;
+};
+
+export default function ViewTaskLog({ task }: Props) {
   const cancelButtonRef = useRef(null);
-  const [open, setOpen] = useState(false);
-  const [contents, setContents] = useState("");
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [tail, setTail] = useState(
-    task.state === "RUNNING" || task.state === "SCHEDULED"
+
+  const [open, setOpen] = useState<boolean>(false);
+  const [contents, setContents] = useState<string>('');
+  const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [tail, setTail] = useState<boolean>(
+    task.state === 'RUNNING' || task.state === 'SCHEDULED'
   );
-  const [tailInterval, setTailInterval] = useState(2_000);
+  const [tailInterval, setTailInterval] = useState<number>(2_000);
 
   const refreshLog = useCallback(
-    function (page: number) {
-      console.log(`${format(new Date(), "hh:mm:ss")}: refresh log`);
-      return fetch(`/api/tasks/${task.id}/log?page=${page}`)
-        .then((res) => res.json() as Promise<Page<TaskLogPart>>)
-        .then((log) => {
-          setTotalPages(log.totalPages);
-          return log.items
-            .map((it) => {
-              return it.contents.split("\n").reverse().join("\n");
-            })
-            .join("")
-            .trim();
-        })
-        .then((contents) => {
-          setContents((oldContents) => {
-            if (oldContents === contents) {
-              setTailInterval((tailInterval) => {
-                var newInterval = tailInterval * 2;
-                if (newInterval > 10_000) {
-                  newInterval = 10_000;
-                }
-                return newInterval;
-              });
-            } else {
-              setTailInterval(2_000);
-            }
-            return contents;
-          });
+    async (page: number) => {
+      console.log(`${format(new Date(), 'hh:mm:ss')}: refresh log`);
+      try {
+        const res = await fetch(`/api/tasks/${task.id}/log?page=${page}`);
+        const log: Page<TaskLogPart> = await res.json();
+
+        setTotalPages(log.totalPages);
+
+        const contents = log.items
+          .map((it) => {
+            return it.contents.split('\n').reverse().join('\n');
+          })
+          .join('')
+          .trim();
+
+        setContents((oldContents) => {
+          if (oldContents === contents) {
+            setTailInterval((tailInterval) => {
+              let newInterval = tailInterval * 2;
+              if (newInterval > 10_000) {
+                newInterval = 10_000;
+              }
+              return newInterval;
+            });
+          } else {
+            setTailInterval(2_000);
+          }
+          return contents;
         });
+      } catch (e) {
+        console.error(e);
+      }
     },
     [open, task.id, contents, setContents, setTotalPages, setTailInterval]
   );
@@ -73,18 +83,18 @@ export default function ViewTaskLog({ task }: { task: Task }) {
       >
         Log
       </button>
-      <Transition.Root show={open} as={Fragment}>
+      <Transition show={open} as={Fragment}>
         <Dialog
           as="div"
           className="relative z-10"
           initialFocus={cancelButtonRef}
           onClose={() => {
-            setContents("");
+            setContents('');
             setOpen(false);
             setTail(false);
           }}
         >
-          <Transition.Child
+          <TransitionChild
             as={Fragment}
             enter="ease-out duration-300"
             enterFrom="opacity-0"
@@ -94,11 +104,11 @@ export default function ViewTaskLog({ task }: { task: Task }) {
             leaveTo="opacity-0"
           >
             <div className="fixed inset-0 bg-gray-500/30 bg-opacity-75 transition-opacity" />
-          </Transition.Child>
+          </TransitionChild>
 
           <div className="fixed inset-0 z-10 overflow-y-auto">
             <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-              <Transition.Child
+              <TransitionChild
                 as={Fragment}
                 enter="ease-out duration-300"
                 enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -107,9 +117,9 @@ export default function ViewTaskLog({ task }: { task: Task }) {
                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
-                <Dialog.Panel className="relative transform rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:p-6 sm:w-full sm:max-w-4xl">
+                <DialogPanel className="relative transform rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:p-6 sm:w-full sm:max-w-4xl">
                   <p className="font-mono bg-gray-200 p-4 text-xs whitespace-pre-line max-h-96 overflow-scroll">
-                    {contents ? contents : "no logs to show"}
+                    {contents ? contents : 'no logs to show'}
                   </p>
 
                   <div className="flex gap-1 mt-4 justify-between">
@@ -117,7 +127,7 @@ export default function ViewTaskLog({ task }: { task: Task }) {
                       type="button"
                       className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                       onClick={() => {
-                        setContents("");
+                        setContents('');
                         setOpen(false);
                         setTail(false);
                       }}
@@ -126,8 +136,8 @@ export default function ViewTaskLog({ task }: { task: Task }) {
                       Close
                     </button>
                     <div className="flex gap-2">
-                      {task.state === "RUNNING" ||
-                      task.state === "SCHEDULED" ? (
+                      {task.state === 'RUNNING' ||
+                      task.state === 'SCHEDULED' ? (
                         <button
                           type="button"
                           title="Tail"
@@ -142,7 +152,7 @@ export default function ViewTaskLog({ task }: { task: Task }) {
                         >
                           <ArrowPathIcon
                             className={`h-5 w-5 text-black ${
-                              tail ? "animate-spin" : ""
+                              tail ? 'animate-spin' : ''
                             }`}
                             aria-hidden="true"
                           />
@@ -182,12 +192,12 @@ export default function ViewTaskLog({ task }: { task: Task }) {
                       </button>
                     </div>
                   </div>
-                </Dialog.Panel>
-              </Transition.Child>
+                </DialogPanel>
+              </TransitionChild>
             </div>
           </div>
         </Dialog>
-      </Transition.Root>
+      </Transition>
     </>
   );
 }

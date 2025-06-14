@@ -1,15 +1,41 @@
-"use client";
+'use client';
 
 import { useRouter } from 'next/navigation';
 import { Fragment, useRef, useState } from 'react';
 
-import { Dialog, Transition } from '@headlessui/react';
+import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
-export default function PauseScheduledJob({ job }: { job: ScheduledJob }) {
-  const cancelButtonRef = useRef(null);
-  const [open, setOpen] = useState(false);
+import { ScheduledJob } from '@/models';
+
+type Props = {
+  job: ScheduledJob;
+};
+
+export default function PauseScheduledJob({ job }: Props) {
   const router = useRouter();
+
+  const cancelButtonRef = useRef(null);
+
+  const [open, setOpen] = useState(false);
+
+  const handlePauseScheduledJob = async (): Promise<void> => {
+    try {
+      const response = await fetch(`/api/scheduled-jobs/${job.id}/pause`, {
+        method: 'PUT',
+      });
+      if (!response.ok) {
+        console.error(response.statusText);
+        return;
+      }
+      const data = await response.json();
+      console.log(data);
+      router.refresh();
+      setOpen(false);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -20,14 +46,14 @@ export default function PauseScheduledJob({ job }: { job: ScheduledJob }) {
       >
         Pause
       </button>
-      <Transition.Root show={open} as={Fragment}>
+      <Transition show={open} as={Fragment}>
         <Dialog
           as="div"
           className="relative z-10"
           initialFocus={cancelButtonRef}
           onClose={setOpen}
         >
-          <Transition.Child
+          <TransitionChild
             as={Fragment}
             enter="ease-out duration-300"
             enterFrom="opacity-0"
@@ -37,11 +63,11 @@ export default function PauseScheduledJob({ job }: { job: ScheduledJob }) {
             leaveTo="opacity-0"
           >
             <div className="fixed inset-0 bg-gray-500/30 bg-opacity-75 transition-opacity" />
-          </Transition.Child>
+          </TransitionChild>
 
           <div className="fixed inset-0 z-10 overflow-y-auto">
             <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-              <Transition.Child
+              <TransitionChild
                 as={Fragment}
                 enter="ease-out duration-300"
                 enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -50,7 +76,7 @@ export default function PauseScheduledJob({ job }: { job: ScheduledJob }) {
                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
-                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                <DialogPanel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                   <div className="sm:flex sm:items-start">
                     <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
                       <ExclamationTriangleIcon
@@ -59,12 +85,12 @@ export default function PauseScheduledJob({ job }: { job: ScheduledJob }) {
                       />
                     </div>
                     <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                      <Dialog.Title
+                      <DialogTitle
                         as="h3"
                         className="text-base font-semibold leading-6 text-gray-900"
                       >
                         Pause Job
-                      </Dialog.Title>
+                      </DialogTitle>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
                           Are you sure you want to pause this scheduled job?
@@ -77,16 +103,7 @@ export default function PauseScheduledJob({ job }: { job: ScheduledJob }) {
                     <button
                       type="button"
                       className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:w-auto"
-                      onClick={() =>
-                        fetch(`/api/scheduled-jobs/${job.id}/pause`, {
-                          method: "PUT",
-                        })
-                          .then((res) => res.json())
-                          .then((data) => {
-                            router.refresh();
-                            setOpen(false);
-                          })
-                      }
+                      onClick={handlePauseScheduledJob}
                     >
                       Confirm
                     </button>
@@ -99,12 +116,12 @@ export default function PauseScheduledJob({ job }: { job: ScheduledJob }) {
                       Cancel
                     </button>
                   </div>
-                </Dialog.Panel>
-              </Transition.Child>
+                </DialogPanel>
+              </TransitionChild>
             </div>
           </div>
         </Dialog>
-      </Transition.Root>
+      </Transition>
     </>
   );
 }

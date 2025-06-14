@@ -1,4 +1,4 @@
-interface Task {
+export interface Task {
   id: string;
   name: string;
   state: string;
@@ -13,11 +13,11 @@ interface Task {
   gpus: string;
 }
 
-interface TaskLogPart {
+export interface TaskLogPart {
   contents: string;
   createdAt: string;
 }
 
-interface Parallel {
+export interface Parallel {
   tasks: Task[];
 }

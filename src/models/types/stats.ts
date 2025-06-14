@@ -1,18 +1,18 @@
-interface Metrics {
+export interface Metrics {
   jobs: JobMetrics;
   tasks: TaskMetrics;
   nodes: NodeMetrics;
 }
 
-interface JobMetrics {
+export interface JobMetrics {
   running: number;
 }
 
-interface TaskMetrics {
+export interface TaskMetrics {
   running: number;
 }
 
-interface NodeMetrics {
+export interface NodeMetrics {
   online: number;
   cpuPercent: number;
 }

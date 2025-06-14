@@ -11,16 +11,19 @@ import THeader from '@/components/table-header';
 import ViewJobLog from '@/components/view-job-log';
 import ViewTask from '@/components/view-task';
 import ViewTaskLog from '@/components/view-task-log';
+import ENV_CONFIG from '@/config/env-config';
 import { formatRuntime, formatTimestamp } from '@/lib/datetime';
 import { truncateString } from '@/lib/strings';
+import { Job } from '@/models';
 
-interface Props {
+type Props = {
   params: Promise<{ id: string }>;
-}
+};
 
-export default async function Job({ params }: Props) {
+export default async function JobPage({ params }: Props) {
   const { id } = await params;
   const job = await getData(id);
+
   return (
     <>
       <div className="md:flex md:items-center md:justify-between">
@@ -110,7 +113,7 @@ export default async function Job({ params }: Props) {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
-          {job.execution.reverse().map((task) => (
+          {job.execution.reverse().map((task: any) => (
             <tr key={task.id}>
               <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm  text-gray-500 sm:pl-6">
                 {truncateString(task.name, 30)}
@@ -148,8 +151,9 @@ export default async function Job({ params }: Props) {
   );
 }
 
+// TODO: Extract this out into a service file e.g. "services/server/jobs/jobs.service.ts"
 async function getData(jobId: string): Promise<Job> {
-  const res = await fetch(`${process.env.BACKEND_URL}/jobs/${jobId}`, {
+  const res = await fetch(`${ENV_CONFIG.backendUrl}/jobs/${jobId}`, {
     cache: 'no-cache',
   });
   if (!res.ok) {

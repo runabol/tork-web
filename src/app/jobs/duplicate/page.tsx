@@ -1,41 +1,37 @@
-"use client";
+import { notFound } from 'next/navigation';
 
-import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import DuplicateJob from '@/components/duplicate-job';
+import ENV_CONFIG from '@/config/env-config';
+import { Job, SearchParams } from '@/models';
 
-import { stringify } from 'yaml';
+// TODO: extract this out into a service file e.g. "services/server/jobs/jobs.service.ts"
+const getJobById = async (id: string): Promise<Job | null> => {
+  const res = await fetch(`${ENV_CONFIG.baseUrl}/api/jobs/${id}`);
+  if (!res.ok) {
+    console.error(`Failed to fetch job with ID ${id}: ${res.statusText}`);
+    return null;
+  }
 
-import CreateJob from '@/components/create-job';
+  const job = await res.json();
 
-export default function Duplicate() {
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
-  const [placeholder, setPlaceholder] = useState("");
+  return job as Job;
+};
 
-  useEffect(() => {
-    fetch(`/api/jobs/${id}`)
-      .then((res) => res.json() as Promise<Job>)
-      .then((job) =>
-        setPlaceholder(
-          stringify(
-            {
-              name: job.name,
-              description: job.description,
-              tags: job.tags,
-              inputs: job.inputs,
-              secrets: job.secrets,
-              output: job.output,
-              tasks: job.tasks,
-              defaults: job.defaults,
-              webhooks: job.webhooks,
-            },
-            { lineWidth: 0, blockQuote: true }
-          )
-        )
-      );
-  }, []);
+type Props = {
+  searchParams: Promise<SearchParams>;
+};
 
-  return (
-    <CreateJob placeholder={placeholder} setPlaceholder={setPlaceholder} />
-  );
+export default async function DuplicateJobPage({ searchParams }: Props) {
+  const id = (await searchParams).id;
+  if (!id) {
+    throw new Error('Job ID is required for duplication.');
+  }
+
+  const job = await getJobById(id as string);
+
+  if (!job) {
+    notFound();
+  }
+
+  return <DuplicateJob job={job} />;
 }

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useRouter } from 'next/navigation';
 
@@ -6,6 +6,7 @@ import { ArrowPathIcon } from '@heroicons/react/24/solid';
 
 export default function Refresh() {
   const router = useRouter();
+
   return (
     <button
       type="button"

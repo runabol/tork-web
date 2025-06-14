@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+import ENV_CONFIG from '@/config/env-config';
+
 export async function GET(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -9,7 +11,7 @@ export async function GET(
   const urlParams = new URLSearchParams(search);
   const page = urlParams.get('page') || '1';
   const res = await fetch(
-    `${process.env.BACKEND_URL}/jobs/${id}/log?page=${page}&size=50`,
+    `${ENV_CONFIG.backendUrl}/jobs/${id}/log?page=${page}&size=50`,
     {
       cache: 'no-cache',
     }

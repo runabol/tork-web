@@ -1,11 +1,14 @@
 import Refresh from '@/components/refresh';
 import Table from '@/components/table';
 import THeader from '@/components/table-header';
+import ENV_CONFIG from '@/config/env-config';
+import { Queue } from '@/models';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
-export default async function Queues() {
+export default async function QueuesPage() {
   const qs = await getData();
+
   const sorted = qs.sort((a, b) => {
     if (a.size === b.size) {
       if (a.name < b.name) {
@@ -19,6 +22,7 @@ export default async function Queues() {
     }
     return a.size > b.size ? -1 : 1;
   });
+
   return (
     <>
       <div className="mt-8 flex justify-end gap-2">
@@ -56,12 +60,13 @@ export default async function Queues() {
   );
 }
 
+// TODO: Extract this out into a service file e.g. "services/server/queues/queues.service.ts"
 async function getData(): Promise<Queue[]> {
-  const res = await fetch(`${process.env.BACKEND_URL}/queues`, {
-    cache: "no-store",
+  const res = await fetch(`${ENV_CONFIG.backendUrl}/queues`, {
+    cache: 'no-store',
   });
   if (!res.ok) {
-    throw new Error("Failed to fetch data");
+    throw new Error('Failed to fetch data');
   }
   return res.json();
 }

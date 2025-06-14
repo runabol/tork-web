@@ -8,10 +8,10 @@ type EnvConfig = {
 };
 
 const envConfigSchema = z.object({
-  BACKEND_URL: z.string().min(1),
+  NEXT_PUBLIC_BACKEND_URL: z.string().min(1),
+  NEXT_PUBLIC_BASE_URL: z.string().min(1),
   NODE_ENV: z.enum(['development', 'production']),
-  PORT: z.coerce.number(),
-  BASE_URL: z.string().min(1),
+  PORT: z.coerce.number().optional().default(3000),
 });
 
 let ENV_CONFIG: EnvConfig;
@@ -26,10 +26,10 @@ try {
     process.exit(1);
   }
   ENV_CONFIG = {
-    backendUrl: validationResult.data.BACKEND_URL,
+    backendUrl: validationResult.data.NEXT_PUBLIC_BACKEND_URL,
+    baseUrl: validationResult.data.NEXT_PUBLIC_BASE_URL,
     environment: validationResult.data.NODE_ENV,
     port: validationResult.data.PORT,
-    baseUrl: validationResult.data.BASE_URL,
   };
 } catch (error: any) {
   console.error('❌ Error parsing environment variables:', error);

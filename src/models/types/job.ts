@@ -1,4 +1,6 @@
-interface Job {
+import { Task } from './task';
+
+export interface Job {
   id: string;
   parentId: string;
   name: string;
@@ -21,7 +23,7 @@ interface Job {
   schedule?: any;
 }
 
-interface ScheduledJob {
+export interface ScheduledJob {
   id: string;
   cron: string;
   name: string;
@@ -44,7 +46,7 @@ interface ScheduledJob {
   schedule?: any;
 }
 
-interface Webhook {
+export interface Webhook {
   url: string;
   headers: Map<string, string>;
 }
