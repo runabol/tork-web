@@ -2,12 +2,13 @@ import { NextResponse } from 'next/server';
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   const res = await fetch(
-    `${process.env.BACKEND_URL}/scheduled-jobs/${params.id}/resume`,
+    `${process.env.BACKEND_URL}/scheduled-jobs/${id}/resume`,
     {
-      method: "PUT",
+      method: 'PUT',
     }
   );
   const data = await res.json();

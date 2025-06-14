@@ -2,14 +2,12 @@ import { NextResponse } from 'next/server';
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const res = await fetch(
-    `${process.env.BACKEND_URL}/scheduled-jobs/${params.id}`,
-    {
-      method: "DELETE",
-    }
-  );
+  const { id } = await params;
+  const res = await fetch(`${process.env.BACKEND_URL}/scheduled-jobs/${id}`, {
+    method: 'DELETE',
+  });
   if (res.ok) {
     return NextResponse.json({ OK: true });
   } else {

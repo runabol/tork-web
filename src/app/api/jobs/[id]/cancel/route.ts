@@ -2,14 +2,12 @@ import { NextResponse } from 'next/server';
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const res = await fetch(
-    `${process.env.BACKEND_URL}/jobs/${params.id}/cancel`,
-    {
-      method: "PUT",
-    }
-  );
+  const { id } = await params;
+  const res = await fetch(`${process.env.BACKEND_URL}/jobs/${id}/cancel`, {
+    method: 'PUT',
+  });
   const data = await res.json();
   if (res.ok) {
     return NextResponse.json(data);

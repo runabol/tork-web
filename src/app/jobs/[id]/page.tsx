@@ -14,11 +14,11 @@ import ViewTaskLog from '@/components/view-task-log';
 import { formatRuntime, formatTimestamp } from '@/lib/datetime';
 import { truncateString } from '@/lib/strings';
 
-interface params {
-  id: string;
+interface Props {
+  params: Promise<{ id: string }>;
 }
 
-export default async function Job({ params  }: { params: params }) {
+export default async function Job({ params }: Props) {
   const { id } = await params;
   const job = await getData(id);
   return (
@@ -48,7 +48,7 @@ export default async function Job({ params  }: { params: params }) {
                   className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                   aria-hidden="true"
                 />
-                Ended at{" "}
+                Ended at{' '}
                 {job.completedAt
                   ? formatTimestamp(job.completedAt)
                   : formatTimestamp(job.failedAt)}
@@ -61,7 +61,7 @@ export default async function Job({ params  }: { params: params }) {
                 className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                 aria-hidden="true"
               />
-              Runtime{" "}
+              Runtime{' '}
               {job.completedAt
                 ? formatRuntime(job.state, job.startedAt, job.completedAt)
                 : formatRuntime(job.state, job.startedAt, job.failedAt)}
@@ -70,9 +70,9 @@ export default async function Job({ params  }: { params: params }) {
         </div>
       </div>
       <div className="mt-2 flex justify-end gap-2">
-        {job.state === "PENDING" ||
-        job.state === "RUNNING" ||
-        job.state === "SCHEDULED" ? (
+        {job.state === 'PENDING' ||
+        job.state === 'RUNNING' ||
+        job.state === 'SCHEDULED' ? (
           <Refresh />
         ) : (
           <></>
@@ -86,12 +86,12 @@ export default async function Job({ params  }: { params: params }) {
             Duplicate
           </button>
         </Link>
-        {job.state === "RUNNING" || job.state === "SCHEDULED" ? (
+        {job.state === 'RUNNING' || job.state === 'SCHEDULED' ? (
           <CancelJob job={job} />
         ) : (
           <></>
         )}
-        {job.state === "FAILED" || job.state === "CANCELLED" ? (
+        {job.state === 'FAILED' || job.state === 'CANCELLED' ? (
           <RestartJob job={job} />
         ) : (
           <></>
@@ -116,14 +116,14 @@ export default async function Job({ params  }: { params: params }) {
                 {truncateString(task.name, 30)}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
-                {task.startedAt ? formatTimestamp(task.startedAt) : ""}
+                {task.startedAt ? formatTimestamp(task.startedAt) : ''}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
                 {task.completedAt
                   ? formatTimestamp(task.completedAt)
                   : task.failedAt
-                  ? formatTimestamp(task.failedAt)
-                  : ""}
+                    ? formatTimestamp(task.failedAt)
+                    : ''}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 {task.completedAt
@@ -150,10 +150,10 @@ export default async function Job({ params  }: { params: params }) {
 
 async function getData(jobId: string): Promise<Job> {
   const res = await fetch(`${process.env.BACKEND_URL}/jobs/${jobId}`, {
-    cache: "no-cache",
+    cache: 'no-cache',
   });
   if (!res.ok) {
-    throw new Error("Failed to fetch data");
+    throw new Error('Failed to fetch data');
   }
   return res.json();
 }
