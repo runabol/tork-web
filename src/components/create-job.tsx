@@ -15,11 +15,21 @@ type Props = {
 export default function CreateJob({ jobTemplate }: Props) {
   const router = useRouter();
 
-  const code = `name: my_job
+  const code = `name: my job
 tasks:
-  - name: my_first_task
+  - name: my first task
+    var: myVar
     image: node:22-alpine
-    run: node -e "console.log('Hello World')"`;
+    run: |
+      node -e "console.log('Hello World')" > $TORK_OUTPUT
+      
+  - name: my second task
+    image: alpine:3.22.0
+    run: |
+      echo $MY_VAR
+    env: 
+      MY_VAR: "{{ tasks.myVar }}"`;
+      
   const [placeholder, setPlaceholder] = useState(jobTemplate ?? code);
   const [errorMsg, setErrorMsg] = useState('');
 
