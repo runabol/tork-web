@@ -20,6 +20,19 @@ jobs:
           node-version: 22
           cache: npm
 
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          # See here for caching with `yarn`, `bun` or other package managers https://github.com/actions/cache/blob/main/examples.md or you can leverage caching with actions/setup-node https://github.com/actions/setup-node
+          path: |
+            ~/.npm
+            ${{ github.workspace }}/.next/cache
+          # Generate a new cache whenever packages or source files change.
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+          # If source files changed but packages didn't, rebuild from a prior cache.
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+
       - name: Install dependencies
         run: npm i --frozen-lockfile
 
@@ -28,7 +41,6 @@ jobs:
           # Set environment variables for the build. Need to find a better way to do this. Maybe use doppler?
           export NEXT_PUBLIC_BACKEND_URL=test
           export NEXT_PUBLIC_BASE_URL=http://localhost:3000
-          export NODE_ENV=development
           npm run build
 
       - name: Lint
@@ -40,12 +52,15 @@ jobs:
   docker-release:
     runs-on: ubuntu-latest
 
+    needs: build_and_test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
     env:
       DOCKER_LOGIN: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Build the docker image
         run: make docker-build
