@@ -52,12 +52,15 @@ jobs:
   docker-release:
     runs-on: ubuntu-latest
 
+    needs: build_and_test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
     env:
       DOCKER_LOGIN: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Build the docker image
         run: make docker-build
