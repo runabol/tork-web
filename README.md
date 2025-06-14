@@ -1,6 +1,6 @@
-## Tork UI
+## Tork Web
 
-A web UI for the [Tork](https://github.com/runabol/tork) Workflow Engine.
+A frontend for the [Tork](https://github.com/runabol/tork) Workflow Engine.
 
 ---
 
@@ -13,13 +13,17 @@ Then run the following command from the command palette:
 
 This will automatically select the workspace folder. But if you need to find the project manually then it is located at `/workspaces/tork-web`.
 
+---
+
 ### Development
 
-Once you're in the devcontainer, run the following commands:
+Make a copy of the `.env.example` file and name it `.env.local` and edit the values as you see fit.
+
+Then run the following commands:
 
 ```bash
-npm install
-npm run dev
+$ npm install
+$ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
@@ -29,9 +33,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ### Docker
 
 ```bash
-docker run \
-  -it \
-  --rm \
+docker run -it --rm \
   --name=tork-web \
   -p 3000:3000 \
   -e BACKEND_URL=http://host.docker.internal:8000 \
@@ -52,19 +54,19 @@ You can override the default configuration by creating an `.env.local` file.
 
 List Jobs:
 
-![jobs](screenshots/jobs-v6.png "Jobs")
+![jobs](screenshots/jobs-v6.png 'Jobs')
 
 Create Job:
 
-![create job](screenshots/create-job.png "Create Job")
+![create job](screenshots/create-job.png 'Create Job')
 
 View Job:
 
-![view job](screenshots/view-job-v5.png "View Job")
+![view job](screenshots/view-job-v5.png 'View Job')
 
 Task Logs:
 
-![task logs](screenshots/task-logs.png "Task Logs")
+![task logs](screenshots/task-logs.png 'Task Logs')
 
 ---
 
