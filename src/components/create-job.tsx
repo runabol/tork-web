@@ -20,13 +20,11 @@ tasks:
   - name: my first task
     var: myVar
     image: node:22-alpine
-    run: |
-      node -e "console.log('Hello World')" > $TORK_OUTPUT
+    run: node -e "console.log('Hello World')" > $TORK_OUTPUT
       
   - name: my second task
     image: alpine:3.22.0
-    run: |
-      echo $MY_VAR
+    run: echo $MY_VAR
     env: 
       MY_VAR: "{{ tasks.myVar }}"`;
       
