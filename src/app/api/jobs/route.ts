@@ -1,16 +1,18 @@
 import { NextResponse } from 'next/server';
 
+import ENV_CONFIG from '@/config/env-config';
+
 export async function POST(request: Request) {
   const body = await request.text();
   const res = await fetch(
-    `${process.env.BACKEND_URL}/${
-      body.indexOf("cron") > 0 ? "scheduled-jobs" : "jobs"
+    `${ENV_CONFIG.backendUrl}/${
+      body.indexOf('cron') > 0 ? 'scheduled-jobs' : 'jobs'
     }`,
     {
-      method: "POST",
+      method: 'POST',
       body: body,
       headers: {
-        "content-type": "text/yaml",
+        'content-type': 'text/yaml',
       },
     }
   );

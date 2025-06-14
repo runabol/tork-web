@@ -9,6 +9,7 @@ import THeader from '@/components/table-header';
 import ENV_CONFIG from '@/config/env-config';
 import { formatRuntime, formatTimestamp } from '@/lib/datetime';
 import { truncateString } from '@/lib/strings';
+import { Job, Metrics, Page } from '@/models';
 
 type Props = {
   searchParams: Promise<{
@@ -17,7 +18,7 @@ type Props = {
   }>;
 };
 
-export default async function Jobs({ searchParams }: Props) {
+export default async function JobsPage({ searchParams }: Props) {
   const { page: pageNum, q } = await searchParams;
   const page = await getJobs(pageNum || 1, q || '');
   const metrics = await getMetrics();
@@ -76,7 +77,7 @@ export default async function Jobs({ searchParams }: Props) {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
-          {page.items.map((item) => (
+          {page.items.map((item: any) => (
             <tr key={item.id}>
               <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-6 flex gap-2">
                 <span>{truncateString(item.name, 50)}</span>
@@ -149,6 +150,7 @@ export default async function Jobs({ searchParams }: Props) {
   );
 }
 
+// TODO: Extract this out into a service file e.g. "services/server/jobs/jobs.service.ts"
 async function getJobs(page: number, q: string): Promise<Page<Job>> {
   const res = await fetch(`${ENV_CONFIG.backendUrl}/jobs?page=${page}&q=${q}`, {
     cache: 'no-cache',
@@ -159,6 +161,7 @@ async function getJobs(page: number, q: string): Promise<Page<Job>> {
   return res.json();
 }
 
+// TODO: Extract this out into a service file e.g. "services/server/metrics/metrics.service.ts"
 async function getMetrics(): Promise<Metrics> {
   const res = await fetch(`${ENV_CONFIG.backendUrl}/metrics`, {
     cache: 'no-cache',

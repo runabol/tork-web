@@ -2,20 +2,52 @@ name: Docker Release
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  pull_request:
+    branches: [main]
+
 jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm i --frozen-lockfile
+
+      - name: Build
+        run: npm run build
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm run test
+
   docker-release:
     runs-on: ubuntu-latest
+
     env:
       DOCKER_LOGIN: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+
     steps:
       - uses: actions/checkout@v3
+
       - name: Build the docker image
         run: make docker-build
+
       - name: List docker images
         run: docker images
+
       - name: Publish the docker image
         run: |
           make docker-push

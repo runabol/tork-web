@@ -3,11 +3,14 @@ import { formatDistanceToNow, parseISO } from 'date-fns';
 import Refresh from '@/components/refresh';
 import Table from '@/components/table';
 import THeader from '@/components/table-header';
+import ENV_CONFIG from '@/config/env-config';
+import { Node } from '@/models';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
-export default async function Nodes() {
+export default async function NodesPage() {
   const nodes = await getData();
+
   return (
     <>
       <div className="mt-8 flex justify-end gap-2">
@@ -27,7 +30,7 @@ export default async function Nodes() {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
-          {nodes.map((node) => (
+          {nodes.map((node: Node) => (
             <tr key={node.id}>
               <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-6 ">
                 {node.id}
@@ -51,7 +54,7 @@ export default async function Nodes() {
                 {node.taskCount}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {node.status === "UP" ? (
+                {node.status === 'UP' ? (
                   <span
                     className={`inline-flex items-center capitalize rounded-md bg-green-50 text-green-700 px-2 py-1 text-xs font-medium  ring-1 ring-inset ring-gray-500/10`}
                   >
@@ -73,12 +76,13 @@ export default async function Nodes() {
   );
 }
 
+// TODO: Extract this out into a service file e.g. "services/server/nodes/nodes.service.ts"
 async function getData(): Promise<Node[]> {
-  const res = await fetch(`${process.env.BACKEND_URL}/nodes`, {
-    cache: "no-cache",
+  const res = await fetch(`${ENV_CONFIG.backendUrl}/nodes`, {
+    cache: 'no-cache',
   });
   if (!res.ok) {
-    throw new Error("Failed to fetch data");
+    throw new Error('Failed to fetch data');
   }
   return res.json();
 }

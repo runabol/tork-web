@@ -1,12 +1,14 @@
 import { NextResponse } from 'next/server';
 
+import ENV_CONFIG from '@/config/env-config';
+
 export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
   const res = await fetch(
-    `${process.env.BACKEND_URL}/scheduled-jobs/${id}/pause`,
+    `${ENV_CONFIG.backendUrl}/scheduled-jobs/${id}/pause`,
     {
       method: 'PUT',
     }

@@ -1,41 +1,30 @@
-"use client";
+import DuplicateJob from '@/components/duplicate-job';
+import ENV_CONFIG from '@/config/env-config';
+import { Job, SearchParams } from '@/models';
 
-import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+// TODO: extract this out into a service file e.g. "services/server/jobs/jobs.service.ts"
+const getJobById = async (id: string): Promise<Job> => {
+  const res = await fetch(`${ENV_CONFIG.baseUrl}/api/jobs/${id}`);
+  if (!res.ok) {
+    throw new Error('Failed to fetch job.');
+  }
 
-import { stringify } from 'yaml';
+  const job = await res.json();
 
-import CreateJob from '@/components/create-job';
+  return job as Job;
+};
 
-export default function Duplicate() {
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
-  const [placeholder, setPlaceholder] = useState("");
+type Props = {
+  searchParams: Promise<SearchParams>;
+};
 
-  useEffect(() => {
-    fetch(`/api/jobs/${id}`)
-      .then((res) => res.json() as Promise<Job>)
-      .then((job) =>
-        setPlaceholder(
-          stringify(
-            {
-              name: job.name,
-              description: job.description,
-              tags: job.tags,
-              inputs: job.inputs,
-              secrets: job.secrets,
-              output: job.output,
-              tasks: job.tasks,
-              defaults: job.defaults,
-              webhooks: job.webhooks,
-            },
-            { lineWidth: 0, blockQuote: true }
-          )
-        )
-      );
-  }, []);
+export default async function DuplicateJobPage({ searchParams }: Props) {
+  const id = (await searchParams).id;
+  if (!id) {
+    throw new Error('Job ID is required for duplication.');
+  }
 
-  return (
-    <CreateJob placeholder={placeholder} setPlaceholder={setPlaceholder} />
-  );
+  const job = await getJobById(id as string);
+
+  return <DuplicateJob job={job} />;
 }

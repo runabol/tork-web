@@ -1,4 +1,4 @@
-interface Queue {
+export interface Queue {
   name: string;
   size: number;
   subscribers: number;
