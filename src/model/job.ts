@@ -11,8 +11,8 @@ interface Job {
   failedAt: string;
   execution: Task[];
   tasks: Task[];
-  inputs: Map<String, String>;
-  secrets: Map<String, String>;
+  inputs: Map<string, string>;
+  secrets: Map<string, string>;
   position: number;
   taskCount: number;
   output: string;
@@ -34,8 +34,8 @@ interface ScheduledJob {
   failedAt: string;
   execution: Task[];
   tasks: Task[];
-  inputs: Map<String, String>;
-  secrets: Map<String, String>;
+  inputs: Map<string, string>;
+  secrets: Map<string, string>;
   position: number;
   taskCount: number;
   output: string;
