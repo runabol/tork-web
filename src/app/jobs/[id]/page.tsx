@@ -18,7 +18,8 @@ interface params {
   id: string;
 }
 
-export default async function Job({ params: { id } }: { params: params }) {
+export default async function Job({ params  }: { params: params }) {
+  const { id } = await params;
   const job = await getData(id);
   return (
     <>
