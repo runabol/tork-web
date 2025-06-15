@@ -1,14 +1,16 @@
 import { NextResponse } from 'next/server';
 
-import ENV_CONFIG from '@/config/env-config';
+import { getEnvConfig } from '@/config/env-config';
 
 export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const envConfig = await getEnvConfig();
+
   const { id } = await params;
   const res = await fetch(
-    `${ENV_CONFIG.backendUrl}/scheduled-jobs/${id}/resume`,
+    `${envConfig.backendUrl}/scheduled-jobs/${id}/resume`,
     {
       method: 'PUT',
     }

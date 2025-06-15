@@ -19,24 +19,39 @@ This will automatically select the workspace folder. But if you need to find the
 
 Make a copy of the `.env.example` file and name it `.env.local` and edit the values as you see fit.
 
-Then run the following commands:
+Now run the following commands:
 
 ```bash
-$ npm install
+$ npm i
 $ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
+`Docker`:
+
+To build and run the development version of the app in Docker, run the following command:
+
+```bash
+$ docker build . -t tork-web
+
+$ docker run -itd --rm \
+  -p 3000:3000 \
+  -e BACKEND_URL="http://host.docker.internal:8000" \
+  -e BASE_URL="http://localhost:3000" \
+  tork-web
+```
+
 ---
 
 ### Docker
 
+To use the most currently deployed version of the app on Dockerhub, run the following command:
+
 ```bash
-docker run -it --rm \
+$ docker run -it --rm \
   --name=tork-web \
   -p 3000:3000 \
-  -e BACKEND_URL=http://host.docker.internal:8000 \
   runabol/tork-web
 ```
 

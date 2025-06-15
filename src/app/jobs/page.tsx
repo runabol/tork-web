@@ -6,10 +6,37 @@ import RestartJob from '@/components/restart-job';
 import StateBadge from '@/components/state-badge';
 import Table from '@/components/table';
 import THeader from '@/components/table-header';
-import ENV_CONFIG from '@/config/env-config';
+import { getEnvConfig } from '@/config/env-config';
 import { formatRuntime, formatTimestamp } from '@/lib/datetime';
 import { truncateString } from '@/lib/strings';
 import { Job, Metrics, Page } from '@/models';
+
+// TODO: Extract this out into a service file e.g. "services/server/jobs/jobs.service.ts"
+async function getJobs(page: number, q: string): Promise<Page<Job>> {
+  const envConfig = await getEnvConfig();
+
+  const res = await fetch(`${envConfig.backendUrl}/jobs?page=${page}&q=${q}`, {
+    cache: 'no-cache',
+  });
+  if (!res.ok) {
+    throw new Error('Failed to fetch data');
+  }
+
+  return res.json();
+}
+
+// TODO: Extract this out into a service file e.g. "services/server/metrics/metrics.service.ts"
+async function getMetrics(): Promise<Metrics> {
+  const envConfig = await getEnvConfig();
+
+  const res = await fetch(`${envConfig.backendUrl}/metrics`, {
+    cache: 'no-cache',
+  });
+  if (!res.ok) {
+    throw new Error('Failed to fetch data');
+  }
+  return res.json();
+}
 
 type Props = {
   searchParams: Promise<{
@@ -148,26 +175,4 @@ export default async function JobsPage({ searchParams }: Props) {
       </Table>
     </>
   );
-}
-
-// TODO: Extract this out into a service file e.g. "services/server/jobs/jobs.service.ts"
-async function getJobs(page: number, q: string): Promise<Page<Job>> {
-  const res = await fetch(`${ENV_CONFIG.backendUrl}/jobs?page=${page}&q=${q}`, {
-    cache: 'no-cache',
-  });
-  if (!res.ok) {
-    throw new Error('Failed to fetch data');
-  }
-  return res.json();
-}
-
-// TODO: Extract this out into a service file e.g. "services/server/metrics/metrics.service.ts"
-async function getMetrics(): Promise<Metrics> {
-  const res = await fetch(`${ENV_CONFIG.backendUrl}/metrics`, {
-    cache: 'no-cache',
-  });
-  if (!res.ok) {
-    throw new Error('Failed to fetch data');
-  }
-  return res.json();
 }

@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export function middleware(request: Request) {
+export function middleware(request: NextRequest) {
   if (new URL(request.url).pathname === '/') {
     return NextResponse.redirect(new URL('/jobs', request.url));
   }
@@ -8,6 +8,7 @@ export function middleware(request: Request) {
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('next-url', request.url);
   requestHeaders.set('next-path', new URL(request.url).pathname);
+
   return NextResponse.next({
     request: {
       // Apply new request headers

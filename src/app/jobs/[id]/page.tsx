@@ -11,10 +11,24 @@ import THeader from '@/components/table-header';
 import ViewJobLog from '@/components/view-job-log';
 import ViewTask from '@/components/view-task';
 import ViewTaskLog from '@/components/view-task-log';
-import ENV_CONFIG from '@/config/env-config';
+import { getEnvConfig } from '@/config/env-config';
 import { formatRuntime, formatTimestamp } from '@/lib/datetime';
 import { truncateString } from '@/lib/strings';
 import { Job } from '@/models';
+
+// TODO: Extract this out into a service file e.g. "services/server/jobs/jobs.service.ts"
+async function getData(jobId: string): Promise<Job> {
+  const envConfig = await getEnvConfig();
+
+  const res = await fetch(`${envConfig.backendUrl}/jobs/${jobId}`, {
+    cache: 'no-cache',
+  });
+  if (!res.ok) {
+    throw new Error('Failed to fetch data');
+  }
+
+  return res.json();
+}
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -149,15 +163,4 @@ export default async function JobPage({ params }: Props) {
       </Table>
     </>
   );
-}
-
-// TODO: Extract this out into a service file e.g. "services/server/jobs/jobs.service.ts"
-async function getData(jobId: string): Promise<Job> {
-  const res = await fetch(`${ENV_CONFIG.backendUrl}/jobs/${jobId}`, {
-    cache: 'no-cache',
-  });
-  if (!res.ok) {
-    throw new Error('Failed to fetch data');
-  }
-  return res.json();
 }

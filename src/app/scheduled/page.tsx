@@ -4,9 +4,22 @@ import Refresh from '@/components/refresh';
 import ResumeScheduledJob from '@/components/resume-scheduled-job';
 import Table from '@/components/table';
 import THeader from '@/components/table-header';
-import ENV_CONFIG from '@/config/env-config';
+import { getEnvConfig } from '@/config/env-config';
 import { formatTimestamp } from '@/lib/datetime';
 import { Page, ScheduledJob } from '@/models';
+
+// TODO: Extract this out into a service file e.g. "services/server/scheduled-jobs/scheduled-jobs.service.ts"
+async function getData(): Promise<Page<ScheduledJob>> {
+  const envConfig = await getEnvConfig();
+
+  const res = await fetch(`${envConfig.backendUrl}/scheduled-jobs`, {
+    cache: 'no-cache',
+  });
+  if (!res.ok) {
+    throw new Error('Failed to fetch data');
+  }
+  return res.json();
+}
 
 export const dynamic = 'force-dynamic';
 
@@ -68,15 +81,4 @@ export default async function ScheduledPage() {
       </Table>
     </>
   );
-}
-
-// TODO: Extract this out into a service file e.g. "services/server/scheduled-jobs/scheduled-jobs.service.ts"
-async function getData(): Promise<Page<ScheduledJob>> {
-  const res = await fetch(`${ENV_CONFIG.backendUrl}/scheduled-jobs`, {
-    cache: 'no-cache',
-  });
-  if (!res.ok) {
-    throw new Error('Failed to fetch data');
-  }
-  return res.json();
 }

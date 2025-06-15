@@ -37,11 +37,7 @@ jobs:
         run: npm i --frozen-lockfile
 
       - name: Build
-        run: |
-          # Set environment variables for the build. Need to find a better way to do this. Maybe use doppler?
-          export NEXT_PUBLIC_BACKEND_URL=test
-          export NEXT_PUBLIC_BASE_URL=http://localhost:3000
-          npm run build
+        run: npm run build
 
       - name: Lint
         run: npm run lint

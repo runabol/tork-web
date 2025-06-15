@@ -3,8 +3,22 @@ import { formatDistanceToNow, parseISO } from 'date-fns';
 import Refresh from '@/components/refresh';
 import Table from '@/components/table';
 import THeader from '@/components/table-header';
-import ENV_CONFIG from '@/config/env-config';
+import { getEnvConfig } from '@/config/env-config';
 import { Node } from '@/models';
+
+// TODO: Extract this out into a service file e.g. "services/server/nodes/nodes.service.ts"
+async function getData(): Promise<Node[]> {
+  const envConfig = await getEnvConfig();
+
+  const res = await fetch(`${envConfig.backendUrl}/nodes`, {
+    cache: 'no-cache',
+  });
+  if (!res.ok) {
+    throw new Error('Failed to fetch data');
+  }
+
+  return res.json();
+}
 
 export const dynamic = 'force-dynamic';
 
@@ -74,15 +88,4 @@ export default async function NodesPage() {
       </Table>
     </>
   );
-}
-
-// TODO: Extract this out into a service file e.g. "services/server/nodes/nodes.service.ts"
-async function getData(): Promise<Node[]> {
-  const res = await fetch(`${ENV_CONFIG.backendUrl}/nodes`, {
-    cache: 'no-cache',
-  });
-  if (!res.ok) {
-    throw new Error('Failed to fetch data');
-  }
-  return res.json();
 }
