@@ -33,11 +33,12 @@ function initEnvConfig(): EnvConfig {
   const validationResult = envConfigSchema.safeParse(process.env);
 
   if (!validationResult.success) {
-    console.error('❌ Invalid environment config:');
+    console.error('❌ Invalid environment configuration:');
     console.error(
       JSON.stringify(validationResult.error.flatten().fieldErrors, null, 2)
     );
-    return {} as EnvConfig; // Return an empty object if validation fails
+    // Return an empty object if validation fails
+    return {} as EnvConfig;
   }
 
   const { SOME_SECRET, BACKEND_URL, BASE_URL, NODE_ENV } =
