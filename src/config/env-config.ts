@@ -1,43 +1,71 @@
+'use server';
+
 import { z } from 'zod';
 
-type EnvConfig = {
+import { Environment, environmentEnumSchema } from '@/models';
+
+// Pass dynamic variables and client side ENV variables through here.
+// DO NOT pass secrets through here as it will be accessible client-side.
+export type ClientEnvConfig = {
   backendUrl: string;
   baseUrl: string;
-  environment: 'development' | 'production';
-  port: number;
+  environment: Environment;
 };
 
+export type EnvConfig = {
+  someSecret?: string;
+} & ClientEnvConfig;
+
 const envConfigSchema = z.object({
-  NEXT_PUBLIC_BACKEND_URL: z.string().min(1),
-  NEXT_PUBLIC_BASE_URL: z.string().min(1),
-  NODE_ENV: z
-    .enum(['development', 'production'])
-    .optional()
-    .default('development'),
-  PORT: z.coerce.number().optional().default(3000),
+  //  server-side
+  SOME_SECRET: z.string().optional(),
+  BACKEND_URL: z.string().min(1),
+  BASE_URL: z.string().min(1),
+  NODE_ENV: environmentEnumSchema.optional().default('development'),
+
+  // static client-side
+  // NEXT_PUBLIC_<NAME>: z.string().min(1),
 });
 
 let ENV_CONFIG: EnvConfig;
 
-try {
+function initEnvConfig(): EnvConfig {
   const validationResult = envConfigSchema.safeParse(process.env);
+
   if (!validationResult.success) {
-    console.error('❌ Invalid env:');
+    console.error('❌ Invalid environment configuration:');
     console.error(
       JSON.stringify(validationResult.error.flatten().fieldErrors, null, 2)
     );
-    process.exit(1);
+    // Return an empty object if validation fails
+    return {} as EnvConfig;
   }
-  ENV_CONFIG = {
-    backendUrl: validationResult.data.NEXT_PUBLIC_BACKEND_URL,
-    baseUrl: validationResult.data.NEXT_PUBLIC_BASE_URL,
-    environment: validationResult.data.NODE_ENV,
-    port: validationResult.data.PORT,
+
+  const { SOME_SECRET, BACKEND_URL, BASE_URL, NODE_ENV } =
+    validationResult.data;
+
+  return {
+    someSecret: SOME_SECRET,
+    backendUrl: BACKEND_URL,
+    baseUrl: BASE_URL,
+    environment: NODE_ENV,
   };
-} catch (error: any) {
-  console.error('❌ Error parsing environment variables:', error);
-  console.error(JSON.stringify(error.flatten().fieldErrors, null, 2));
-  process.exit(1);
 }
 
-export default ENV_CONFIG;
+export async function getEnvConfig(): Promise<EnvConfig> {
+  if (!ENV_CONFIG) {
+    ENV_CONFIG = initEnvConfig();
+  }
+  return ENV_CONFIG;
+}
+
+export async function getClientEnvConfig(): Promise<ClientEnvConfig> {
+  const config = await getEnvConfig();
+  // Only pass variables here that you want to expose to the client-side.
+  // Do not pass secrets or sensitive data.
+  return {
+    backendUrl: config.backendUrl,
+    baseUrl: config.baseUrl,
+    environment: config.environment,
+  };
+}

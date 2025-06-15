@@ -1,8 +1,21 @@
 import Refresh from '@/components/refresh';
 import Table from '@/components/table';
 import THeader from '@/components/table-header';
-import ENV_CONFIG from '@/config/env-config';
+import { getEnvConfig } from '@/config/env-config';
 import { Queue } from '@/models';
+
+// TODO: Extract this out into a service file e.g. "services/server/queues/queues.service.ts"
+async function getData(): Promise<Queue[]> {
+  const envConfig = await getEnvConfig();
+
+  const res = await fetch(`${envConfig.backendUrl}/queues`, {
+    cache: 'no-store',
+  });
+  if (!res.ok) {
+    throw new Error('Failed to fetch data');
+  }
+  return res.json();
+}
 
 export const dynamic = 'force-dynamic';
 
@@ -58,15 +71,4 @@ export default async function QueuesPage() {
       </Table>
     </>
   );
-}
-
-// TODO: Extract this out into a service file e.g. "services/server/queues/queues.service.ts"
-async function getData(): Promise<Queue[]> {
-  const res = await fetch(`${ENV_CONFIG.backendUrl}/queues`, {
-    cache: 'no-store',
-  });
-  if (!res.ok) {
-    throw new Error('Failed to fetch data');
-  }
-  return res.json();
 }

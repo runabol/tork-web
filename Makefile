@@ -4,7 +4,7 @@ PROJECT_VERSION ?= $(shell jq -r '.version' package.json)
 
 .PHONY: docker-build
 docker-build:
-	docker build -t runabol/tork-web:$(PROJECT_VERSION) .
+	docker build . -t runabol/tork-web:$(PROJECT_VERSION) 
 
 .PHONY: docker-push
 docker-push:

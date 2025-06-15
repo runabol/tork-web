@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server';
 
-import ENV_CONFIG from '@/config/env-config';
+import { getEnvConfig } from '@/config/env-config';
 
 export async function POST(request: Request) {
+  const envConfig = await getEnvConfig();
+
   const body = await request.text();
   const res = await fetch(
-    `${ENV_CONFIG.backendUrl}/${
+    `${envConfig.backendUrl}/${
       body.indexOf('cron') > 0 ? 'scheduled-jobs' : 'jobs'
     }`,
     {
