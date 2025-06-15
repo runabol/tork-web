@@ -28,7 +28,9 @@ $ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
-`Docker`:
+---
+
+### Docker
 
 To build and run the development version of the app in Docker, run the following command:
 
@@ -36,21 +38,16 @@ To build and run the development version of the app in Docker, run the following
 $ docker build . -t tork-web
 
 $ docker run -itd --rm \
-  --name=tork-web \
+  --name tork-web
   -p 3000:3000 \
-  -e <declare all the variables that are not prefixed with NEXT_PUBLIC_ here found in the .env.local file> \
   tork-web
 ```
-
----
-
-### Docker
 
 To use the most currently deployed version of the app on Dockerhub, run the following command:
 
 ```bash
 $ docker run -it --rm \
-  --name=tork-web \
+  --name tork-web \
   -p 3000:3000 \
   -e <declare all the variables that are not prefixed with NEXT_PUBLIC_ here found in the .env.local file> \
   runabol/tork-web

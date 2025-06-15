@@ -14,7 +14,7 @@ export default function Header() {
     'inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700';
 
   return (
-    <nav className="bg-white shadow">
+    <nav className="bg-white shadow-sm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 justify-between">
           <div className="flex">
@@ -49,7 +49,7 @@ export default function Header() {
             <Link href={'/jobs/create'}>
               <button
                 type="button"
-                className="relative inline-flex items-center gap-x-1.5 rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                className="relative inline-flex items-center gap-x-1.5 rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-gray-800 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
               >
                 <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
                 New Job

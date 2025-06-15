@@ -31,7 +31,7 @@ export default function RestartJob({ job }: Props) {
   return (
     <button
       type="button"
-      className="rounded bg-green-50 px-2 py-1 text-xs font-semibold text-green-700 shadow-sm ring-1 ring-inset ring-green-600/40 hover:bg-green-200"
+      className="rounded bg-green-50 px-2 py-1 text-xs font-semibold text-green-700 shadow-xs ring-1 ring-inset ring-green-600/40 hover:bg-green-200"
       onClick={handleConfirmJobRestart}
     >
       Restart

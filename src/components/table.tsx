@@ -23,7 +23,7 @@ export default function Table({ children, page, search, q }: Props) {
                   name="q"
                   id="q"
                   autoFocus={q ? true : false}
-                  className="block my-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block my-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   placeholder="Search by job name, description or status"
                   defaultValue={q}
                 />
@@ -32,7 +32,7 @@ export default function Table({ children, page, search, q }: Props) {
           ) : (
             <></>
           )}
-          <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+          <div className="mt-8 overflow-hidden shadow-sm ring-1 ring-neutral-200 sm:rounded-lg">
             <table className="min-w-full divide-y divide-gray-300">
               {children}
             </table>
