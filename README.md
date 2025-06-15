@@ -36,9 +36,9 @@ To build and run the development version of the app in Docker, run the following
 $ docker build . -t tork-web
 
 $ docker run -itd --rm \
+  --name=tork-web \
   -p 3000:3000 \
-  -e BACKEND_URL="http://host.docker.internal:8000" \
-  -e BASE_URL="http://localhost:3000" \
+  -e <declare all the variables that are not prefixed with NEXT_PUBLIC_ here found in the .env.local file> \
   tork-web
 ```
 
@@ -52,16 +52,9 @@ To use the most currently deployed version of the app on Dockerhub, run the foll
 $ docker run -it --rm \
   --name=tork-web \
   -p 3000:3000 \
+  -e <declare all the variables that are not prefixed with NEXT_PUBLIC_ here found in the .env.local file> \
   runabol/tork-web
 ```
-
----
-
-### Configuration
-
-Default configuration can be found at [.env.development](.env.development).
-
-You can override the default configuration by creating an `.env.local` file.
 
 ---
 
