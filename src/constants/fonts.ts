@@ -1,13 +1,7 @@
-import { Lexend, Outfit } from 'next/font/google';
+import { DM_Sans } from 'next/font/google';
 
-export const primaryFont = Lexend({
+export const primaryFont = DM_Sans({
   subsets: ['latin'],
   variable: '--font-primary',
-  weight: ['300', '400', '500', '600', '700'],
-});
-
-export const secondaryFont = Outfit({
-  subsets: ['latin'],
-  variable: '--font-secondary',
   weight: ['300', '400', '500', '600', '700'],
 });
