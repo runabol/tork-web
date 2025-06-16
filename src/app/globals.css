@@ -113,8 +113,7 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   /* Custom */
-  --font-primary: 'Lexend', sans-serif;
-  --font-secondary: 'Outfit', sans-serif;
+  --font-primary: 'DM Sans', sans-serif;
 }
 
 /*
@@ -147,7 +146,7 @@
     font-size: 16px;
     scroll-behavior: smooth;
     overflow-x: hidden;
-    @apply font-secondary bg-background text-foreground transition-colors duration-150;
+    @apply font-primary bg-background text-foreground transition-colors duration-150;
   }
 }
 
