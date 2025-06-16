@@ -40,16 +40,21 @@ $ docker build . -t tork-web
 $ docker run -itd --rm \
   --name tork-web
   -p 3000:3000 \
+  # declare all the variables here found in the .env.local file
+  -e BACKEND_URL=<value> \
+  ...
   tork-web
 ```
 
-To use the most currently deployed version of the app on Dockerhub, run the following command:
+To test and run the most currently deployed version of the app on Dockerhub, run the following command:
 
 ```bash
 $ docker run -it --rm \
   --name tork-web \
   -p 3000:3000 \
-  -e <declare all the variables that are not prefixed with NEXT_PUBLIC_ here found in the .env.local file> \
+  # declare all the variables here found in the .env.example file
+  -e BACKEND_URL=<value> \
+  ...
   runabol/tork-web
 ```
 
@@ -59,7 +64,7 @@ $ docker run -it --rm \
 
 List Jobs:
 
-![jobs](screenshots/jobs-v6.png 'Jobs')
+![jobs](screenshots/jobs.png 'Jobs')
 
 Create Job:
 
@@ -67,7 +72,7 @@ Create Job:
 
 View Job:
 
-![view job](screenshots/view-job-v5.png 'View Job')
+![view job](screenshots/view-job.png 'View Job')
 
 Task Logs:
 
