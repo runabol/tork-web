@@ -12,9 +12,8 @@ import ViewJobLog from '@/components/view-job-log';
 import ViewTask from '@/components/view-task';
 import ViewTaskLog from '@/components/view-task-log';
 import { getEnvConfig } from '@/config/env-config';
-import { formatRuntime, formatTimestamp } from '@/lib/datetime';
-import { truncateString } from '@/lib/strings';
 import { Job } from '@/models';
+import { formatRuntime, formatTimestamp, truncateString } from '@/utils';
 
 // TODO: Extract this out into a service file e.g. "services/server/jobs/jobs.service.ts"
 async function getData(jobId: string): Promise<Job> {
@@ -45,7 +44,7 @@ export default async function JobPage({ params }: Props) {
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
             {job.name}
           </h2>
-          <p className="hidden md:block text-sm text-gray-500 mt-3 whitespace-pre border-b-[1px] border-gray-300 pb-4">
+          <p className="hidden md:block text-sm text-gray-500 mt-3 whitespace-pre border-b border-gray-300 pb-4">
             {job.description}
           </p>
           <div className="mt-2 flex flex-col sm:flex-row sm:flex-wrap sm:space-x-6">
@@ -54,7 +53,7 @@ export default async function JobPage({ params }: Props) {
             </div>
             <div className="mt-2 flex items-center text-sm text-gray-500">
               <CalendarIcon
-                className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                className="mr-1.5 h-5 w-5 shrink-0 text-gray-400"
                 aria-hidden="true"
               />
               Created at {formatTimestamp(job.createdAt)}
@@ -62,7 +61,7 @@ export default async function JobPage({ params }: Props) {
             {job.completedAt || job.failedAt ? (
               <div className="mt-2 flex items-center text-sm text-gray-500">
                 <CalendarIcon
-                  className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                  className="mr-1.5 h-5 w-5 shrink-0 text-gray-400"
                   aria-hidden="true"
                 />
                 Ended at{' '}
@@ -75,7 +74,7 @@ export default async function JobPage({ params }: Props) {
             )}
             <div className="mt-2 flex items-center text-sm text-gray-500">
               <ClockIcon
-                className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                className="mr-1.5 h-5 w-5 shrink-0 text-gray-400"
                 aria-hidden="true"
               />
               Runtime{' '}
@@ -98,7 +97,7 @@ export default async function JobPage({ params }: Props) {
         <Link href={`/jobs/duplicate?id=${job.id}`}>
           <button
             type="button"
-            className="rounded-md bg-blue-50 px-2.5 py-1.5 text-sm font-semibold text-blue-900 shadow-sm ring-1 ring-inset ring-blue-300 hover:bg-blue-100"
+            className="rounded-md bg-blue-50 px-2.5 py-1.5 text-sm font-semibold text-blue-900 shadow-xs ring-1 ring-inset ring-blue-300 hover:bg-blue-100"
           >
             Duplicate
           </button>

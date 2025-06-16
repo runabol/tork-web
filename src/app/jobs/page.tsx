@@ -7,9 +7,8 @@ import StateBadge from '@/components/state-badge';
 import Table from '@/components/table';
 import THeader from '@/components/table-header';
 import { getEnvConfig } from '@/config/env-config';
-import { formatRuntime, formatTimestamp } from '@/lib/datetime';
-import { truncateString } from '@/lib/strings';
 import { Job, Metrics, Page } from '@/models';
+import { formatRuntime, formatTimestamp, truncateString } from '@/utils';
 
 // TODO: Extract this out into a service file e.g. "services/server/jobs/jobs.service.ts"
 async function getJobs(page: number, q: string): Promise<Page<Job>> {
@@ -57,7 +56,7 @@ export default async function JobsPage({ searchParams }: Props) {
       </div>
       <div>
         <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-4">
-          <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+          <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow-sm sm:p-6">
             <dt className="truncate text-sm font-medium text-gray-500">
               Running Jobs
             </dt>
@@ -65,7 +64,7 @@ export default async function JobsPage({ searchParams }: Props) {
               {metrics.jobs.running}
             </dd>
           </div>
-          <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+          <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow-sm sm:p-6">
             <dt className="truncate text-sm font-medium text-gray-500">
               Running Tasks
             </dt>
@@ -73,7 +72,7 @@ export default async function JobsPage({ searchParams }: Props) {
               {metrics.tasks.running}
             </dd>
           </div>
-          <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+          <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow-sm sm:p-6">
             <dt className="truncate text-sm font-medium text-gray-500">
               Nodes
             </dt>
@@ -81,7 +80,7 @@ export default async function JobsPage({ searchParams }: Props) {
               {metrics.nodes.online}
             </dd>
           </div>
-          <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+          <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow-sm sm:p-6">
             <dt className="truncate text-sm font-medium text-gray-500">
               Utilization
             </dt>
@@ -153,7 +152,7 @@ export default async function JobsPage({ searchParams }: Props) {
                 >
                   <button
                     type="button"
-                    className="rounded bg-white px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 hover:bg-gray-50"
+                    className="rounded bg-white px-2 py-1 text-xs font-semibold text-gray-900 shadow-xs ring-1 ring-inset ring-gray-400 hover:bg-gray-50"
                   >
                     View
                   </button>

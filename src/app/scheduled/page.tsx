@@ -5,8 +5,8 @@ import ResumeScheduledJob from '@/components/resume-scheduled-job';
 import Table from '@/components/table';
 import THeader from '@/components/table-header';
 import { getEnvConfig } from '@/config/env-config';
-import { formatTimestamp } from '@/lib/datetime';
 import { Page, ScheduledJob } from '@/models';
+import { formatTimestamp } from '@/utils';
 
 // TODO: Extract this out into a service file e.g. "services/server/scheduled-jobs/scheduled-jobs.service.ts"
 async function getData(): Promise<Page<ScheduledJob>> {
