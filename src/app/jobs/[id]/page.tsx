@@ -1,13 +1,14 @@
 import Link from 'next/link';
 
-import { CalendarIcon, ClockIcon } from '@heroicons/react/24/solid';
+import { CalendarIcon, ClockIcon } from 'lucide-react';
 
 import CancelJob from '@/components/cancel-job';
 import Refresh from '@/components/refresh';
 import RestartJob from '@/components/restart-job';
+import DataTable from '@/components/shared/data-table';
 import StateBadge from '@/components/state-badge';
-import Table from '@/components/table';
-import THeader from '@/components/table-header';
+import { Button } from '@/components/ui/button';
+import { TableCell, TableRow } from '@/components/ui/table';
 import ViewJobLog from '@/components/view-job-log';
 import ViewTask from '@/components/view-task';
 import ViewTaskLog from '@/components/view-task-log';
@@ -29,6 +30,16 @@ async function getData(jobId: string): Promise<Job> {
   return res.json();
 }
 
+const tableColumns = [
+  'Name',
+  'Started at',
+  'Ended at',
+  'Runtime',
+  'State',
+  'Output',
+  '',
+];
+
 type Props = {
   params: Promise<{ id: string }>;
 };
@@ -38,18 +49,18 @@ export default async function JobPage({ params }: Props) {
   const job = await getData(id);
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
       <div className="md:flex md:items-center md:justify-between">
         <div className="min-w-0 flex-1">
-          <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+          <h2 className="text-2xl font-bold leading-7 text-foreground sm:truncate sm:text-3xl sm:tracking-tight">
             {job.name}
           </h2>
-          <p className="hidden md:block text-sm text-gray-500 mt-3 whitespace-pre border-b border-gray-300 pb-4">
+          <p className="hidden md:block text-sm text-gray-500 mt-3 whitespace-pre border-b border-gray-300 dark:border-gray-700 pb-4">
             {job.description}
           </p>
           <div className="mt-2 flex flex-col sm:flex-row sm:flex-wrap sm:space-x-6">
             <div className="mt-2 flex items-center text-sm text-gray-500">
-              <StateBadge textSize="text-lg" name={job.state}></StateBadge>
+              <StateBadge textSize="text-lg" name={job.state} />
             </div>
             <div className="mt-2 flex items-center text-sm text-gray-500">
               <CalendarIcon
@@ -58,7 +69,7 @@ export default async function JobPage({ params }: Props) {
               />
               Created at {formatTimestamp(job.createdAt)}
             </div>
-            {job.completedAt || job.failedAt ? (
+            {(job.completedAt || job.failedAt) && (
               <div className="mt-2 flex items-center text-sm text-gray-500">
                 <CalendarIcon
                   className="mr-1.5 h-5 w-5 shrink-0 text-gray-400"
@@ -69,8 +80,6 @@ export default async function JobPage({ params }: Props) {
                   ? formatTimestamp(job.completedAt)
                   : formatTimestamp(job.failedAt)}
               </div>
-            ) : (
-              <></>
             )}
             <div className="mt-2 flex items-center text-sm text-gray-500">
               <ClockIcon
@@ -86,80 +95,73 @@ export default async function JobPage({ params }: Props) {
         </div>
       </div>
       <div className="mt-2 flex justify-end gap-2">
-        {job.state === 'PENDING' ||
-        job.state === 'RUNNING' ||
-        job.state === 'SCHEDULED' ? (
-          <Refresh />
-        ) : (
-          <></>
-        )}
+        {(job.state === 'PENDING' ||
+          job.state === 'RUNNING' ||
+          job.state === 'SCHEDULED') && <Refresh />}
         <ViewJobLog job={job} />
         <Link href={`/jobs/duplicate?id=${job.id}`}>
-          <button
+          <Button
             type="button"
-            className="rounded-md bg-blue-50 px-2.5 py-1.5 text-sm font-semibold text-blue-900 shadow-xs ring-1 ring-inset ring-blue-300 hover:bg-blue-100"
+            variant="default"
+            className="rounded-md bg-blue-50 dark:bg-blue-200 px-2.5 py-1.5 text-sm font-semibold text-blue-900 shadow-xs ring-1 ring-inset ring-blue-300 hover:bg-blue-100"
           >
             Duplicate
-          </button>
+          </Button>
         </Link>
-        {job.state === 'RUNNING' || job.state === 'SCHEDULED' ? (
+        {(job.state === 'RUNNING' || job.state === 'SCHEDULED') && (
           <CancelJob job={job} />
-        ) : (
-          <></>
         )}
-        {job.state === 'FAILED' || job.state === 'CANCELLED' ? (
+        {(job.state === 'FAILED' || job.state === 'CANCELLED') && (
           <RestartJob job={job} />
-        ) : (
-          <></>
         )}
       </div>
-      <Table>
-        <thead className="bg-gray-50">
-          <tr>
-            <THeader name="Name" />
-            <THeader name="Started at" />
-            <THeader name="Ended at" />
-            <THeader name="Runtime" />
-            <THeader name="State" />
-            <THeader name="Output" />
-            <THeader name="" />
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-200 bg-white">
-          {job.execution.reverse().map((task: any) => (
-            <tr key={task.id}>
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm  text-gray-500 sm:pl-6">
+      <DataTable columns={tableColumns}>
+        {job.execution.reverse().map((task: any) => (
+          <TableRow
+            key={task.id}
+            className="hover:bg-gray-100 dark:hover:bg-gray-800"
+          >
+            <TableCell className="p-4">
+              <span className="text-sm text-foreground">
                 {truncateString(task.name, 30)}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
+              </span>
+            </TableCell>
+            <TableCell className="p-4">
+              <span className="text-sm text-foreground">
                 {task.startedAt ? formatTimestamp(task.startedAt) : ''}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
+              </span>
+            </TableCell>
+            <TableCell className="p-4">
+              <span className="text-sm text-foreground">
                 {task.completedAt
                   ? formatTimestamp(task.completedAt)
                   : task.failedAt
                     ? formatTimestamp(task.failedAt)
                     : ''}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+              </span>
+            </TableCell>
+            <TableCell className="p-4">
+              <span className="text-sm text-foreground">
                 {task.completedAt
                   ? formatRuntime(task.state, task.startedAt, task.completedAt)
                   : formatRuntime(task.state, task.startedAt, task.failedAt)}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                <StateBadge name={task.state} />
-              </td>
-              <td className="px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
+              </span>
+            </TableCell>
+            <TableCell className="p-4">
+              <StateBadge name={task.state} />
+            </TableCell>
+            <TableCell>
+              <span className="text-sm text-foreground">
                 {truncateString(task.error ? task.error : task.result, 30)}
-              </td>
-              <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 flex gap-2 justify-end">
-                <ViewTaskLog task={task} />
-                <ViewTask task={task} />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    </>
+              </span>
+            </TableCell>
+            <TableCell className="relative p-4 text-right text-sm flex gap-2 justify-end">
+              <ViewTaskLog task={task} />
+              <ViewTask task={task} />
+            </TableCell>
+          </TableRow>
+        ))}
+      </DataTable>
+    </div>
   );
 }

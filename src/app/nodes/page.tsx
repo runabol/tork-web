@@ -1,7 +1,7 @@
 import { formatDistanceToNow, parseISO } from 'date-fns';
 
 import Refresh from '@/components/refresh';
-import Table from '@/components/table';
+import DataTable from '@/components/shared/data-table';
 import THeader from '@/components/table-header';
 import { getEnvConfig } from '@/config/env-config';
 import { Node } from '@/models';
@@ -26,11 +26,11 @@ export default async function NodesPage() {
   const nodes = await getData();
 
   return (
-    <>
+    <div>
       <div className="mt-8 flex justify-end gap-2">
         <Refresh />
       </div>
-      <Table>
+      <DataTable>
         <thead className="bg-gray-50">
           <tr>
             <THeader name="ID" />
@@ -85,7 +85,7 @@ export default async function NodesPage() {
             </tr>
           ))}
         </tbody>
-      </Table>
-    </>
+      </DataTable>
+    </div>
   );
 }

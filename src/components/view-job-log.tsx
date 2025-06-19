@@ -1,21 +1,23 @@
 'use client';
 
-import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react';
-import { ArrowRightIcon } from '@heroicons/react/20/solid';
-import { ArrowLeftIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
+import { ArrowLeftIcon, ArrowRightIcon, RefreshCw } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
 import { Job, Page, TaskLogPart } from '@/models';
+import { Button } from './ui/button';
+import {
+  Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
+  DialogTrigger,
+} from './ui/dialog';
 
 type Props = {
   job: Job;
 };
 
 export default function ViewJobLog({ job }: Props) {
-  const cancelButtonRef = useRef(null);
-
   const [open, setOpen] = useState(false);
   const [contents, setContents] = useState('');
   const [page, setPage] = useState(1);
@@ -68,131 +70,98 @@ export default function ViewJobLog({ job }: Props) {
   }, [open, tail, tailInterval]);
 
   return (
-    <>
-      <button
-        type="button"
-        className="rounded bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-inset ring-gray-400 hover:bg-gray-50"
-        onClick={() => {
-          refreshLog(page);
-          setOpen(true);
-        }}
-      >
-        Log
-      </button>
-      <Transition show={open} as={Fragment}>
-        <Dialog
-          as="div"
-          className="relative z-10"
-          initialFocus={cancelButtonRef}
-          onClose={() => {
-            setContents('');
-            setOpen(false);
-            setTail(false);
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button
+          type="button"
+          variant="outline"
+          className="dark:border-gray-700 cursor-pointer"
+          onClick={() => {
+            refreshLog(page);
+            setOpen(true);
           }}
         >
-          <TransitionChild
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-gray-500/30 bg-opacity-75 transition-opacity" />
-          </TransitionChild>
-
-          <div className="fixed inset-0 z-10 overflow-y-auto">
-            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-              <TransitionChild
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                enterTo="opacity-100 translate-y-0 sm:scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+          Log
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Logs</DialogTitle>
+          <DialogDescription className="font-mono bg-gray-200 dark:bg-gray-700 p-4 text-xs whitespace-pre-line max-h-96 overflow-scroll">
+            {contents ?? 'no logs to show'}
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant="outline"
+              className="cursor-pointer dark:border-gray-700"
+              onClick={() => {
+                setContents('');
+                setOpen(false);
+                setTail(false);
+              }}
+            >
+              Close
+            </Button>
+          </DialogClose>
+          <div className="flex gap-2">
+            {(job.state === 'RUNNING' || job.state === 'SCHEDULED') && (
+              <Button
+                type="button"
+                title="Tail"
+                variant="default"
+                className="cursor-pointer"
+                onClick={() => {
+                  if (!tail) {
+                    refreshLog(1);
+                    setPage(1);
+                  }
+                  setTail((v) => !v);
+                }}
               >
-                <DialogPanel className="relative transform rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:p-6 sm:w-full sm:max-w-4xl">
-                  <p className="font-mono bg-gray-200 p-4 text-xs whitespace-pre-line max-h-96 overflow-scroll">
-                    {contents ? contents : 'no logs to show'}
-                  </p>
-
-                  <div className="flex gap-1 mt-4 justify-between">
-                    <button
-                      type="button"
-                      className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                      onClick={() => {
-                        setContents('');
-                        setOpen(false);
-                        setTail(false);
-                      }}
-                      ref={cancelButtonRef}
-                    >
-                      Close
-                    </button>
-                    <div className="flex gap-2">
-                      {job.state === 'RUNNING' || job.state === 'SCHEDULED' ? (
-                        <button
-                          type="button"
-                          title="Tail"
-                          className={`rounded-md font-semibold bg-white px-3 py-2 text-sm  text-gray-900 shadow-xs ring-1 ring-inset ring-gray-300 hover:bg-gray-50`}
-                          onClick={() => {
-                            if (!tail) {
-                              refreshLog(1);
-                              setPage(1);
-                            }
-                            setTail((v) => !v);
-                          }}
-                        >
-                          <ArrowPathIcon
-                            className={`h-5 w-5 text-black ${
-                              tail ? 'animate-spin' : ''
-                            }`}
-                            aria-hidden="true"
-                          />
-                        </button>
-                      ) : (
-                        <></>
-                      )}
-                      <button
-                        type="button"
-                        disabled={page >= totalPages || tail}
-                        title="Previous Page"
-                        className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:opacity-30"
-                        onClick={() => {
-                          setPage((page) => page + 1);
-                          refreshLog(page + 1);
-                        }}
-                      >
-                        <ArrowLeftIcon
-                          className="h-5 w-5 text-black"
-                          aria-hidden="true"
-                        />
-                      </button>
-                      <button
-                        type="button"
-                        title="Next Page"
-                        className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:opacity-30"
-                        disabled={page < 2 || tail}
-                        onClick={() => {
-                          setPage((page) => page - 1);
-                          refreshLog(page - 1);
-                        }}
-                      >
-                        <ArrowRightIcon
-                          className="h-5 w-5 text-black"
-                          aria-hidden="true"
-                        />
-                      </button>
-                    </div>
-                  </div>
-                </DialogPanel>
-              </TransitionChild>
-            </div>
+                <RefreshCw
+                  className={cn(`h-5 w-5 text-black`, tail && 'animate-spin')}
+                  aria-hidden="true"
+                />
+              </Button>
+            )}
+            <Button
+              type="button"
+              title="Previous Page"
+              variant="default"
+              className="cursor-pointer"
+              disabled={page >= totalPages || tail}
+              onClick={() => {
+                setPage((page) => page + 1);
+                refreshLog(page + 1);
+              }}
+            >
+              <ArrowLeftIcon
+                className="h-5 w-5 text-black"
+                aria-hidden="true"
+              />
+            </Button>
+            <Button
+              type="button"
+              title="Next Page"
+              variant="default"
+              className="cursor-pointer"
+              disabled={page < 2 || tail}
+              onClick={() => {
+                setPage((page) => page - 1);
+                refreshLog(page - 1);
+              }}
+            >
+              <ArrowRightIcon
+                className="h-5 w-5 text-black"
+                aria-hidden="true"
+              />
+            </Button>
           </div>
-        </Dialog>
-      </Transition>
-    </>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

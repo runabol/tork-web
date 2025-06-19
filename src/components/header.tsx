@@ -3,18 +3,20 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { PlusIcon } from '@heroicons/react/20/solid';
+import { PlusIcon } from 'lucide-react';
+
+import { Button } from './ui/button';
 
 export default function Header() {
   const pathname = usePathname();
 
   const active =
-    'inline-flex items-center border-b-2 border-gray-800 px-1 pt-1 text-sm font-medium text-gray-900';
+    'inline-flex items-center border-b-2 border-black dark:border-blue-500 px-1 pt-1 text-sm font-medium dark:text-blue-500 text-black';
   const inactive =
-    'inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700';
+    'inline-flex items-center border-b-2 text-gray-500 border-transparent px-1 pt-1 text-sm font-medium hover:border-gray-300 hover:text-gray-600 dark:hover:text-white';
 
   return (
-    <nav className="bg-white shadow-sm">
+    <nav className="shadow-sm border-b border-gray-100 dark:border-gray-800">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 justify-between">
           <div className="flex">
@@ -46,14 +48,15 @@ export default function Header() {
             </div>
           </div>
           <div className="flex items-center">
-            <Link href={'/jobs/create'}>
-              <button
+            <Link href="/jobs/create">
+              <Button
                 type="button"
-                className="relative inline-flex items-center gap-x-1.5 rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-gray-800 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                variant="default"
+                className="cursor-pointer"
               >
                 <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
                 New Job
-              </button>
+              </Button>
             </Link>
           </div>
         </div>

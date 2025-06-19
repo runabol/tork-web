@@ -1,5 +1,5 @@
 import Refresh from '@/components/refresh';
-import Table from '@/components/table';
+import DataTable from '@/components/shared/data-table';
 import THeader from '@/components/table-header';
 import { getEnvConfig } from '@/config/env-config';
 import { Queue } from '@/models';
@@ -41,7 +41,7 @@ export default async function QueuesPage() {
       <div className="mt-8 flex justify-end gap-2">
         <Refresh />
       </div>
-      <Table>
+      <DataTable>
         <thead className="bg-gray-50">
           <tr>
             <THeader name="Name" />
@@ -68,7 +68,7 @@ export default async function QueuesPage() {
             </tr>
           ))}
         </tbody>
-      </Table>
+      </DataTable>
     </>
   );
 }
