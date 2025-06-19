@@ -1,17 +1,18 @@
-import { XCircleIcon } from '@heroicons/react/24/solid';
+import { XCircleIcon } from 'lucide-react';
 
-export default function Alert({ message }: { message: string }) {
+import { Alert as ShadcnAlert, AlertDescription, AlertTitle } from './ui/alert';
+
+type Props = {
+  message: string;
+};
+
+export default function Alert({ message }: Props) {
   return message ? (
-    <div className="rounded-md bg-red-50 p-4 my-4">
-      <div className="flex">
-        <div className="shrink-0">
-          <XCircleIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
-        </div>
-        <div className="ml-3">
-          <h3 className="text-sm font-medium text-red-800">{message}</h3>
-        </div>
-      </div>
-    </div>
+    <ShadcnAlert>
+      <XCircleIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
+      <AlertTitle>Error</AlertTitle>
+      <AlertDescription>{message}</AlertDescription>
+    </ShadcnAlert>
   ) : (
     <></>
   );

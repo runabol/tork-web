@@ -17,7 +17,7 @@ type Props = {
   task: Task;
 };
 
-export default function ViewTaskLog({ task }: Props) {
+export default function TaskLogs({ task }: Props) {
   const cancelButtonRef = useRef(null);
 
   const [open, setOpen] = useState<boolean>(false);
@@ -82,19 +82,18 @@ export default function ViewTaskLog({ task }: Props) {
           type="button"
           variant="outline"
           size="sm"
-          className="dark:border-gray-700 cursor-pointer"
           onClick={() => {
             refreshLog(page);
             setOpen(true);
           }}
         >
-          Log
+          Logs
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Logs</DialogTitle>
-          <DialogDescription className="font-mono bg-gray-200 dark:bg-gray-700 p-4 text-xs whitespace-pre-line max-h-96 overflow-scroll">
+          <DialogDescription className="scrollbar-thin w-full max-w-md font-mono bg-gray-200 dark:bg-gray-700 p-4 text-xs whitespace-pre-line max-h-96 overflow-x-hidden overflow-y-scroll">
             {contents ? contents : 'no logs to show'}
           </DialogDescription>
         </DialogHeader>
@@ -103,8 +102,7 @@ export default function ViewTaskLog({ task }: Props) {
             <Button
               ref={cancelButtonRef}
               type="button"
-              variant="outline"
-              className="dark:border-gray-700 cursor-pointer"
+              variant="outlineError"
               onClick={() => {
                 setContents('');
                 setOpen(false);
@@ -120,7 +118,6 @@ export default function ViewTaskLog({ task }: Props) {
                 type="button"
                 title="Tail"
                 variant="outline"
-                className="dark:border-gray-700 cursor-pointer"
                 onClick={() => {
                   if (!tail) {
                     refreshLog(1);
@@ -130,7 +127,10 @@ export default function ViewTaskLog({ task }: Props) {
                 }}
               >
                 <RefreshCw
-                  className={cn('h-5 w-5 text-black', tail && 'animate-spin')}
+                  className={cn(
+                    'h-5 w-5 text-foreground',
+                    tail && 'animate-spin'
+                  )}
                   aria-hidden="true"
                 />
               </Button>
@@ -139,7 +139,6 @@ export default function ViewTaskLog({ task }: Props) {
               type="button"
               title="Previous Page"
               variant="outline"
-              className="dark:border-gray-700 cursor-pointer"
               disabled={page >= totalPages || tail}
               onClick={() => {
                 setPage((page) => page + 1);
@@ -147,7 +146,7 @@ export default function ViewTaskLog({ task }: Props) {
               }}
             >
               <ArrowLeftIcon
-                className="h-5 w-5 text-black"
+                className="h-5 w-5 text-foreground"
                 aria-hidden="true"
               />
             </Button>
@@ -155,7 +154,6 @@ export default function ViewTaskLog({ task }: Props) {
               type="button"
               title="Next Page"
               variant="outline"
-              className="dark:border-gray-700 cursor-pointer"
               disabled={page < 2 || tail}
               onClick={() => {
                 setPage((page) => page - 1);
@@ -163,7 +161,7 @@ export default function ViewTaskLog({ task }: Props) {
               }}
             >
               <ArrowRightIcon
-                className="h-5 w-5 text-black"
+                className="h-5 w-5 text-foreground"
                 aria-hidden="true"
               />
             </Button>

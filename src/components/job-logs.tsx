@@ -17,15 +17,15 @@ type Props = {
   job: Job;
 };
 
-export default function ViewJobLog({ job }: Props) {
-  const [open, setOpen] = useState(false);
-  const [contents, setContents] = useState('');
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [tail, setTail] = useState(
+export default function JobLogs({ job }: Props) {
+  const [open, setOpen] = useState<boolean>(false);
+  const [contents, setContents] = useState<string>('');
+  const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [tail, setTail] = useState<boolean>(
     job.state === 'RUNNING' || job.state === 'SCHEDULED'
   );
-  const [tailInterval, setTailInterval] = useState(2_000);
+  const [tailInterval, setTailInterval] = useState<number>(2_000);
 
   const refreshLog = useCallback(
     async (page: number) => {
@@ -75,19 +75,18 @@ export default function ViewJobLog({ job }: Props) {
         <Button
           type="button"
           variant="outline"
-          className="dark:border-gray-700 cursor-pointer"
           onClick={() => {
             refreshLog(page);
             setOpen(true);
           }}
         >
-          Log
+          Logs
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Logs</DialogTitle>
-          <DialogDescription className="font-mono bg-gray-200 dark:bg-gray-700 p-4 text-xs whitespace-pre-line max-h-96 overflow-scroll">
+          <DialogDescription className="scrollbar-thin w-full max-w-md font-mono bg-gray-200 dark:bg-gray-700 p-4 text-xs whitespace-pre-line max-h-96 overflow-x-hidden overflow-y-scroll">
             {contents ?? 'no logs to show'}
           </DialogDescription>
         </DialogHeader>
@@ -95,8 +94,7 @@ export default function ViewJobLog({ job }: Props) {
           <DialogClose asChild>
             <Button
               type="button"
-              variant="outline"
-              className="cursor-pointer dark:border-gray-700"
+              variant="outlineError"
               onClick={() => {
                 setContents('');
                 setOpen(false);
@@ -112,7 +110,6 @@ export default function ViewJobLog({ job }: Props) {
                 type="button"
                 title="Tail"
                 variant="default"
-                className="cursor-pointer"
                 onClick={() => {
                   if (!tail) {
                     refreshLog(1);
@@ -122,7 +119,10 @@ export default function ViewJobLog({ job }: Props) {
                 }}
               >
                 <RefreshCw
-                  className={cn(`h-5 w-5 text-black`, tail && 'animate-spin')}
+                  className={cn(
+                    `h-5 w-5 text-foreground`,
+                    tail && 'animate-spin'
+                  )}
                   aria-hidden="true"
                 />
               </Button>
@@ -131,7 +131,6 @@ export default function ViewJobLog({ job }: Props) {
               type="button"
               title="Previous Page"
               variant="default"
-              className="cursor-pointer"
               disabled={page >= totalPages || tail}
               onClick={() => {
                 setPage((page) => page + 1);
@@ -139,7 +138,7 @@ export default function ViewJobLog({ job }: Props) {
               }}
             >
               <ArrowLeftIcon
-                className="h-5 w-5 text-black"
+                className="h-5 w-5 text-foreground"
                 aria-hidden="true"
               />
             </Button>
@@ -147,7 +146,6 @@ export default function ViewJobLog({ job }: Props) {
               type="button"
               title="Next Page"
               variant="default"
-              className="cursor-pointer"
               disabled={page < 2 || tail}
               onClick={() => {
                 setPage((page) => page - 1);
@@ -155,7 +153,7 @@ export default function ViewJobLog({ job }: Props) {
               }}
             >
               <ArrowRightIcon
-                className="h-5 w-5 text-black"
+                className="h-5 w-5 text-foreground"
                 aria-hidden="true"
               />
             </Button>

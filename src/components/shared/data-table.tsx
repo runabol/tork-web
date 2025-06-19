@@ -20,7 +20,7 @@ export default function DataTable({
     <div className="overflow-hidden shadow-md border border-gray-200 dark:border-gray-700 rounded-lg">
       <Table className="bg-secondary">
         <TableHeader>
-          <TableRow className="hover:bg-gray-100 dark:hover:bg-gray-800">
+          <TableRow className="hover:bg-secondary">
             {columns.map((column) => (
               <TableHead
                 key={column}

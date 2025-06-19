@@ -65,7 +65,8 @@ export default async function JobsPage({ searchParams }: Props) {
 
   return (
     <div className="flex gap-10 flex-col">
-      <div className="flex justify-end gap-2">
+      <h2 className="text-3xl font-semibold text-center">Jobs</h2>
+      <div className="flex justify-end">
         <Refresh />
       </div>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-4">
@@ -79,85 +80,97 @@ export default async function JobsPage({ searchParams }: Props) {
       </div>
       <JobsSearchInput query={q} />
       <DataTable columns={tableColumns} page={page} q={q}>
-        {page.items.map((job: Job) => (
-          <TableRow
-            key={job.id}
-            className="hover:bg-gray-100 dark:hover:bg-gray-800"
-          >
-            <TableCell className="p-4">
-              <span className="text-sm text-foreground">
-                {truncateString(job.name, 50)}
-              </span>
-              {job.parentId && (
-                <Badge
-                  variant="outline"
-                  className="ml-2 text-gray-700 dark:text-gray-300"
-                >
-                  sub
-                </Badge>
-              )}
-              {job.schedule && (
-                <Badge
-                  variant="outline"
-                  className="ml-2 text-gray-700 dark:text-gray-300"
-                >
-                  scheduled
-                </Badge>
-              )}
-            </TableCell>
-            <TableCell className="p-4">
-              <span className="text-sm text-foreground">
-                {formatTimestamp(job.createdAt)}
-              </span>
-            </TableCell>
-            <TableCell className="p-4">
-              <span className="text-sm text-foreground">
-                {job.completedAt
-                  ? formatTimestamp(job.completedAt)
-                  : job.failedAt
-                    ? formatTimestamp(job.failedAt)
-                    : ''}
-              </span>
-            </TableCell>
-            <TableCell className="p-4">
-              <span className="text-sm text-foreground">
-                {job.position
-                  ? Math.round(((job.position - 1) / job.taskCount) * 100)
-                  : 0}
-              </span>
-            </TableCell>
-            <TableCell className="p-4">
-              <span className="text-sm text-foreground">
-                {job.completedAt
-                  ? formatRuntime(job.state, job.startedAt, job.completedAt)
-                  : formatRuntime(job.state, job.startedAt, job.failedAt)}
-              </span>
-            </TableCell>
-            <TableCell className="p-4">
-              <StateBadge name={job.state} />
-            </TableCell>
-            <TableCell className="p-4">
-              <span className="relative text-right text-sm font-medium flex gap-2 justify-end">
-                <Link href={`/jobs/${job.id}`}>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    className="border-gray-300 dark:border-gray-700 text-sm"
-                  >
-                    View
-                  </Button>
-                </Link>
-                {(job.state === 'RUNNING' || job.state === 'SCHEDULED') && (
-                  <CancelJob job={job} />
-                )}
-                {(job.state === 'FAILED' || job.state === 'CANCELLED') && (
-                  <RestartJob job={job} />
-                )}
-              </span>
+        {page.items.length > 0 ? (
+          <>
+            {page.items.map((job: Job) => (
+              <TableRow
+                key={job.id}
+                className="hover:bg-gray-100 dark:hover:bg-gray-800"
+              >
+                <TableCell className="p-4">
+                  <span className="text-sm text-foreground">
+                    {truncateString(job.name, 50)}
+                  </span>
+                  {job.parentId && (
+                    <Badge
+                      variant="outline"
+                      className="ml-2 text-gray-700 dark:text-gray-300"
+                    >
+                      sub
+                    </Badge>
+                  )}
+                  {job.schedule && (
+                    <Badge
+                      variant="outline"
+                      className="ml-2 text-gray-700 dark:text-gray-300"
+                    >
+                      scheduled
+                    </Badge>
+                  )}
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="text-sm text-foreground">
+                    {formatTimestamp(job.createdAt)}
+                  </span>
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="text-sm text-foreground">
+                    {job.completedAt
+                      ? formatTimestamp(job.completedAt)
+                      : job.failedAt
+                        ? formatTimestamp(job.failedAt)
+                        : ''}
+                  </span>
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="text-sm text-foreground">
+                    {job.position
+                      ? Math.round(((job.position - 1) / job.taskCount) * 100)
+                      : 0}
+                  </span>
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="text-sm text-foreground">
+                    {job.completedAt
+                      ? formatRuntime(job.state, job.startedAt, job.completedAt)
+                      : formatRuntime(job.state, job.startedAt, job.failedAt)}
+                  </span>
+                </TableCell>
+                <TableCell className="p-4">
+                  <StateBadge name={job.state} />
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="relative text-right text-sm font-medium flex gap-2 justify-end">
+                    <Link href={`/jobs/${job.id}`}>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="text-sm"
+                      >
+                        View
+                      </Button>
+                    </Link>
+                    {(job.state === 'RUNNING' || job.state === 'SCHEDULED') && (
+                      <CancelJob job={job} />
+                    )}
+                    {(job.state === 'FAILED' || job.state === 'CANCELLED') && (
+                      <RestartJob job={job} />
+                    )}
+                  </span>
+                </TableCell>
+              </TableRow>
+            ))}
+          </>
+        ) : (
+          <TableRow>
+            <TableCell
+              className="p-4 text-center"
+              colSpan={tableColumns.length}
+            >
+              No jobs found.
             </TableCell>
           </TableRow>
-        ))}
+        )}
       </DataTable>
     </div>
   );

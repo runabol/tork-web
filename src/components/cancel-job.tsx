@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { AlertTriangle } from 'lucide-react';
 
 import { Job } from '@/models';
 import { Button } from './ui/button';
@@ -46,7 +46,7 @@ export default function CancelJob({ job }: Props) {
         <DialogHeader>
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-100">
-              <ExclamationTriangleIcon
+              <AlertTriangle
                 className="h-6 w-6 text-red-600"
                 aria-hidden="true"
               />
@@ -65,7 +65,6 @@ export default function CancelJob({ job }: Props) {
             <Button
               type="button"
               variant="outline"
-              className="bg-secondary dark:border-gray-700"
               onClick={() => setOpen(false)}
             >
               Cancel

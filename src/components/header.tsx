@@ -49,11 +49,7 @@ export default function Header() {
           </div>
           <div className="flex items-center">
             <Link href="/jobs/create">
-              <Button
-                type="button"
-                variant="default"
-                className="cursor-pointer"
-              >
+              <Button type="button" variant="default">
                 <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
                 New Job
               </Button>

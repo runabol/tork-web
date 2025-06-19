@@ -13,33 +13,24 @@ type Props = {
   task: Task;
 };
 
-export default function ViewTask({ task }: Props) {
+export default function TaskInfo({ task }: Props) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className="dark:border-gray-700 cursor-pointer"
-        >
+        <Button type="button" variant="outline" size="sm">
           View
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Task</DialogTitle>
-          <DialogDescription className="font-mono bg-gray-200 dark:bg-gray-700 p-4 text-xs whitespace-pre-line max-h-96 overflow-scroll">
+          <DialogDescription className="scrollbar-thin w-full max-w-md font-mono bg-gray-200 dark:bg-gray-700 p-4 text-xs whitespace-pre-line max-h-96 overflow-x-hidden overflow-y-scroll">
             {stringify(task)}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>
-            <Button
-              type="button"
-              variant="outline"
-              className="dark:border-gray-700 cursor-pointer"
-            >
+            <Button type="button" variant="outlineError">
               Close
             </Button>
           </DialogClose>

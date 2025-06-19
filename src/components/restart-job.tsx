@@ -18,8 +18,7 @@ export default function RestartJob({ job }: Props) {
         method: 'PUT',
       });
       if (!response.ok) {
-        console.error(response.statusText);
-        return;
+        throw new Error(response.statusText);
       }
       const data = await response.json();
       console.log(data);
@@ -30,7 +29,7 @@ export default function RestartJob({ job }: Props) {
   };
 
   return (
-    <Button type="button" variant="secondary" onClick={handleConfirmJobRestart}>
+    <Button type="button" variant="outline" onClick={handleConfirmJobRestart}>
       Restart
     </Button>
   );

@@ -29,10 +29,7 @@ export default function StateBadge({ name, textSize }: Props) {
   }
 
   return (
-    <Badge
-      variant="outline"
-      className={cn(textSize || 'text-xs', backgroundColor, textColor)}
-    >
+    <Badge className={cn(textSize || 'text-xs', backgroundColor, textColor)}>
       {name.toLowerCase()}
     </Badge>
   );

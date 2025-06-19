@@ -14,8 +14,6 @@
     "test:debug": "vitest --inspect-brk --inspect --logHeapUsage --threads=false"
   },
   "dependencies": {
-    "@headlessui/react": "^2.2.4",
-    "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^5.1.1",
     "@monaco-editor/react": "^4.7.0",
     "@radix-ui/react-dialog": "^1.1.14",

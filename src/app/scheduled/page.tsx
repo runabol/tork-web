@@ -3,6 +3,7 @@ import PauseScheduledJob from '@/components/pause-scheduled-job';
 import Refresh from '@/components/refresh';
 import ResumeScheduledJob from '@/components/resume-scheduled-job';
 import DataTable from '@/components/shared/data-table';
+import StatusBadge from '@/components/status-badge';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { getEnvConfig } from '@/config/env-config';
 import { Page, ScheduledJob } from '@/models';
@@ -30,47 +31,52 @@ export default async function ScheduledPage() {
 
   return (
     <div className="flex flex-col gap-10">
-      <div className="mt-8 flex justify-end gap-2">
+      <h2 className="text-3xl font-semibold text-center">Scheduled Jobs</h2>
+      <div className="flex justify-end">
         <Refresh />
       </div>
       <DataTable columns={tableColumns} page={scheduledJobsPaged}>
-        {scheduledJobsPaged.items.map((job: ScheduledJob) => (
-          <TableRow key={job.id}>
-            <TableCell className="p-4">
-              <span className="text-sm text-gray-500">{job.name}</span>
-            </TableCell>
-            <TableCell className="p-4">
-              <span className="text-sm text-gray-500">
-                {formatTimestamp(job.createdAt)}
-              </span>
-            </TableCell>
-            <TableCell className="p-4">
-              <span className="text-sm text-gray-500">{job.cron}</span>
-            </TableCell>
-            <TableCell className="p-4">
-              {job.state === 'ACTIVE' ? (
-                <span
-                  className={`inline-flex items-center capitalize rounded-md bg-green-50 text-green-700 px-2 py-1 text-xs font-medium  ring-1 ring-inset ring-gray-500/10`}
-                >
-                  {job.state}
-                </span>
-              ) : (
-                <span
-                  className={`inline-flex items-center capitalize rounded-md bg-red-50 text-red-700 px-2 py-1 text-xs font-medium  ring-1 ring-inset ring-gray-500/10`}
-                >
-                  {job.state}
-                </span>
-              )}
-            </TableCell>
-            <TableCell className="p-4">
-              <span className="flex gap-2">
-                {job.state === 'ACTIVE' && <PauseScheduledJob job={job} />}
-                {job.state === 'PAUSED' && <ResumeScheduledJob job={job} />}
-                <DeleteScheduledJob job={job} />
-              </span>
+        {scheduledJobsPaged.items?.length > 0 ? (
+          <>
+            {scheduledJobsPaged.items.map((job: ScheduledJob) => (
+              <TableRow
+                key={job.id}
+                className="hover:bg-gray-100 dark:hover:bg-gray-800"
+              >
+                <TableCell className="p-4">
+                  <span className="text-sm text-foreground">{job.name}</span>
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="text-sm text-foreground">
+                    {formatTimestamp(job.createdAt)}
+                  </span>
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="text-sm text-foreground">{job.cron}</span>
+                </TableCell>
+                <TableCell className="p-4">
+                  <StatusBadge status={job.state} />
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="flex gap-2">
+                    {job.state === 'ACTIVE' && <PauseScheduledJob job={job} />}
+                    {job.state === 'PAUSED' && <ResumeScheduledJob job={job} />}
+                    <DeleteScheduledJob job={job} />
+                  </span>
+                </TableCell>
+              </TableRow>
+            ))}
+          </>
+        ) : (
+          <TableRow>
+            <TableCell
+              className="p-4 text-center"
+              colSpan={tableColumns.length}
+            >
+              No scheduled jobs found.
             </TableCell>
           </TableRow>
-        ))}
+        )}
       </DataTable>
     </div>
   );
