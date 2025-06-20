@@ -30,7 +30,7 @@ export default function ResumeScheduledJob({ job }: Props) {
   return (
     <Button
       type="button"
-      variant="outlineSuccess"
+      variant="success"
       size="sm"
       onClick={handleConfirmScheduledJobResume}
     >

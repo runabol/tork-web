@@ -58,11 +58,11 @@ export default async function JobPage({ params }: Props) {
           <p className="hidden md:block text-sm text-gray-500 mt-3 whitespace-pre border-b border-gray-300 dark:border-gray-700 pb-4">
             {job.description}
           </p>
-          <div className="mt-2 flex flex-col sm:flex-row sm:flex-wrap sm:space-x-6">
+          <div className="mt-2 flex flex-col sm:flex-row sm:flex-wrap gap-4">
             <div className="flex items-center text-sm my-1">
               <StateBadge textSize="text-base" name={job.state} />
             </div>
-            <div className="mt-2 flex items-center text-sm text-gray-500">
+            <div className="flex items-center text-sm text-gray-500">
               <CalendarIcon
                 className="mr-1.5 h-5 w-5 shrink-0 text-gray-400"
                 aria-hidden="true"
@@ -70,7 +70,7 @@ export default async function JobPage({ params }: Props) {
               Created at {formatTimestamp(job.createdAt)}
             </div>
             {(job.completedAt || job.failedAt) && (
-              <div className="mt-2 flex items-center text-sm text-gray-500">
+              <div className="flex items-center text-sm text-gray-500">
                 <CalendarIcon
                   className="mr-1.5 h-5 w-5 shrink-0 text-gray-400"
                   aria-hidden="true"
@@ -81,7 +81,7 @@ export default async function JobPage({ params }: Props) {
                   : formatTimestamp(job.failedAt)}
               </div>
             )}
-            <div className="mt-2 flex items-center text-sm text-gray-500">
+            <div className="flex items-center text-sm text-gray-500">
               <ClockIcon
                 className="mr-1.5 h-5 w-5 shrink-0 text-gray-400"
                 aria-hidden="true"

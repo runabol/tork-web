@@ -65,8 +65,7 @@ export default async function JobsPage({ searchParams }: Props) {
 
   return (
     <div className="flex gap-10 flex-col">
-      <h2 className="text-3xl font-semibold text-center">Jobs</h2>
-      <div className="flex justify-end">
+      <div className="mt-10 flex justify-end">
         <Refresh />
       </div>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-4">

@@ -40,8 +40,7 @@ export default async function QueuesPage() {
 
   return (
     <div className="flex flex-col gap-10">
-      <h2 className="text-3xl font-semibold text-center">Queues</h2>
-      <div className="flex justify-end">
+      <div className="mt-10 flex justify-end">
         <Refresh />
       </div>
       <DataTable columns={tableColumns}>

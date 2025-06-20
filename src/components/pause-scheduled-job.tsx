@@ -27,8 +27,6 @@ export default function PauseScheduledJob({ job }: Props) {
       if (!response.ok) {
         throw new Error(response.statusText);
       }
-      const data = await response.json();
-      console.log(data);
       router.refresh();
       setOpen(false);
     } catch (error: any) {
@@ -39,7 +37,7 @@ export default function PauseScheduledJob({ job }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outlineWarning" size="sm">
+        <Button variant="warning" size="sm">
           Pause
         </Button>
       </DialogTrigger>
@@ -62,7 +60,7 @@ export default function PauseScheduledJob({ job }: Props) {
           </div>
         </DialogHeader>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>
+          <Button variant="destructive" onClick={() => setOpen(false)}>
             Cancel
           </Button>
           <Button variant="success" onClick={handlePauseScheduledJob}>

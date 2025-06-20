@@ -31,8 +31,7 @@ export default async function ScheduledPage() {
 
   return (
     <div className="flex flex-col gap-10">
-      <h2 className="text-3xl font-semibold text-center">Scheduled Jobs</h2>
-      <div className="flex justify-end">
+      <div className="mt-10 flex justify-end">
         <Refresh />
       </div>
       <DataTable columns={tableColumns} page={scheduledJobsPaged}>

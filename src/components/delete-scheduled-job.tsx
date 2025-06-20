@@ -26,8 +26,6 @@ export default function DeleteScheduledJob({ job }: Props) {
       if (!response.ok) {
         throw new Error(response.statusText);
       }
-      const data = await response.json();
-      console.log(data);
       router.refresh();
     } catch (error: any) {
       console.error(error);
@@ -38,7 +36,7 @@ export default function DeleteScheduledJob({ job }: Props) {
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <Button type="button" variant="outlineError" size="sm">
+          <Button type="button" variant="destructive" size="sm">
             Delete
           </Button>
         </DialogTrigger>

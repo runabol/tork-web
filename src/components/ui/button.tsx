@@ -12,23 +12,15 @@ const buttonVariants = cva(
       variant: {
         default:
           'bg-primary text-primary-foreground shadow-xs hover:bg-primary/90',
-        success:
-          'bg-green-500 text-white shadow-xs hover:bg-green-600 focus-visible:ring-green-500/20 dark:focus-visible:ring-green-500/40',
         destructive:
-          'bg-destructive text-white shadow-xs hover:bg-destructive/70 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40',
-        warning:
-          'bg-orange-500 text-white shadow-xs hover:bg-orange-600 focus-visible:ring-orange-500/20 dark:focus-visible:ring-orange-500/40',
-        info: 'bg-blue-500 text-white shadow-xs hover:bg-blue-600 focus-visible:ring-blue-500/20 dark:focus-visible:ring-blue-500/40',
+          'border text-red-700 dark:text-red-500 border-red-600/40 bg-red-50 dark:bg-red-500/20 dark:hover:bg-red-500/40 hover:bg-red-100',
         outline:
           'border bg-background shadow-xs hover:bg-accent dark:bg-input/30 dark:border-input dark:hover:bg-input/50 dark:border-gray-700',
-        outlineSuccess:
+        success:
           'border text-green-700 dark:text-green-500 border-green-600/40 bg-green-50 dark:bg-green-500/30 dark:hover:bg-green-500/40 hover:bg-green-100',
-        outlineWarning:
+        warning:
           'border text-orange-700 dark:text-orange-500 border-orange-600/40 bg-orange-50 dark:bg-orange-500/30 dark:hover:bg-orange-500/40 hover:bg-orange-100',
-        outlineError:
-          'border text-red-700 dark:text-red-500 border-red-600/40 bg-red-50 dark:bg-red-500/20 dark:hover:bg-red-500/40 hover:bg-red-100',
-        outlineInfo:
-          'border text-blue-700 dark:text-blue-500 border-blue-600/40 bg-blue-50 dark:bg-blue-500/30 dark:hover:bg-blue-500/40 hover:bg-blue-100',
+        info: 'border text-blue-700 dark:text-blue-500 border-blue-600/40 bg-blue-50 dark:bg-blue-500/30 dark:hover:bg-blue-500/40 hover:bg-blue-100',
         secondary:
           'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
         ghost:

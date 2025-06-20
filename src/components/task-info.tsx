@@ -30,7 +30,7 @@ export default function TaskInfo({ task }: Props) {
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>
-            <Button type="button" variant="outlineError">
+            <Button type="button" variant="destructive">
               Close
             </Button>
           </DialogClose>

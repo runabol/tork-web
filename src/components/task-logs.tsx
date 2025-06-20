@@ -102,7 +102,7 @@ export default function TaskLogs({ task }: Props) {
             <Button
               ref={cancelButtonRef}
               type="button"
-              variant="outlineError"
+              variant="destructive"
               onClick={() => {
                 setContents('');
                 setOpen(false);

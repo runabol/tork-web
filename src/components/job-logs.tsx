@@ -94,7 +94,7 @@ export default function JobLogs({ job }: Props) {
           <DialogClose asChild>
             <Button
               type="button"
-              variant="outlineError"
+              variant="destructive"
               onClick={() => {
                 setContents('');
                 setOpen(false);

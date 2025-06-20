@@ -64,13 +64,13 @@ export default function CancelJob({ job }: Props) {
           <DialogClose asChild>
             <Button
               type="button"
-              variant="outline"
+              variant="destructive"
               onClick={() => setOpen(false)}
             >
               Cancel
             </Button>
           </DialogClose>
-          <Button type="button" variant="destructive" onClick={handleCancel}>
+          <Button type="button" variant="success" onClick={handleCancel}>
             Confirm
           </Button>
         </DialogFooter>

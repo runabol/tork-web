@@ -20,8 +20,6 @@ export default function RestartJob({ job }: Props) {
       if (!response.ok) {
         throw new Error(response.statusText);
       }
-      const data = await response.json();
-      console.log(data);
       router.refresh();
     } catch (error: any) {
       console.error(error);
