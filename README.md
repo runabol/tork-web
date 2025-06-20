@@ -17,7 +17,11 @@ This will automatically select the workspace folder. But if you need to find the
 
 ### Development
 
+`Environment variables`:
+
 Make a copy of the `.env.example` file and name it `.env.local` and edit the values as you see fit.
+
+`Dependencies`:
 
 Now run the following commands:
 
@@ -27,6 +31,20 @@ $ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
+
+`Git`:
+
+When committing in this project, you must follow conventional commits. Take a look at the `commitlint.config.js` file for a list of accepted tags under "rules".
+
+These are the following ways you can commit:
+
+```bash
+# Commit message without a reference to a task ID
+$ feat: <message>
+
+# Commit message with a reference to a GitHub issue
+$ fix: [#10] - <message>
+```
 
 ---
 
