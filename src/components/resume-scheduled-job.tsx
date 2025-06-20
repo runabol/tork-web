@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 
 import { ScheduledJob } from '@/models';
+import { Button } from './ui/button';
 
 type Props = {
   job: ScheduledJob;
@@ -20,8 +21,6 @@ export default function ResumeScheduledJob({ job }: Props) {
         console.error(response.statusText);
         return;
       }
-      const data = await response.json();
-      console.log(data);
       router.refresh();
     } catch (error: any) {
       console.error(error);
@@ -29,12 +28,13 @@ export default function ResumeScheduledJob({ job }: Props) {
   };
 
   return (
-    <button
+    <Button
       type="button"
-      className="rounded bg-green-50 px-2 py-1 text-xs font-semibold text-green-700 shadow-xs ring-1 ring-inset ring-green-600/40 hover:bg-green-200"
+      variant="success"
+      size="sm"
       onClick={handleConfirmScheduledJobResume}
     >
       Resume
-    </button>
+    </Button>
   );
 }

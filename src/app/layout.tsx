@@ -18,7 +18,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
   const clientEnvConfig = await getClientEnvConfig();
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="light" suppressHydrationWarning>
       <body
         className={`${primaryFont.className} antialiased`}
         suppressHydrationWarning

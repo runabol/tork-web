@@ -1,11 +1,15 @@
 import Link from 'next/link';
 
 import CancelJob from '@/components/cancel-job';
+import JobsSearchInput from '@/components/dashboard/jobs/jobs-search-input';
+import StatsCard from '@/components/dashboard/stats-card';
 import Refresh from '@/components/refresh';
 import RestartJob from '@/components/restart-job';
+import DataTable from '@/components/shared/data-table';
 import StateBadge from '@/components/state-badge';
-import Table from '@/components/table';
-import THeader from '@/components/table-header';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { TableCell, TableRow } from '@/components/ui/table';
 import { getEnvConfig } from '@/config/env-config';
 import { Job, Metrics, Page } from '@/models';
 import { formatRuntime, formatTimestamp, truncateString } from '@/utils';
@@ -37,6 +41,16 @@ async function getMetrics(): Promise<Metrics> {
   return res.json();
 }
 
+const tableColumns: string[] = [
+  'Name',
+  'Created at',
+  'Ended at',
+  '% Completed',
+  'Runtime',
+  'State',
+  '',
+];
+
 type Props = {
   searchParams: Promise<{
     page?: number;
@@ -50,128 +64,113 @@ export default async function JobsPage({ searchParams }: Props) {
   const metrics = await getMetrics();
 
   return (
-    <>
-      <div className="mt-8 flex justify-end gap-2">
+    <div className="flex gap-10 flex-col">
+      <div className="mt-10 flex justify-end">
         <Refresh />
       </div>
-      <div>
-        <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-4">
-          <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow-sm sm:p-6">
-            <dt className="truncate text-sm font-medium text-gray-500">
-              Running Jobs
-            </dt>
-            <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-              {metrics.jobs.running}
-            </dd>
-          </div>
-          <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow-sm sm:p-6">
-            <dt className="truncate text-sm font-medium text-gray-500">
-              Running Tasks
-            </dt>
-            <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-              {metrics.tasks.running}
-            </dd>
-          </div>
-          <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow-sm sm:p-6">
-            <dt className="truncate text-sm font-medium text-gray-500">
-              Nodes
-            </dt>
-            <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-              {metrics.nodes.online}
-            </dd>
-          </div>
-          <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow-sm sm:p-6">
-            <dt className="truncate text-sm font-medium text-gray-500">
-              Utilization
-            </dt>
-            <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-              {Math.round(metrics.nodes.cpuPercent * 100) / 100}%
-            </dd>
-          </div>
-        </dl>
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-4">
+        <StatsCard label="Running Jobs" value={metrics.jobs.running} />
+        <StatsCard label="Running Tasks" value={metrics.tasks.running} />
+        <StatsCard label="Nodes" value={metrics.nodes.online} />
+        <StatsCard
+          label="Utilization"
+          value={`${Math.round(metrics.nodes.cpuPercent * 100) / 100}%`}
+        />
       </div>
-      <Table page={page} search={true} q={q}>
-        <thead className="bg-gray-50">
-          <tr>
-            <THeader name="Name" />
-            <THeader name="Created at" />
-            <THeader name="Ended at" />
-            <THeader name="% Completed" />
-            <THeader name="Runtime" />
-            <THeader name="State" />
-            <THeader name="" />
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-200 bg-white">
-          {page.items.map((item: any) => (
-            <tr key={item.id}>
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-6 flex gap-2">
-                <span>{truncateString(item.name, 50)}</span>
-                {item.parentId ? (
-                  <span className="inline-flex items-center rounded-md bg-gray-200 px-2 py-1 text-xs font-medium text-gray-700 ring-1 ring-inset ring-gray-500/10">
-                    sub
+      <JobsSearchInput query={q} />
+      <DataTable columns={tableColumns} page={page} q={q}>
+        {page.items.length > 0 ? (
+          <>
+            {page.items.map((job: Job) => (
+              <TableRow
+                key={job.id}
+                className="hover:bg-gray-100 dark:hover:bg-gray-800"
+              >
+                <TableCell className="p-4">
+                  <span className="text-sm text-foreground">
+                    {truncateString(job.name, 50)}
                   </span>
-                ) : (
-                  <></>
-                )}
-                {item.schedule ? (
-                  <span className="inline-flex items-center rounded-md bg-gray-200 px-2 py-1 text-xs font-medium text-gray-700 ring-1 ring-inset ring-gray-500/10">
-                    Scheduled
+                  {job.parentId && (
+                    <Badge
+                      variant="outline"
+                      className="ml-2 text-gray-700 dark:text-gray-300"
+                    >
+                      sub
+                    </Badge>
+                  )}
+                  {job.schedule && (
+                    <Badge
+                      variant="outline"
+                      className="ml-2 text-gray-700 dark:text-gray-300"
+                    >
+                      scheduled
+                    </Badge>
+                  )}
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="text-sm text-foreground">
+                    {formatTimestamp(job.createdAt)}
                   </span>
-                ) : (
-                  <></>
-                )}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {formatTimestamp(item.createdAt)}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {item.completedAt
-                  ? formatTimestamp(item.completedAt)
-                  : item.failedAt
-                    ? formatTimestamp(item.failedAt)
-                    : ''}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {item.position
-                  ? Math.round(((item.position - 1) / item.taskCount) * 100)
-                  : 0}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {item.completedAt
-                  ? formatRuntime(item.state, item.startedAt, item.completedAt)
-                  : formatRuntime(item.state, item.startedAt, item.failedAt)}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                <StateBadge name={item.state} />
-              </td>
-              <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 flex gap-2 justify-end">
-                <Link
-                  href={`/jobs/${item.id}`}
-                  className="text-black hover:text-gray-700"
-                >
-                  <button
-                    type="button"
-                    className="rounded bg-white px-2 py-1 text-xs font-semibold text-gray-900 shadow-xs ring-1 ring-inset ring-gray-400 hover:bg-gray-50"
-                  >
-                    View
-                  </button>
-                </Link>
-                {item.state === 'RUNNING' || item.state === 'SCHEDULED' ? (
-                  <CancelJob job={item} />
-                ) : (
-                  <></>
-                )}
-                {item.state === 'FAILED' || item.state === 'CANCELLED' ? (
-                  <RestartJob job={item} />
-                ) : (
-                  <></>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    </>
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="text-sm text-foreground">
+                    {job.completedAt
+                      ? formatTimestamp(job.completedAt)
+                      : job.failedAt
+                        ? formatTimestamp(job.failedAt)
+                        : ''}
+                  </span>
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="text-sm text-foreground">
+                    {job.position
+                      ? Math.round(((job.position - 1) / job.taskCount) * 100)
+                      : 0}
+                  </span>
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="text-sm text-foreground">
+                    {job.completedAt
+                      ? formatRuntime(job.state, job.startedAt, job.completedAt)
+                      : formatRuntime(job.state, job.startedAt, job.failedAt)}
+                  </span>
+                </TableCell>
+                <TableCell className="p-4">
+                  <StateBadge name={job.state} />
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="relative text-right text-sm font-medium flex gap-2 justify-end">
+                    <Link href={`/jobs/${job.id}`}>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="text-sm"
+                      >
+                        View
+                      </Button>
+                    </Link>
+                    {(job.state === 'RUNNING' || job.state === 'SCHEDULED') && (
+                      <CancelJob job={job} />
+                    )}
+                    {(job.state === 'FAILED' || job.state === 'CANCELLED') && (
+                      <RestartJob job={job} />
+                    )}
+                  </span>
+                </TableCell>
+              </TableRow>
+            ))}
+          </>
+        ) : (
+          <TableRow>
+            <TableCell
+              className="p-4 text-center"
+              colSpan={tableColumns.length}
+            >
+              No jobs found.
+            </TableCell>
+          </TableRow>
+        )}
+      </DataTable>
+    </div>
   );
 }

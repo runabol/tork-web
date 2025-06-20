@@ -1,6 +1,6 @@
 import Refresh from '@/components/refresh';
-import Table from '@/components/table';
-import THeader from '@/components/table-header';
+import DataTable from '@/components/shared/data-table';
+import { TableCell, TableRow } from '@/components/ui/table';
 import { getEnvConfig } from '@/config/env-config';
 import { Queue } from '@/models';
 
@@ -17,12 +17,14 @@ async function getData(): Promise<Queue[]> {
   return res.json();
 }
 
+const tableColumns = ['Name', 'Size', 'Subscribers', 'Unacked'];
+
 export const dynamic = 'force-dynamic';
 
 export default async function QueuesPage() {
-  const qs = await getData();
+  const queues = await getData();
 
-  const sorted = qs.sort((a, b) => {
+  const sorted = queues.sort((a, b) => {
     if (a.size === b.size) {
       if (a.name < b.name) {
         return -1;
@@ -37,38 +39,44 @@ export default async function QueuesPage() {
   });
 
   return (
-    <>
-      <div className="mt-8 flex justify-end gap-2">
+    <div className="flex flex-col gap-10">
+      <div className="mt-10 flex justify-end">
         <Refresh />
       </div>
-      <Table>
-        <thead className="bg-gray-50">
-          <tr>
-            <THeader name="Name" />
-            <THeader name="Size" />
-            <THeader name="Subscribers" />
-            <THeader name="Unacked" />
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-200 bg-white">
-          {sorted.map((q) => (
-            <tr key={q.name}>
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-6 ">
-                {q.name}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {q.size}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {q.subscribers}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {q.unacked}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    </>
+      <DataTable columns={tableColumns}>
+        {queues.length > 0 ? (
+          <>
+            {sorted.map((queue) => (
+              <TableRow
+                key={queue.name}
+                className="hover:bg-gray-100 dark:hover:bg-gray-800"
+              >
+                <TableCell className="p-4">
+                  <span className="text-sm">{queue.name}</span>
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="text-sm">{queue.size}</span>
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="text-sm">{queue.subscribers}</span>
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="text-sm">{queue.unacked}</span>
+                </TableCell>
+              </TableRow>
+            ))}
+          </>
+        ) : (
+          <TableRow>
+            <TableCell
+              className="p-4 text-center"
+              colSpan={tableColumns.length}
+            >
+              No queues found.
+            </TableCell>
+          </TableRow>
+        )}
+      </DataTable>
+    </div>
   );
 }

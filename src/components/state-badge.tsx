@@ -1,37 +1,36 @@
+import { cn } from '@/lib/utils';
+import { Badge } from './ui/badge';
+
 type Props = {
   name: string;
   textSize?: string;
 };
 
 export default function StateBadge({ name, textSize }: Props) {
-  let bcolor: string;
-  let tcolor: string;
+  let backgroundColor: string;
+  let textColor: string;
 
   switch (name) {
     case 'COMPLETED':
-      bcolor = 'bg-green-50';
-      tcolor = 'text-green-700';
+      backgroundColor = 'bg-green-400/20';
+      textColor = 'text-green-400';
       break;
     case 'FAILED':
-      bcolor = 'bg-red-50';
-      tcolor = 'text-red-700';
+      backgroundColor = 'bg-red-400/20';
+      textColor = 'text-red-400';
       break;
     case 'CANCELLED':
-      bcolor = 'bg-yellow-50';
-      tcolor = 'text-yellow-800';
+      backgroundColor = 'bg-yellow-400/20';
+      textColor = 'text-yellow-400';
       break;
     default:
-      bcolor = 'bg-gray-50';
-      tcolor = 'text-gray-600';
+      backgroundColor = 'bg-gray-400/20';
+      textColor = 'text-gray-400';
   }
 
   return (
-    <span
-      className={`${
-        textSize || 'text-xs'
-      } ${bcolor} ${tcolor} inline-flex items-center capitalize rounded-md  px-2 py-1 font-medium ring-1 ring-inset ring-gray-500/10`}
-    >
+    <Badge className={cn(textSize || 'text-xs', backgroundColor, textColor)}>
       {name.toLowerCase()}
-    </span>
+    </Badge>
   );
 }

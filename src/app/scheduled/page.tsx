@@ -2,8 +2,9 @@ import DeleteScheduledJob from '@/components/delete-scheduled-job';
 import PauseScheduledJob from '@/components/pause-scheduled-job';
 import Refresh from '@/components/refresh';
 import ResumeScheduledJob from '@/components/resume-scheduled-job';
-import Table from '@/components/table';
-import THeader from '@/components/table-header';
+import DataTable from '@/components/shared/data-table';
+import StatusBadge from '@/components/status-badge';
+import { TableCell, TableRow } from '@/components/ui/table';
 import { getEnvConfig } from '@/config/env-config';
 import { Page, ScheduledJob } from '@/models';
 import { formatTimestamp } from '@/utils';
@@ -21,64 +22,61 @@ async function getData(): Promise<Page<ScheduledJob>> {
   return res.json();
 }
 
+const tableColumns = ['Name', 'Created at', 'Schedule', 'Status', ''];
+
 export const dynamic = 'force-dynamic';
 
 export default async function ScheduledPage() {
-  const scheduledJobs = await getData();
+  const scheduledJobsPaged = await getData();
 
   return (
-    <>
-      <div className="mt-8 flex justify-end gap-2">
+    <div className="flex flex-col gap-10">
+      <div className="mt-10 flex justify-end">
         <Refresh />
       </div>
-      <Table>
-        <thead className="bg-gray-50">
-          <tr>
-            <THeader name="Name" />
-            <THeader name="Created at" />
-            <THeader name="Schedule" />
-            <THeader name="Status" />
-            <THeader name="" />
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-200 bg-white">
-          {scheduledJobs.items.map((job: ScheduledJob) => (
-            <tr key={job.id}>
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-6 ">
-                {job.name}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {formatTimestamp(job.createdAt)}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {job.cron}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {job.state === 'ACTIVE' ? (
-                  <span
-                    className={`inline-flex items-center capitalize rounded-md bg-green-50 text-green-700 px-2 py-1 text-xs font-medium  ring-1 ring-inset ring-gray-500/10`}
-                  >
-                    {job.state}
+      <DataTable columns={tableColumns} page={scheduledJobsPaged}>
+        {scheduledJobsPaged.items?.length > 0 ? (
+          <>
+            {scheduledJobsPaged.items.map((job: ScheduledJob) => (
+              <TableRow
+                key={job.id}
+                className="hover:bg-gray-100 dark:hover:bg-gray-800"
+              >
+                <TableCell className="p-4">
+                  <span className="text-sm text-foreground">{job.name}</span>
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="text-sm text-foreground">
+                    {formatTimestamp(job.createdAt)}
                   </span>
-                ) : (
-                  <span
-                    className={`inline-flex items-center capitalize rounded-md bg-red-50 text-red-700 px-2 py-1 text-xs font-medium  ring-1 ring-inset ring-gray-500/10`}
-                  >
-                    {job.state}
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="text-sm text-foreground">{job.cron}</span>
+                </TableCell>
+                <TableCell className="p-4">
+                  <StatusBadge status={job.state} />
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="flex gap-2">
+                    {job.state === 'ACTIVE' && <PauseScheduledJob job={job} />}
+                    {job.state === 'PAUSED' && <ResumeScheduledJob job={job} />}
+                    <DeleteScheduledJob job={job} />
                   </span>
-                )}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                <div className="flex gap-2">
-                  {job.state === 'ACTIVE' && <PauseScheduledJob job={job} />}
-                  {job.state === 'PAUSED' && <ResumeScheduledJob job={job} />}
-                  <DeleteScheduledJob job={job} />
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    </>
+                </TableCell>
+              </TableRow>
+            ))}
+          </>
+        ) : (
+          <TableRow>
+            <TableCell
+              className="p-4 text-center"
+              colSpan={tableColumns.length}
+            >
+              No scheduled jobs found.
+            </TableCell>
+          </TableRow>
+        )}
+      </DataTable>
+    </div>
   );
 }

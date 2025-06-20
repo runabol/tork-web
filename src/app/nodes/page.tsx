@@ -1,8 +1,9 @@
 import { formatDistanceToNow, parseISO } from 'date-fns';
 
+import NodeStatusBadge from '@/components/node-status-badge';
 import Refresh from '@/components/refresh';
-import Table from '@/components/table';
-import THeader from '@/components/table-header';
+import DataTable from '@/components/shared/data-table';
+import { TableCell, TableRow } from '@/components/ui/table';
 import { getEnvConfig } from '@/config/env-config';
 import { Node } from '@/models';
 
@@ -20,72 +21,77 @@ async function getData(): Promise<Node[]> {
   return res.json();
 }
 
+const tableColumns = [
+  'ID',
+  'Name',
+  'Hostname',
+  'Version',
+  'Uptime',
+  'CPU %',
+  'Tasks',
+  'Status',
+];
+
 export const dynamic = 'force-dynamic';
 
 export default async function NodesPage() {
   const nodes = await getData();
 
   return (
-    <>
-      <div className="mt-8 flex justify-end gap-2">
+    <div className="flex flex-col gap-10">
+      <div className="mt-10 flex justify-end">
         <Refresh />
       </div>
-      <Table>
-        <thead className="bg-gray-50">
-          <tr>
-            <THeader name="ID" />
-            <THeader name="Name" />
-            <THeader name="Hostname" />
-            <THeader name="Version" />
-            <THeader name="Uptime" />
-            <THeader name="CPU %" />
-            <THeader name="Tasks" />
-            <THeader name="Status" />
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-200 bg-white">
-          {nodes.map((node: Node) => (
-            <tr key={node.id}>
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-6 ">
-                {node.id}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {node.name}
-              </td>
-              <td className="hostname whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {node.hostname}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {node.version}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {formatDistanceToNow(parseISO(node.startedAt))}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {Math.round(node.cpuPercent * 100) / 100}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {node.taskCount}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {node.status === 'UP' ? (
-                  <span
-                    className={`inline-flex items-center capitalize rounded-md bg-green-50 text-green-700 px-2 py-1 text-xs font-medium  ring-1 ring-inset ring-gray-500/10`}
-                  >
-                    {node.status}
+      <DataTable columns={tableColumns}>
+        {nodes.length > 0 ? (
+          <>
+            {nodes.map((node: Node) => (
+              <TableRow
+                key={node.id}
+                className="hover:bg-gray-100 dark:hover:bg-gray-800"
+              >
+                <TableCell className="p-4">
+                  <span className="text-sm">{node.id}</span>
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="text-sm">{node.name}</span>
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="text-sm">{node.hostname}</span>
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="text-sm">{node.version}</span>
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="text-sm">
+                    {formatDistanceToNow(parseISO(node.startedAt))}
                   </span>
-                ) : (
-                  <span
-                    className={`inline-flex items-center capitalize rounded-md bg-red-50 text-red-700 px-2 py-1 text-xs font-medium  ring-1 ring-inset ring-gray-500/10`}
-                  >
-                    {node.status}
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="text-sm">
+                    {Math.round(node.cpuPercent * 100) / 100}
                   </span>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    </>
+                </TableCell>
+                <TableCell className="p-4">
+                  <span className="text-sm">{node.taskCount}</span>
+                </TableCell>
+                <TableCell className="p-4">
+                  <NodeStatusBadge status={node.status} />
+                </TableCell>
+              </TableRow>
+            ))}
+          </>
+        ) : (
+          <TableRow>
+            <TableCell
+              className="p-4 text-center"
+              colSpan={tableColumns.length}
+            >
+              No nodes found.
+            </TableCell>
+          </TableRow>
+        )}
+      </DataTable>
+    </div>
   );
 }
