@@ -1,4 +1,8 @@
-## Tork Web
+# Tork Web
+
+<p align="center">
+  <img src="./app-logo.png" alt="Tork Logo" width="300">
+</p>
 
 A frontend for the [Tork](https://github.com/runabol/tork) Workflow Engine.
 
