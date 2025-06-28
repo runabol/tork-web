@@ -19,14 +19,8 @@ export default function CreateJob({ jobTemplate }: Props) {
   const code = `name: my job
 tasks:
   - name: my first task
-    image: node:22-alpine
-    var: myVar
-    run: node -e "console.log('Hello World')" > $TORK_OUTPUT
-  - name: my second task
-    image: alpine:3.22.0
-    env: 
-      MY_VAR: "{{ tasks.myVar }}"
-    run: echo $MY_VAR`;
+    image: alpine:latest
+    run: echo hello world`;
 
   const [placeholder, setPlaceholder] = useState(jobTemplate ?? code);
   const [errorMsg, setErrorMsg] = useState('');
