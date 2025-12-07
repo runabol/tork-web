@@ -5,9 +5,12 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { stringify } from "yaml";
 
-export default function Duplicate() {
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
+export default function Duplicate({
+  searchParams,
+}: {
+  searchParams: { id?: string };
+}) {
+  const id = searchParams.id;
   const [placeholder, setPlaceholder] = useState("");
 
   useEffect(() => {
